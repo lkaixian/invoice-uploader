@@ -37,4 +37,7 @@ The main purpose of the app is to ensure individuals who need to do their own ta
 
 This is solely just a solution to solve a problem that others might faced with, and I glad this app can be solve the problem that rooted me for months. There could be much more improvements and recommendation to be made including an option where uploading E-Invoice file is possible, OCR ability to reconise the invoice code for better verification and reference purpose, and maybe even a new API where E-invoice file could be automatically obtain from website, upload and append.
 
+*Note: Icon used:* 
+<a href="https://www.flaticon.com/free-icons/invoice" title="invoice icons">Invoice icons created by Ubaid El-Ahyar Alyafizi - Flaticon</a>
+
 _Note: You reached the end of the file..._
