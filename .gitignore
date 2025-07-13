@@ -1,0 +1,60 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IDE-specific
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+# Flutter/Dart/Pub related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Android related
+android/.gradle/
+android/key.properties
+android/app/*.jks
+android/app/*.keystore
+*.jks
+*.keystore
+android/local.properties
+
+# iOS related
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.podspec
+ios/Runner.xcworkspace/
+
+# Symbolication / obfuscation
+app.*.symbols
+app.*.map.json
+
+# Output folders from build variants
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# Swift Package Manager
+.swiftpm/
