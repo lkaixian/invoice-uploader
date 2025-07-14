@@ -1,0 +1,76 @@
+{
+  "@@locale": "en",
+  "appTitle": "Invoice Uploader App",
+  "signedInMessage": "✅ Signed in as {email}",
+  "signInCancelled": "❌ Sign-in cancelled",
+  "signedOut": "🔒 Signed out",
+  "signInError": "❌ Error signing in: {error}",
+  "welcomeHeader": "Welcome!",
+  "welcomeUser": "Welcome, {user}",
+  "pleaseSignIn": "Please sign in to begin.",
+  "signInButton": "Sign In",
+  "signOutButton": "Sign Out",
+  "receiptUpload": "Receipt Upload",
+  "spreadsheet": "Spreadsheet",
+  "noCategory": "⚠️ No category chosen yet. Please upload at least one receipt first.",
+  "spreadsheetOpenFail": "❌ Failed to open spreadsheet: {error}",
+  "uploadSuccess": "✅ Upload success!",
+  "uploadFailed": "❌ Upload failed: {statusCode} {error}",
+  "failedToLoadData": "❌ Failed to load data: {error}",
+  "noImageSelected": "No image selected",
+  "cameraButton": "Camera",
+  "galleryButton": "Gallery",
+  "categoryLabel": "Category",
+  "addCategoryOption": "➕ Add Category",
+  "newCategoryLabel": "New Category Name",
+  "deleteCategoryTitle": "Delete '{category}'?",
+  "deleteCategoryConfirm": "Do you want to remove this category?",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "amountLabel": "Invoice Amount (e.g. 34.50)",
+  "filenameLabel": "Filename (optional: auto generated)",
+  "pickDate": "Pick Date",
+  "noDateSelected": "No date selected",
+  "uploadButton": "Upload!",
+  "uploadProgress": "Uploading and updating sheet...",
+  "uploadSuccessSnackbar": "✅ Uploaded & logged to sheet!",
+  "uploadFailedSnackbar": "❌ Upload failed",
+  "uploadErrorTitle": "Upload Error",
+  "ok": "OK",
+  "@signedInMessage": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "@signInError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@welcomeUser": {
+    "placeholders": {
+      "user": {}
+    }
+  },
+  "@spreadsheetOpenFail": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@uploadFailed": {
+    "placeholders": {
+      "statusCode": {},
+      "error": {}
+    }
+  },
+  "@failedToLoadData": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@deleteCategoryTitle": {
+    "placeholders": {
+      "category": {}
+    }
+  }
+}

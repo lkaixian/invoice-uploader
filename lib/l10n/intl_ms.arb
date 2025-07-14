@@ -1,0 +1,76 @@
+{
+  "@@locale": "ms",
+  "appTitle": "Aplikasi Pemuat Naik Resit",
+  "signedInMessage": "✅ Log masuk sebagai {email}",
+  "signInCancelled": "❌ Log masuk dibatalkan",
+  "signedOut": "🔒 Telah log keluar",
+  "signInError": "❌ Ralat semasa log masuk: {error}",
+  "welcomeHeader": "Selamat datang!",
+  "welcomeUser": "Selamat datang, {user}",
+  "pleaseSignIn": "Sila log masuk untuk bermula.",
+  "signInButton": "Log Masuk",
+  "signOutButton": "Log Keluar",
+  "receiptUpload": "Muat Naik Resit",
+  "spreadsheet": "Spreadsheet",
+  "noCategory": "⚠️ Tiada kategori dipilih. Sila muat naik sekurang-kurangnya satu resit dahulu.",
+  "spreadsheetOpenFail": "❌ Gagal buka helaian: {error}",
+  "uploadSuccess": "✅ Muat naik berjaya!",
+  "uploadFailed": "❌ Gagal muat naik: {statusCode} {error}",
+  "failedToLoadData": "❌ Gagal memuatkan data: {error}",
+  "noImageSelected": "Tiada imej dipilih",
+  "cameraButton": "Kamera",
+  "galleryButton": "Galeri",
+  "categoryLabel": "Kategori",
+  "addCategoryOption": "➕ Tambah Kategori",
+  "newCategoryLabel": "Nama Kategori Baru",
+  "deleteCategoryTitle": "Padam '{category}'?",
+  "deleteCategoryConfirm": "Adakah anda pasti ingin memadam kategori ini?",
+  "delete": "Padam",
+  "cancel": "Batal",
+  "amountLabel": "Jumlah Invois (cth: 34.50)",
+  "filenameLabel": "Nama Fail (pilihan: auto jana)",
+  "pickDate": "Pilih Tarikh",
+  "noDateSelected": "Tiada tarikh dipilih",
+  "uploadButton": "Muat Naik!",
+  "uploadProgress": "Memuat naik dan mengemas kini spreadsheet...",
+  "uploadSuccessSnackbar": "✅ Telah dimuat naik & dicatat ke spreadsheet!",
+  "uploadFailedSnackbar": "❌ Gagal memuat naik",
+  "uploadErrorTitle": "Ralat Muat Naik",
+  "ok": "OK",
+  "@signedInMessage": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "@signInError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@welcomeUser": {
+    "placeholders": {
+      "user": {}
+    }
+  },
+  "@spreadsheetOpenFail": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@uploadFailed": {
+    "placeholders": {
+      "statusCode": {},
+      "error": {}
+    }
+  },
+  "@failedToLoadData": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@deleteCategoryTitle": {
+    "placeholders": {
+      "category": {}
+    }
+  }
+}

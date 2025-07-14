@@ -5,6 +5,8 @@ import 'google_drive_helper.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'google_sheets_helper.dart';
+import 'package:invoice_scanner/l10n/app_localizations.dart';
+
 
 class ReceiptUploadScreen extends StatefulWidget {
   final GoogleSignInAccount user;
@@ -41,7 +43,7 @@ void initState() {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getStringList('customCategories') ?? [];
     setState(() {
-      _categories = [...stored, '➕ Add Category'];
+      _categories = [...stored, S.of(context)!.addCategoryOption];
     });
   }
 
@@ -93,7 +95,7 @@ void initState() {
 
   bool get _isFormComplete {
     final isCategoryValid = _selectedCategory != null &&
-        (_selectedCategory != '➕ Add Category' || _customCategoryController.text.isNotEmpty);
+        (_selectedCategory != S.of(context)!.addCategoryOption || _customCategoryController.text.isNotEmpty);
     return _selectedImage != null &&
         _amountController.text.isNotEmpty &&
         _filenameController.text.isNotEmpty &&
@@ -103,7 +105,7 @@ void initState() {
 
   void _autoGenerateFilename() {
     if (_filenameController.text.trim().isNotEmpty) return;
-    final cat = _selectedCategory == '➕ Add Category'
+    final cat = _selectedCategory == S.of(context)!.addCategoryOption
         ? _customCategoryController.text.trim()
         : _selectedCategory ?? 'receipt';
     final date = _selectedDate ?? DateTime.now();
@@ -118,12 +120,12 @@ void initState() {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text("Delete '$category'?"),
-        content: Text("Do you want to remove this category?"),
+        title: Text(S.of(context)!.deleteCategoryTitle(category)),
+        content: Text(S.of(context)!.deleteCategoryConfirm),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text("Cancel")),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(S.of(context)!.cancel)),
           ElevatedButton(
-            child: Text("Delete"),
+            child: Text(S.of(context)!.delete),
             onPressed: () async {
               Navigator.pop(context);
               await _removeCategory(category);
@@ -133,13 +135,14 @@ void initState() {
       ),
     );
   }
+
   Future<void> _uploadAndReturn() async {
   _autoGenerateFilename();
 
   if (widget.user == null || _selectedImage == null) return;
 
   final uploader = GoogleDriveUploader(widget.user);
-  final category = _selectedCategory == '➕ Add Category'
+  final category = _selectedCategory == S.of(context)!.addCategoryOption
       ? _customCategoryController.text
       : _selectedCategory!.trim();
   final prefs = await SharedPreferences.getInstance();
@@ -190,13 +193,13 @@ void initState() {
 
       Navigator.pop(context); // Close progress dialog
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("✅ Uploaded & logged to sheet!")),
+        SnackBar(content: Text(S.of(context)!.uploadSuccessSnackbar)),
       );
       Navigator.pop(context); // Close upload screen
     } else {
       Navigator.pop(context); // Close progress dialog
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("❌ Upload failed")),
+        SnackBar(content: Text(S.of(context)!.uploadFailedSnackbar)),
       );
     }
   } catch (e) {
@@ -204,10 +207,10 @@ void initState() {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text("Upload Error"),
+        title: Text(S.of(context)!.uploadErrorTitle),
         content: Text("$e"),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text("OK")),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(S.of(context)!.ok)),
         ],
       ),
     );
@@ -221,7 +224,7 @@ void initState() {
         : _selectedCategory ?? '';
 
     return Scaffold(
-      appBar: AppBar(title: Text("Upload Receipt")),
+      appBar: AppBar(title: Text(S.of(context)!.receiptUpload)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
@@ -231,7 +234,7 @@ void initState() {
               color: Colors.grey[300],
               child: _selectedImage != null
                   ? Image.file(_selectedImage!, fit: BoxFit.cover)
-                  : Center(child: Text("No image selected")),
+                  : Center(child: Text(S.of(context)!.noImageSelected)),
             ),
             const SizedBox(height: 10),
 
@@ -240,12 +243,12 @@ void initState() {
               children: [
                 ElevatedButton.icon(
                   icon: Icon(Icons.camera_alt),
-                  label: Text("Camera"),
+                  label: Text(S.of(context)!.cameraButton),
                   onPressed: () => _pickImage(ImageSource.camera),
                 ),
                 ElevatedButton.icon(
                   icon: Icon(Icons.photo_library),
-                  label: Text("Gallery"),
+                  label: Text(S.of(context)!.galleryButton),
                   onPressed: () => _pickImage(ImageSource.gallery),
                 ),
               ],
@@ -253,12 +256,12 @@ void initState() {
             const SizedBox(height: 20),
 
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: "Category"),
+              decoration: InputDecoration(labelText: S.of(context)!.categoryLabel),
               items: _categories.map((c) {
                 return DropdownMenuItem<String>(
                   value: c,
                   child: GestureDetector(
-                    onLongPress: c != '➕ Add Category' ? () => _showDeleteDialog(c) : null,
+                    onLongPress: c != S.of(context)!.addCategoryOption ? () => _showDeleteDialog(c) : null,
                     child: Text(c),
                   ),
                 );
@@ -266,13 +269,13 @@ void initState() {
               value: _selectedCategory,
               onChanged: (value) => setState(() => _selectedCategory = value),
             ),
-            if (_selectedCategory == '➕ Add Category')
+            if (_selectedCategory == S.of(context)!.addCategoryOption )
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _customCategoryController,
-                      decoration: InputDecoration(labelText: "New Category Name"),
+                      decoration: InputDecoration(labelText: S.of(context)!.newCategoryLabel),
                     ),
                   ),
                   IconButton(
@@ -291,14 +294,14 @@ void initState() {
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: "Invoice Amount (e.g. 34.50)"),
+              decoration: InputDecoration(labelText: S.of(context)!.amountLabel),
             ),
             const SizedBox(height: 20),
 
             TextField(
               focusNode: _filenameFocusNode,
               controller: _filenameController,
-              decoration: InputDecoration(labelText: "Filename (optional: auto generated)"),
+              decoration: InputDecoration(labelText: S.of(context)!.filenameLabel),
             ),
             const SizedBox(height: 20),
 
@@ -306,7 +309,7 @@ void initState() {
               children: [
                 ElevatedButton.icon(
                   icon: Icon(Icons.calendar_today),
-                  label: Text("Pick Date"),
+                  label: Text(S.of(context)!.pickDate),
                   onPressed: _pickDate,
                 ),
                 const SizedBox(width: 10),
@@ -315,7 +318,7 @@ void initState() {
                       ? "${_selectedDate!.day.toString().padLeft(2, '0')}/"
                           "${_selectedDate!.month.toString().padLeft(2, '0')}/"
                           "${_selectedDate!.year}"
-                      : "No date selected",
+                      : S.of(context)!.noDateSelected,
                 ),
               ],
             ),
@@ -323,7 +326,7 @@ void initState() {
 
             ElevatedButton.icon(
               icon: Icon(Icons.cloud_upload),
-              label: Text("Upload!"),
+              label: Text(S.of(context)!.uploadButton),
               onPressed: _isFormComplete ? _uploadAndReturn : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: _isFormComplete ? Colors.blue : Colors.grey,

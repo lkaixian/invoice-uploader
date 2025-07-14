@@ -1,29 +1,34 @@
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:invoice_scanner/l10n/app_localizations.dart';
 
 class GoogleDriveSignIn {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/spreadsheets'],
+    scopes: [
+      'https://www.googleapis.com/auth/drive.file',
+      'https://www.googleapis.com/auth/spreadsheets'
+    ],
   );
 
-  Future<GoogleSignInAccount?> signIn() async {
+  Future<GoogleSignInAccount?> signIn(BuildContext context) async {
     try {
       final account = await _googleSignIn.signIn();
       if (account != null) {
-        print("✅ Signed in as ${account.email}");
+        print(S.of(context)!.signedInMessage(account.email));
         return account;
       } else {
-        print("❌ Sign-in cancelled");
+        print(S.of(context)!.signInCancelled);
         return null;
       }
     } catch (error) {
-      print("Error signing in: $error");
+      print(S.of(context)!.signInError(error.toString()));
       return null;
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     await _googleSignIn.signOut();
-    print("🔒 Signed out.");
+    print(S.of(context)!.signedOut);
   }
 
   Future<bool> isSignedIn() async {

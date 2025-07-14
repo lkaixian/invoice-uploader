@@ -1,0 +1,76 @@
+{
+  "@@locale": "zh",
+  "appTitle": "发票上传器",
+  "signedInMessage": "✅ 已登录为 {email}",
+  "signInCancelled": "❌ 登录已取消",
+  "signedOut": "🔒 已登出",
+  "signInError": "❌ 登录出错：{error}",
+  "welcomeHeader": "欢迎！",
+  "welcomeUser": "欢迎，{user}",
+  "pleaseSignIn": "请登录以开始。",
+  "signInButton": "登录",
+  "signOutButton": "登出",
+  "receiptUpload": "上传收据",
+  "spreadsheet": "电子表格",
+  "noCategory": "⚠️ 尚未选择类别。请先上传至少一张收据。",
+  "spreadsheetOpenFail": "❌ 无法打开表格：{error}",
+  "uploadSuccess": "✅ 上传成功！",
+  "uploadFailed": "❌ 上传失败：{statusCode} {error}",
+  "failedToLoadData": "❌ 加载数据失败：{error}",
+  "noImageSelected": "未选择图片",
+  "cameraButton": "相机",
+  "galleryButton": "图库",
+  "categoryLabel": "类别",
+  "addCategoryOption": "➕ 添加类别",
+  "newCategoryLabel": "新类别名称",
+  "deleteCategoryTitle": "删除“{category}”？",
+  "deleteCategoryConfirm": "确定要删除该类别吗？",
+  "delete": "删除",
+  "cancel": "取消",
+  "amountLabel": "发票金额（例如：34.50）",
+  "filenameLabel": "文件名（可选：自动生成）",
+  "pickDate": "选择日期",
+  "noDateSelected": "未选择日期",
+  "uploadButton": "上传！",
+  "uploadProgress": "正在上传并更新表格...",
+  "uploadSuccessSnackbar": "✅ 上传并记录到表格！",
+  "uploadFailedSnackbar": "❌ 上传失败",
+  "uploadErrorTitle": "上传错误",
+  "ok": "好的",
+  "@signedInMessage": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "@signInError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@welcomeUser": {
+    "placeholders": {
+      "user": {}
+    }
+  },
+  "@spreadsheetOpenFail": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@uploadFailed": {
+    "placeholders": {
+      "statusCode": {},
+      "error": {}
+    }
+  },
+  "@failedToLoadData": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@deleteCategoryTitle": {
+    "placeholders": {
+      "category": {}
+    }
+  }
+}
