@@ -99,11 +99,53 @@ abstract class S {
     Locale('ms'),
   ];
 
+  /// No description provided for @selectLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get selectLanguage;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
   /// **'Invoice Uploader App'**
   String get appTitle;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
 
   /// No description provided for @signedInMessage.
   ///
@@ -225,6 +267,12 @@ abstract class S {
   /// **'Category'**
   String get categoryLabel;
 
+  /// No description provided for @selectCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Category'**
+  String get selectCategory;
+
   /// No description provided for @addCategoryOption.
   ///
   /// In en, this message translates to:
@@ -267,11 +315,47 @@ abstract class S {
   /// **'Invoice Amount (e.g. 34.50)'**
   String get amountLabel;
 
+  /// No description provided for @enterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Amount'**
+  String get enterAmount;
+
   /// No description provided for @filenameLabel.
   ///
   /// In en, this message translates to:
   /// **'Filename (optional: auto generated)'**
   String get filenameLabel;
+
+  /// No description provided for @selectFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Files'**
+  String get selectFiles;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @file.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get file;
+
+  /// No description provided for @previous.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
 
   /// No description provided for @pickDate.
   ///
@@ -290,6 +374,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Upload!'**
   String get uploadButton;
+
+  /// No description provided for @uploadingPleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading, please wait...'**
+  String get uploadingPleaseWait;
 
   /// No description provided for @uploadProgress.
   ///
@@ -320,6 +410,24 @@ abstract class S {
   /// In en, this message translates to:
   /// **'OK'**
   String get ok;
+
+  /// No description provided for @viewExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'View Expenses'**
+  String get viewExpenses;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get viewAll;
+
+  /// No description provided for @bulkUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk Upload'**
+  String get bulkUpload;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

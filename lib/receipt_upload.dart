@@ -7,10 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'google_sheets_helper.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
 
-
 class ReceiptUploadScreen extends StatefulWidget {
   final GoogleSignInAccount user;
-  const ReceiptUploadScreen({required this.user, Key? key}) : super(key: key);
+  const ReceiptUploadScreen({required this.user, super.key});
 
   @override
   State<ReceiptUploadScreen> createState() => _ReceiptUploadScreenState();
@@ -19,7 +18,8 @@ class ReceiptUploadScreen extends StatefulWidget {
 class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
   File? _selectedImage;
   final TextEditingController _amountController = TextEditingController();
-  final TextEditingController _customCategoryController = TextEditingController();
+  final TextEditingController _customCategoryController =
+      TextEditingController();
   final TextEditingController _filenameController = TextEditingController();
   final FocusNode _filenameFocusNode = FocusNode();
 
@@ -27,17 +27,19 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
   DateTime? _selectedDate;
   List<String> _categories = [];
 
-@override
-void initState() {
-  super.initState();
-  _loadCategories();
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
 
-  _filenameFocusNode.addListener(() {
-    if (_filenameFocusNode.hasFocus && _filenameController.text.isEmpty && _selectedDate != null) {
-      _autoGenerateFilename();
-    }
-  });
-}
+    _filenameFocusNode.addListener(() {
+      if (_filenameFocusNode.hasFocus &&
+          _filenameController.text.isEmpty &&
+          _selectedDate != null) {
+        _autoGenerateFilename();
+      }
+    });
+  }
 
   Future<void> _loadCategories() async {
     final prefs = await SharedPreferences.getInstance();
@@ -94,8 +96,10 @@ void initState() {
   }
 
   bool get _isFormComplete {
-    final isCategoryValid = _selectedCategory != null &&
-        (_selectedCategory != S.of(context)!.addCategoryOption || _customCategoryController.text.isNotEmpty);
+    final isCategoryValid =
+        _selectedCategory != null &&
+        (_selectedCategory != S.of(context)!.addCategoryOption ||
+            _customCategoryController.text.isNotEmpty);
     return _selectedImage != null &&
         _amountController.text.isNotEmpty &&
         _filenameController.text.isNotEmpty &&
@@ -109,7 +113,8 @@ void initState() {
         ? _customCategoryController.text.trim()
         : _selectedCategory ?? 'receipt';
     final date = _selectedDate ?? DateTime.now();
-    final timestamp = "${date.day.toString().padLeft(2, '0')}"
+    final timestamp =
+        "${date.day.toString().padLeft(2, '0')}"
         "${date.month.toString().padLeft(2, '0')}"
         "${date.year.toString().substring(2)}";
     final generated = "${cat}_$timestamp".toLowerCase().replaceAll(" ", "_");
@@ -123,7 +128,10 @@ void initState() {
         title: Text(S.of(context)!.deleteCategoryTitle(category)),
         content: Text(S.of(context)!.deleteCategoryConfirm),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(S.of(context)!.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context)!.cancel),
+          ),
           ElevatedButton(
             child: Text(S.of(context)!.delete),
             onPressed: () async {
@@ -137,85 +145,88 @@ void initState() {
   }
 
   Future<void> _uploadAndReturn() async {
-  _autoGenerateFilename();
+    _autoGenerateFilename();
 
-  if (widget.user == null || _selectedImage == null) return;
+    if (_selectedImage == null) return;
 
-  final uploader = GoogleDriveUploader(widget.user);
-  final category = _selectedCategory == S.of(context)!.addCategoryOption
-      ? _customCategoryController.text
-      : _selectedCategory!.trim();
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString("lastCategory", category.trim());
+    final uploader = GoogleDriveUploader(widget.user);
+    final category = _selectedCategory == S.of(context)!.addCategoryOption
+        ? _customCategoryController.text
+        : _selectedCategory!.trim();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("lastCategory", category.trim());
 
-  // 🔒 Show blocking progress dialog
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (_) => WillPopScope(
-      onWillPop: () async => false,
-      child: const AlertDialog(
-        content: Row(
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(width: 16),
-            Expanded(child: Text("Uploading and updating sheet...")),
-          ],
-        ),
-      ),
-    ),
-  );
-
-  await Future.delayed(const Duration(milliseconds: 100));
-
-  try {
-    final success = await uploader.uploadFile(
-      file: _selectedImage!,
-      fileName: _filenameController.text.trim(),
-      folderName: category,
-    );
-
-    if (success) {
-      final sheets = GoogleSheetsHelper(widget.user);
-      final sheetId = await sheets.getOrCreateMainSpreadsheet();
-
-      await sheets.ensureCategorySheetExists(sheetId, category);
-      await sheets.appendToCategorySheet(sheetId, category, [
-        _selectedDate!.toIso8601String().split('T').first,
-        _amountController.text.trim(),
-        _filenameController.text.trim(),
-      ]);
-
-      // ✅ Save the sheet ID and last used category
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString("sheetId_$category", sheetId);
-      await prefs.setString("lastUsedCategory", category);
-
-      Navigator.pop(context); // Close progress dialog
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context)!.uploadSuccessSnackbar)),
-      );
-      Navigator.pop(context); // Close upload screen
-    } else {
-      Navigator.pop(context); // Close progress dialog
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context)!.uploadFailedSnackbar)),
-      );
-    }
-  } catch (e) {
-    Navigator.pop(context); // Close progress dialog
+    // 🔒 Show blocking progress dialog
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(S.of(context)!.uploadErrorTitle),
-        content: Text("$e"),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(S.of(context)!.ok)),
-        ],
+      barrierDismissible: false,
+      builder: (_) => WillPopScope(
+        onWillPop: () async => false,
+        child: AlertDialog(
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(width: 16),
+              Expanded(child: Text(S.of(context)!.uploadingPleaseWait)),
+            ],
+          ),
+        ),
       ),
     );
+
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    try {
+      final success = await uploader.uploadFile(
+        file: _selectedImage!,
+        fileName: _filenameController.text.trim(),
+        folderName: category,
+      );
+
+      if (success) {
+        final sheets = GoogleSheetsHelper(widget.user);
+        final sheetId = await sheets.getOrCreateMainSpreadsheet();
+
+        await sheets.ensureCategorySheetExists(sheetId, category);
+        await sheets.appendToCategorySheet(sheetId, category, [
+          _selectedDate!.toIso8601String().split('T').first,
+          _amountController.text.trim(),
+          _filenameController.text.trim(),
+        ]);
+
+        // ✅ Save the sheet ID and last used category
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString("sheetId_$category", sheetId);
+        await prefs.setString("lastUsedCategory", category);
+
+        Navigator.pop(context); // Close progress dialog
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context)!.uploadSuccessSnackbar)),
+        );
+        Navigator.pop(context); // Close upload screen
+      } else {
+        Navigator.pop(context); // Close progress dialog
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context)!.uploadFailedSnackbar)),
+        );
+      }
+    } catch (e) {
+      Navigator.pop(context); // Close progress dialog
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text(S.of(context)!.uploadErrorTitle),
+          content: Text("$e"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(S.of(context)!.ok),
+            ),
+          ],
+        ),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -256,12 +267,16 @@ void initState() {
             const SizedBox(height: 20),
 
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: S.of(context)!.categoryLabel),
+              decoration: InputDecoration(
+                labelText: S.of(context)!.categoryLabel,
+              ),
               items: _categories.map((c) {
                 return DropdownMenuItem<String>(
                   value: c,
                   child: GestureDetector(
-                    onLongPress: c != S.of(context)!.addCategoryOption ? () => _showDeleteDialog(c) : null,
+                    onLongPress: c != S.of(context)!.addCategoryOption
+                        ? () => _showDeleteDialog(c)
+                        : null,
                     child: Text(c),
                   ),
                 );
@@ -269,13 +284,15 @@ void initState() {
               value: _selectedCategory,
               onChanged: (value) => setState(() => _selectedCategory = value),
             ),
-            if (_selectedCategory == S.of(context)!.addCategoryOption )
+            if (_selectedCategory == S.of(context)!.addCategoryOption)
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _customCategoryController,
-                      decoration: InputDecoration(labelText: S.of(context)!.newCategoryLabel),
+                      decoration: InputDecoration(
+                        labelText: S.of(context)!.newCategoryLabel,
+                      ),
                     ),
                   ),
                   IconButton(
@@ -285,7 +302,7 @@ void initState() {
                         _addCategory(_customCategoryController.text.trim());
                       }
                     },
-                  )
+                  ),
                 ],
               ),
 
@@ -294,14 +311,18 @@ void initState() {
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: S.of(context)!.amountLabel),
+              decoration: InputDecoration(
+                labelText: S.of(context)!.amountLabel,
+              ),
             ),
             const SizedBox(height: 20),
 
             TextField(
               focusNode: _filenameFocusNode,
               controller: _filenameController,
-              decoration: InputDecoration(labelText: S.of(context)!.filenameLabel),
+              decoration: InputDecoration(
+                labelText: S.of(context)!.filenameLabel,
+              ),
             ),
             const SizedBox(height: 20),
 
@@ -316,8 +337,8 @@ void initState() {
                 Text(
                   _selectedDate != null
                       ? "${_selectedDate!.day.toString().padLeft(2, '0')}/"
-                          "${_selectedDate!.month.toString().padLeft(2, '0')}/"
-                          "${_selectedDate!.year}"
+                            "${_selectedDate!.month.toString().padLeft(2, '0')}/"
+                            "${_selectedDate!.year}"
                       : S.of(context)!.noDateSelected,
                 ),
               ],

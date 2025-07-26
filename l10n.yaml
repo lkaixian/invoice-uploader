@@ -6,3 +6,6 @@ preferred-supported-locales:
   - en
   - zh
   - ms
+flutter:
+  generate: true
+  uses-material-design: true

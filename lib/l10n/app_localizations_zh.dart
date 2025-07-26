@@ -9,7 +9,28 @@ class SZh extends S {
   SZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get selectLanguage => '选择语言';
+
+  @override
+  String get language => '语言';
+
+  @override
   String get appTitle => '发票上传器';
+
+  @override
+  String get theme => '主题';
+
+  @override
+  String get themeLight => '浅色';
+
+  @override
+  String get themeDark => '深色';
+
+  @override
+  String get themeSystem => '系统';
+
+  @override
+  String get settings => '设置';
 
   @override
   String signedInMessage(Object email) {
@@ -84,6 +105,9 @@ class SZh extends S {
   String get categoryLabel => '类别';
 
   @override
+  String get selectCategory => '选择类别';
+
+  @override
   String get addCategoryOption => '➕ 添加类别';
 
   @override
@@ -107,7 +131,25 @@ class SZh extends S {
   String get amountLabel => '发票金额（例如：34.50）';
 
   @override
+  String get enterAmount => '输入金额';
+
+  @override
   String get filenameLabel => '文件名（可选：自动生成）';
+
+  @override
+  String get selectFiles => '选择文件';
+
+  @override
+  String get date => '日期';
+
+  @override
+  String get file => '文件';
+
+  @override
+  String get previous => '上一步';
+
+  @override
+  String get next => '下一步';
 
   @override
   String get pickDate => '选择日期';
@@ -117,6 +159,9 @@ class SZh extends S {
 
   @override
   String get uploadButton => '上传！';
+
+  @override
+  String get uploadingPleaseWait => '正在上传，请稍候...';
 
   @override
   String get uploadProgress => '正在上传并更新表格...';
@@ -132,4 +177,13 @@ class SZh extends S {
 
   @override
   String get ok => '好的';
+
+  @override
+  String get viewExpenses => '查看支出';
+
+  @override
+  String get viewAll => '查看全部';
+
+  @override
+  String get bulkUpload => '批量上传';
 }

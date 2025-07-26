@@ -11,8 +11,8 @@ class SpreadsheetListScreen extends StatefulWidget {
     required this.spreadsheetId,
     required this.category,
     required this.user,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SpreadsheetListScreen> createState() => _SpreadsheetListScreenState();

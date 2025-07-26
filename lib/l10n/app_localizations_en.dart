@@ -9,7 +9,28 @@ class SEn extends S {
   SEn([String locale = 'en']) : super(locale);
 
   @override
+  String get selectLanguage => 'Select Language';
+
+  @override
+  String get language => 'Language';
+
+  @override
   String get appTitle => 'Invoice Uploader App';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get settings => 'Settings';
 
   @override
   String signedInMessage(Object email) {
@@ -85,6 +106,9 @@ class SEn extends S {
   String get categoryLabel => 'Category';
 
   @override
+  String get selectCategory => 'Select Category';
+
+  @override
   String get addCategoryOption => '➕ Add Category';
 
   @override
@@ -108,7 +132,25 @@ class SEn extends S {
   String get amountLabel => 'Invoice Amount (e.g. 34.50)';
 
   @override
+  String get enterAmount => 'Enter Amount';
+
+  @override
   String get filenameLabel => 'Filename (optional: auto generated)';
+
+  @override
+  String get selectFiles => 'Select Files';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get file => 'File';
+
+  @override
+  String get previous => 'Previous';
+
+  @override
+  String get next => 'Next';
 
   @override
   String get pickDate => 'Pick Date';
@@ -118,6 +160,9 @@ class SEn extends S {
 
   @override
   String get uploadButton => 'Upload!';
+
+  @override
+  String get uploadingPleaseWait => 'Uploading, please wait...';
 
   @override
   String get uploadProgress => 'Uploading and updating sheet...';
@@ -133,4 +178,13 @@ class SEn extends S {
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get viewExpenses => 'View Expenses';
+
+  @override
+  String get viewAll => 'View All';
+
+  @override
+  String get bulkUpload => 'Bulk Upload';
 }

@@ -9,7 +9,28 @@ class SMs extends S {
   SMs([String locale = 'ms']) : super(locale);
 
   @override
+  String get selectLanguage => 'Pilih Bahasa';
+
+  @override
+  String get language => 'Bahasa';
+
+  @override
   String get appTitle => 'Aplikasi Pemuat Naik Resit';
+
+  @override
+  String get theme => 'Tema';
+
+  @override
+  String get themeLight => 'Cerah';
+
+  @override
+  String get themeDark => 'Gelap';
+
+  @override
+  String get themeSystem => 'Sistem';
+
+  @override
+  String get settings => 'Tetapan';
 
   @override
   String signedInMessage(Object email) {
@@ -85,6 +106,9 @@ class SMs extends S {
   String get categoryLabel => 'Kategori';
 
   @override
+  String get selectCategory => 'Pilih Kategori';
+
+  @override
   String get addCategoryOption => '➕ Tambah Kategori';
 
   @override
@@ -109,7 +133,25 @@ class SMs extends S {
   String get amountLabel => 'Jumlah Invois (cth: 34.50)';
 
   @override
+  String get enterAmount => 'Masukkan Jumlah';
+
+  @override
   String get filenameLabel => 'Nama Fail (pilihan: auto jana)';
+
+  @override
+  String get selectFiles => 'Pilih Fail';
+
+  @override
+  String get date => 'Tarikh';
+
+  @override
+  String get file => 'Fail';
+
+  @override
+  String get previous => 'Sebelumnya';
+
+  @override
+  String get next => 'Seterusnya';
 
   @override
   String get pickDate => 'Pilih Tarikh';
@@ -119,6 +161,9 @@ class SMs extends S {
 
   @override
   String get uploadButton => 'Muat Naik!';
+
+  @override
+  String get uploadingPleaseWait => 'Sedang memuat naik, sila tunggu...';
 
   @override
   String get uploadProgress => 'Memuat naik dan mengemas kini spreadsheet...';
@@ -135,4 +180,13 @@ class SMs extends S {
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get viewExpenses => 'Lihat Perbelanjaan';
+
+  @override
+  String get viewAll => 'Lihat Semua';
+
+  @override
+  String get bulkUpload => 'Muat Naik Berkelompok';
 }

@@ -25,7 +25,8 @@ dependencies:
   url_launcher: ^6.1.10
   flutter_plugin_android_lifecycle: ^2.0.15
   flutter_localization: ^0.3.3
-
+  fl_chart: ^0.66.0
+  file_picker: ^10.2.0
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
