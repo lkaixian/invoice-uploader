@@ -1,5 +1,10 @@
 # TODO
 
+## CRITICAL
+- [ ] Get approval from Google Cloud for unlimited userspace.
+
+
+## FEATURES
 - [x] User authentication (sign up, login, logout)
 - [x] Dashboard to view summary of expenses
 - [x] Add new expense (form)
