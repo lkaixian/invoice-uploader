@@ -48,9 +48,7 @@ class _SpreadsheetListScreenState extends State<SpreadsheetListScreen> {
               itemCount: _rows.length,
               itemBuilder: (context, index) {
                 final row = _rows[index];
-                return ListTile(
-                  title: Text(row.join(" | ")),
-                );
+                return ListTile(title: Text(row.join(" | ")));
               },
             ),
     );

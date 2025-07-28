@@ -10,6 +10,7 @@ import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'expense_overview_screen.dart';
 import 'settings_screen.dart';
 import 'bulk_upload_screen.dart';
+import 'category_service.dart';
 
 void main() => runApp(const MyApp());
 
@@ -40,6 +41,19 @@ class _MyAppState extends State<MyApp> {
     setState(() => _themeMode = mode);
   }
 
+  Widget _buildDrawerCard({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Card(
+        child: ListTile(leading: Icon(icon), title: Text(label), onTap: onTap),
+      ),
+    );
+  }
+
   Future<void> _loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
     final themeString = prefs.getString('themeMode');
@@ -62,7 +76,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _checkSignIn() async {
-    final account = await googleDriveSignIn.signInSilently();
+    final account = await googleDriveSignIn.trySilentSignIn();
     if (account != null && mounted) {
       setState(() {
         _user = account;
@@ -253,320 +267,298 @@ class _MyAppState extends State<MyApp> {
             ],
           ),
           drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  child: ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: Text(S.of(context)!.settings),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SettingsScreen(
-                            themeMode: _themeMode,
-                            onThemeChanged: (mode) => _setThemeMode(mode),
-                            onLocaleChanged: (locale) => _setLocale(locale),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                _user == null
-                    ? DrawerHeader(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.blue, Colors.blueAccent],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.account_circle,
-                              size: 64,
-                              color: Colors.white70,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              S.of(context)!.welcomeHeader,
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Colors.white,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // --- Header Section ---
+                    _user == null
+                        ? Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(vertical: 24),
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Colors.blue, Colors.blueAccent],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
                             ),
-                          ],
-                        ),
-                      )
-                    : UserAccountsDrawerHeader(
-                        accountName: Text(_user!.displayName ?? ""),
-                        accountEmail: Text(_user!.email),
-                        currentAccountPicture: _user!.photoUrl != null
-                            ? CircleAvatar(
-                                backgroundImage: NetworkImage(_user!.photoUrl!),
-                              )
-                            : CircleAvatar(
-                                backgroundColor: Colors.grey[400],
-                                child: Text(
-                                  (_user!.displayName
-                                          ?.substring(0, 1)
-                                          .toUpperCase() ??
-                                      "?"),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.account_circle,
+                                  size: 64,
+                                  color: Colors.white70,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  S.of(context)!.welcomeHeader,
                                   style: const TextStyle(
                                     fontSize: 24,
                                     color: Colors.white,
                                   ),
                                 ),
-                              ),
-                      ),
-                if (_user != null) ...[
-                  Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.upload_file),
-                      title: Text(S.of(context)!.receiptUpload),
+                              ],
+                            ),
+                          )
+                        : UserAccountsDrawerHeader(
+                            accountName: Text(_user!.displayName ?? ""),
+                            accountEmail: Text(_user!.email),
+                            currentAccountPicture: _user!.photoUrl != null
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      _user!.photoUrl!,
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    backgroundColor: Colors.grey[400],
+                                    child: Text(
+                                      (_user!.displayName
+                                              ?.substring(0, 1)
+                                              .toUpperCase() ??
+                                          "?"),
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                          ),
+
+                    // --- Settings ---
+                    _buildDrawerCard(
+                      icon: Icons.settings,
+                      label: S.of(context)!.settings,
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ReceiptUploadScreen(user: _user!),
+                            builder: (context) => SettingsScreen(
+                              themeMode: _themeMode,
+                              onThemeChanged: _setThemeMode,
+                              onLocaleChanged: _setLocale,
+                            ),
                           ),
                         );
                       },
                     ),
-                  ),
-                  Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.upload),
-                      title: Text(S.of(context)!.bulkUpload),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        // Ask user to pick a category first
-                        final helper = sheets.GoogleSheetsHelper(_user!);
-                        final spreadsheetId = await helper
-                            .getOrCreateMainSpreadsheet();
-                        final categories = await helper.getCategories(
-                          spreadsheetId,
-                        );
-                        String? selectedCategory;
-                        await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(S.of(context)!.selectCategory),
-                            content: DropdownButton<String>(
-                              value: selectedCategory,
-                              hint: Text(S.of(context)!.selectCategory),
-                              items: categories
-                                  .map(
-                                    (c) => DropdownMenuItem(
-                                      value: c,
-                                      child: Text(c),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (val) {
-                                selectedCategory = val;
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                        );
-                        if (selectedCategory != null) {
+
+                    // --- Auth and Feature Cards ---
+                    if (_user != null) ...[
+                      _buildDrawerCard(
+                        icon: Icons.upload_file,
+                        label: S.of(context)!.receiptUpload,
+                        onTap: () {
+                          Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BulkUploadScreen(
-                                category: selectedCategory!,
-                                onUpload: (entries) async {
-                                  // Implement your upload logic here
-                                  // For each entry: entry.file, entry.date, entry.amount, widget.category
-                                  // Autogenerate filename if needed
-                                  // Use your GoogleSheetsHelper to upload
+                              builder: (context) =>
+                                  ReceiptUploadScreen(user: _user!),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildDrawerCard(
+                        icon: Icons.upload,
+                        label: S.of(context)!.bulkUpload,
+                        onTap: () async {
+                          Navigator.pop(context);
+                          final categories =
+                              await CategoryService.loadCategories();
+                          String? selectedCategory = categories.isNotEmpty
+                              ? categories.first
+                              : null;
+
+                          await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text(S.of(context)!.selectCategory),
+                              content: DropdownButton<String>(
+                                value: selectedCategory,
+                                hint: Text(S.of(context)!.selectCategory),
+                                items: categories
+                                    .map(
+                                      (c) => DropdownMenuItem(
+                                        value: c,
+                                        child: Text(c),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (val) {
+                                  selectedCategory = val;
+                                  Navigator.pop(context);
                                 },
-                                user: _user!,
                               ),
                             ),
                           );
-                        }
-                      },
-                    ),
-                  ),
-                  Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.table_chart),
-                      title: Text(S.of(context)!.spreadsheet),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        final prefs = await SharedPreferences.getInstance();
-                        if (!mounted) return;
-                        final lastCategory = prefs.getString(
-                          "lastUsedCategory",
-                        );
-                        if (lastCategory == null) {
-                          if (!mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(S.of(context)!.noCategory)),
+
+                          if (selectedCategory != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BulkUploadScreen(
+                                  category: selectedCategory!,
+                                  onUpload: (entries) async {},
+                                  user: _user!,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      _buildDrawerCard(
+                        icon: Icons.table_chart,
+                        label: S.of(context)!.spreadsheet,
+                        onTap: () async {
+                          Navigator.pop(context);
+                          final prefs = await SharedPreferences.getInstance();
+                          final lastCategory = prefs.getString(
+                            "lastUsedCategory",
                           );
-                          return;
-                        }
-                        try {
+
+                          if (lastCategory == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(S.of(context)!.noCategory),
+                              ),
+                            );
+                            return;
+                          }
+
+                          try {
+                            final helper = sheets.GoogleSheetsHelper(_user!);
+                            final sheetId = await helper
+                                .getOrCreateMainSpreadsheet();
+                            await helper.ensureCategorySheetExists(
+                              sheetId,
+                              lastCategory,
+                            );
+                            await prefs.setString(
+                              "sheetId_$lastCategory",
+                              sheetId,
+                            );
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SpreadsheetListScreen(
+                                  spreadsheetId: sheetId,
+                                  category: lastCategory,
+                                  user: _user!,
+                                ),
+                              ),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "${S.of(context)!.spreadsheetOpenFail(e)}: $e",
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      _buildDrawerCard(
+                        icon: Icons.pie_chart,
+                        label: S.of(context)!.viewExpenses,
+                        onTap: () async {
+                          Navigator.pop(context);
                           final helper = sheets.GoogleSheetsHelper(_user!);
-                          final sheetId = await helper
+                          final spreadsheetId = await helper
                               .getOrCreateMainSpreadsheet();
-                          if (!mounted) return;
-                          await helper.ensureCategorySheetExists(
-                            sheetId,
-                            lastCategory,
-                          );
-                          if (!mounted) return;
-                          await prefs.setString(
-                            "sheetId_$lastCategory",
-                            sheetId,
-                          );
-                          if (!mounted) return;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SpreadsheetListScreen(
-                                spreadsheetId: sheetId,
-                                category: lastCategory,
+                              builder: (context) => ExpenseOverviewScreen(
+                                spreadsheetId: spreadsheetId,
                                 user: _user!,
                               ),
                             ),
                           );
-                        } catch (e) {
-                          if (!mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "${S.of(context)!.spreadsheetOpenFail(e)}: $e",
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                  Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.pie_chart),
-                      title: Text(
-                        S.of(context)!.viewExpenses,
-                      ), // Add "viewExpenses" to your ARB files
-                      onTap: () async {
-                        Navigator.pop(context);
-                        final helper = sheets.GoogleSheetsHelper(_user!);
-                        final spreadsheetId = await helper
-                            .getOrCreateMainSpreadsheet();
-                        if (!mounted) return;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ExpenseOverviewScreen(
-                              spreadsheetId: spreadsheetId,
-                              user: _user!,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-                if (_user == null)
-                  Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.login),
-                      title: Text(S.of(context)!.signInButton),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        await _handleSignIn(context);
-                      },
-                    ),
-                  ),
-                if (_user != null)
-                  Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.logout),
-                      title: Text(S.of(context)!.signOutButton),
-                      onTap: () async {
-                        Navigator.pop(context);
-                        await _handleSignOut(context);
-                      },
-                    ),
-                  ),
-              ],
+                        },
+                      ),
+                    ],
+
+                    if (_user == null)
+                      _buildDrawerCard(
+                        icon: Icons.login,
+                        label: S.of(context)!.signInButton,
+                        onTap: () async {
+                          Navigator.pop(context);
+                          await _handleSignIn(context);
+                        },
+                      ),
+
+                    if (_user != null)
+                      _buildDrawerCard(
+                        icon: Icons.logout,
+                        label: S.of(context)!.signOutButton,
+                        onTap: () async {
+                          Navigator.pop(context);
+                          await _handleSignOut(context);
+                        },
+                      ),
+                  ],
+                ),
+              ),
             ),
           ),
-          body: Center(
-            child: Card(
-              margin: const EdgeInsets.all(24),
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 40,
-                  horizontal: 24,
+          body: SafeArea(
+            child: Center(
+              child: Card(
+                margin: const EdgeInsets.all(24),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      _user != null
-                          ? Icons.verified_user
-                          : Icons.account_circle,
-                      size: 64,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      _user != null
-                          ? S
-                                .of(context)!
-                                .welcomeUser(_user!.displayName ?? _user!.email)
-                          : S.of(context)!.pleaseSignIn,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 40,
+                    horizontal: 24,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        _user != null
+                            ? Icons.verified_user
+                            : Icons.account_circle,
+                        size: 64,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      Text(
+                        _user != null
+                            ? S
+                                  .of(context)!
+                                  .welcomeUser(
+                                    _user!.displayName ?? _user!.email,
+                                  )
+                            : S.of(context)!.pleaseSignIn,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      if (_user == null) const SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.login),
+                        onPressed: () => _handleSignIn(context),
+                        label: Text(S.of(context)!.signInButton),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

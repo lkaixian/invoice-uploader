@@ -28,10 +28,11 @@ class GoogleSheetsHelper {
     final token = await _getAuthToken();
 
     // Search for spreadsheet by title
-    final query = "mimeType='application/vnd.google-apps.spreadsheet' and name='$sheetTitle' and trashed=false";
+    final query =
+        "mimeType='application/vnd.google-apps.spreadsheet' and name='$sheetTitle' and trashed=false";
     final searchRes = await http.get(
       Uri.parse("$_driveApiBase?q=${Uri.encodeComponent(query)}"),
-      headers: { "Authorization": "Bearer $token" },
+      headers: {"Authorization": "Bearer $token"},
     );
 
     final data = jsonDecode(searchRes.body);
@@ -60,18 +61,24 @@ class GoogleSheetsHelper {
   }
 
   /// Ensure a worksheet/tab exists with category name
-  Future<void> ensureCategorySheetExists(String spreadsheetId, String category) async {
+  Future<void> ensureCategorySheetExists(
+    String spreadsheetId,
+    String category,
+  ) async {
     final token = await _getAuthToken();
 
     final getSheetRes = await http.get(
       Uri.parse("$_sheetsApiBase/$spreadsheetId"),
-      headers: { "Authorization": "Bearer $token" },
+      headers: {"Authorization": "Bearer $token"},
     );
     final sheetData = jsonDecode(getSheetRes.body);
     final sheets = sheetData['sheets'] as List;
 
-    final exists = sheets.any((sheet) =>
-        sheet['properties']?['title']?.toString().toLowerCase() == category.toLowerCase());
+    final exists = sheets.any(
+      (sheet) =>
+          sheet['properties']?['title']?.toString().toLowerCase() ==
+          category.toLowerCase(),
+    );
 
     if (!exists) {
       await http.post(
@@ -84,26 +91,32 @@ class GoogleSheetsHelper {
           "requests": [
             {
               "addSheet": {
-                "properties": {"title": category}
-              }
-            }
-          ]
+                "properties": {"title": category},
+              },
+            },
+          ],
         }),
       );
     }
   }
 
   /// Append a row to the specified category tab
-  Future<void> appendToCategorySheet(String spreadsheetId, String category, List<String> rowData) async {
+  Future<void> appendToCategorySheet(
+    String spreadsheetId,
+    String category,
+    List<String> rowData,
+  ) async {
     final token = await _getAuthToken();
 
     final range = "${Uri.encodeComponent(category)}!A:C";
     final body = jsonEncode({
-      "values": [rowData]
+      "values": [rowData],
     });
 
     await http.post(
-      Uri.parse("$_sheetsApiBase/$spreadsheetId/values/$range:append?valueInputOption=USER_ENTERED"),
+      Uri.parse(
+        "$_sheetsApiBase/$spreadsheetId/values/$range:append?valueInputOption=USER_ENTERED",
+      ),
       headers: {
         "Authorization": "Bearer $token",
         "Content-Type": "application/json",
@@ -113,22 +126,27 @@ class GoogleSheetsHelper {
   }
 
   /// Fetch rows from a category tab
-  Future<List<List<String>>> fetchCategorySheetRows(String spreadsheetId, String category) async {
+  Future<List<List<String>>> fetchCategorySheetRows(
+    String spreadsheetId,
+    String category,
+  ) async {
     final token = await _getAuthToken();
     final range = "${Uri.encodeComponent(category)}!A:C";
 
     final response = await http.get(
       Uri.parse("$_sheetsApiBase/$spreadsheetId/values/$range"),
-      headers: {
-        "Authorization": "Bearer $token",
-      },
+      headers: {"Authorization": "Bearer $token"},
     );
 
-    if (response.statusCode != 200) throw Exception("Failed to load data: ${response.body}");
+    if (response.statusCode != 200)
+      throw Exception("Failed to load data: ${response.body}");
 
     final data = jsonDecode(response.body);
     final values = data['values'] as List<dynamic>?;
 
-    return values?.map<List<String>>((row) => List<String>.from(row)).toList() ?? [];
+    return values
+            ?.map<List<String>>((row) => List<String>.from(row))
+            .toList() ??
+        [];
   }
 }

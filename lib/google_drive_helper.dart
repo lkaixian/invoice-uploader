@@ -21,10 +21,9 @@ class GoogleDriveUploader {
 
     final response = await http.get(
       Uri.parse(
-          'https://www.googleapis.com/drive/v3/files?q=${Uri.encodeComponent(query)}'),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
+        'https://www.googleapis.com/drive/v3/files?q=${Uri.encodeComponent(query)}',
+      ),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
     );
 
     final body = jsonDecode(response.body);
@@ -59,7 +58,9 @@ class GoogleDriveUploader {
     final folderId = await _getOrCreateFolder(folderName);
     if (folderId == null) return false;
 
-    final uri = Uri.parse("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart");
+    final uri = Uri.parse(
+      "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+    );
 
     final mimeType = _getMimeType(file.path);
     final fileBytes = await file.readAsBytes();
@@ -74,7 +75,9 @@ class GoogleDriveUploader {
 
     // Part 1: Metadata (JSON)
     body.addAll(utf8.encode('--$boundary\r\n'));
-    body.addAll(utf8.encode('Content-Type: application/json; charset=UTF-8\r\n\r\n'));
+    body.addAll(
+      utf8.encode('Content-Type: application/json; charset=UTF-8\r\n\r\n'),
+    );
     body.addAll(utf8.encode(jsonEncode(metadata)));
     body.addAll(utf8.encode('\r\n'));
 

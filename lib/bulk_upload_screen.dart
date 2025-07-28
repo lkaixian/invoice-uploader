@@ -92,6 +92,27 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
     }
   }
 
+  Future<void> _pickMoreFiles() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
+    );
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        entries.addAll(
+          result.files.map((f) {
+            return BulkUploadEntry(
+              file: f,
+              filename: truncateFilename(f.name),
+              category: widget.category,
+            );
+          }),
+        );
+      });
+    }
+  }
+
   void _updateAutoFilename(int index) {
     if (entries[index].autoGenerateFilename) {
       final newName = _generateFilename(entries[index]);
@@ -209,8 +230,8 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(S.of(context)!.receiptUpload)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      resizeToAvoidBottomInset: true, // handles keyboard overflow
+      body: SafeArea(
         child: entries.isEmpty
             ? Center(
                 child: ElevatedButton(
@@ -218,138 +239,158 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
                   child: Text(S.of(context)!.galleryButton),
                 ),
               )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('File ${currentIndex + 1} of ${entries.length}'),
-                  const SizedBox(height: 12),
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('File ${currentIndex + 1} of ${entries.length}'),
+                        ElevatedButton.icon(
+                          icon: Icon(Icons.upload_file),
+                          label: Text('Add more files'),
+                          onPressed: _pickMoreFiles,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            textStyle: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
 
-                  if (entry?.file.path != null)
-                    Image.file(File(entry!.file.path!), height: 160),
-
-                  const SizedBox(height: 12),
-                  Text('Original name: ${entry!.file.name}'),
-
-                  // Category
-                  TextFormField(
-                    initialValue: entry.category,
-                    decoration: const InputDecoration(labelText: "Category"),
-                    onChanged: (val) {
-                      setState(() {
-                        entry.category = val;
-                        _updateAutoFilename(currentIndex);
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Date picker
-                  Row(
-                    children: [
-                      Text('${S.of(context)!.pickDate}: '),
-                      Text(
-                        entry.date?.toLocal().toIso8601String().split('T')[0] ??
-                            S.of(context)!.noDateSelected,
+                    if (entry?.file.path != null)
+                      Center(
+                        child: Image.file(
+                          File(entry!.file.path!),
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      const SizedBox(width: 12),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final picked = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          );
-                          if (picked != null) {
+                    const SizedBox(height: 12),
+                    Text('Original name: ${truncateFilename(entry!.filename)}'),
+
+                    TextFormField(
+                      initialValue: entry.category,
+                      decoration: const InputDecoration(labelText: "Category"),
+                      onChanged: (val) {
+                        setState(() {
+                          entry.category = val;
+                          _updateAutoFilename(currentIndex);
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 12),
+
+                    Row(
+                      children: [
+                        Text('${S.of(context)!.pickDate}: '),
+                        Text(
+                          entry.date?.toLocal().toIso8601String().split(
+                                'T',
+                              )[0] ??
+                              S.of(context)!.noDateSelected,
+                        ),
+                        const SizedBox(width: 12),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                            );
+                            if (picked != null) {
+                              setState(() {
+                                entry.date = picked;
+                                _updateAutoFilename(currentIndex);
+                              });
+                            }
+                          },
+                          child: Text(S.of(context)!.pickDate),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+
+                    TextFormField(
+                      controller: entry.amountController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: S.of(context)!.amountLabel,
+                      ),
+                      onChanged: (val) {
+                        setState(() {
+                          entry.amount = double.tryParse(val);
+                          _updateAutoFilename(currentIndex);
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 12),
+
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: entry.autoGenerateFilename,
+                          onChanged: (val) {
                             setState(() {
-                              entry.date = picked;
+                              entry.autoGenerateFilename = val ?? false;
                               _updateAutoFilename(currentIndex);
                             });
-                          }
-                        },
-                        child: Text(S.of(context)!.pickDate),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Amount
-                  TextFormField(
-                    controller: entry.amountController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: S.of(context)!.amountLabel,
+                          },
+                        ),
+                        const Text('Auto-generate filename'),
+                      ],
                     ),
-                    onChanged: (val) {
-                      setState(() {
-                        entry.amount = double.tryParse(val);
-                        _updateAutoFilename(currentIndex);
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 12),
 
-                  // Auto-generate filename
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: entry.autoGenerateFilename,
-                        onChanged: (val) {
-                          setState(() {
-                            entry.autoGenerateFilename = val ?? false;
-                            _updateAutoFilename(currentIndex);
-                          });
-                        },
+                    TextFormField(
+                      enabled: !entry.autoGenerateFilename,
+                      controller: entry.filenameController,
+                      decoration: InputDecoration(
+                        labelText: S.of(context)!.filenameLabel,
                       ),
-                      const Text('Auto-generate filename'),
-                    ],
-                  ),
-
-                  // Filename
-                  TextFormField(
-                    enabled: !entry.autoGenerateFilename,
-                    controller: entry.filenameController,
-                    decoration: InputDecoration(
-                      labelText: S.of(context)!.filenameLabel,
+                      onChanged: (val) {
+                        setState(() {
+                          entry.filename = val;
+                        });
+                      },
                     ),
-                    onChanged: (val) {
-                      setState(() {
-                        entry.filename = val;
-                      });
-                    },
-                  ),
 
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 24),
 
-                  // Navigation
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: currentIndex > 0
-                            ? () => _goToImage(currentIndex - 1)
-                            : null,
-                        child: const Text('Previous'),
-                      ),
-                      ElevatedButton(
-                        onPressed: currentIndex < entries.length - 1
-                            ? () => _goToImage(currentIndex + 1)
-                            : null,
-                        child: const Text('Next'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Submit
-                  Center(
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.cloud_upload),
-                      label: Text(S.of(context)!.uploadButton),
-                      onPressed: _submitAll,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          onPressed: currentIndex > 0
+                              ? () => _goToImage(currentIndex - 1)
+                              : null,
+                          child: const Text('Previous'),
+                        ),
+                        ElevatedButton(
+                          onPressed: currentIndex < entries.length - 1
+                              ? () => _goToImage(currentIndex + 1)
+                              : null,
+                          child: const Text('Next'),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 24),
+
+                    Center(
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.cloud_upload),
+                        label: Text(S.of(context)!.uploadButton),
+                        onPressed: _submitAll,
+                      ),
+                    ),
+                  ],
+                ),
               ),
       ),
     );

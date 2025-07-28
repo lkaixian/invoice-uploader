@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'google_sheets_helper.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
+import 'category_service.dart';
 
 class ReceiptUploadScreen extends StatefulWidget {
   final GoogleSignInAccount user;
@@ -42,34 +43,25 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
   }
 
   Future<void> _loadCategories() async {
-    final prefs = await SharedPreferences.getInstance();
-    final stored = prefs.getStringList('customCategories') ?? [];
+    final stored = await CategoryService.loadCategories();
     setState(() {
       _categories = [...stored, S.of(context)!.addCategoryOption];
     });
   }
 
   Future<void> _addCategory(String newCategory) async {
-    final prefs = await SharedPreferences.getInstance();
-    final stored = prefs.getStringList('customCategories') ?? [];
-    if (!stored.contains(newCategory)) {
-      stored.add(newCategory);
-      await prefs.setStringList('customCategories', stored);
-      await _loadCategories();
-      setState(() {
-        _selectedCategory = newCategory;
-        _customCategoryController.clear();
-      });
-    }
+    final stored = await CategoryService.addCategory(newCategory);
+    setState(() {
+      _categories = [...stored, S.of(context)!.addCategoryOption];
+      _selectedCategory = newCategory;
+      _customCategoryController.clear();
+    });
   }
 
   Future<void> _removeCategory(String category) async {
-    final prefs = await SharedPreferences.getInstance();
-    final stored = prefs.getStringList('customCategories') ?? [];
-    stored.remove(category);
-    await prefs.setStringList('customCategories', stored);
-    await _loadCategories();
+    final stored = await CategoryService.removeCategory(category);
     setState(() {
+      _categories = [...stored, S.of(context)!.addCategoryOption];
       if (_selectedCategory == category) _selectedCategory = null;
     });
   }
