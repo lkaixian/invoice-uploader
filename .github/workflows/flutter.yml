@@ -23,11 +23,19 @@ jobs:
       - name: Install Android SDK Platform 35
         run: sdkmanager "platforms;android-35" "platform-tools" "build-tools;34.0.0"
 
+      - name: Install latest stable build of flutter
+        run: |
+          flutter channel stable
+          flutter upgrade
+
+      - name: Get Flutter version
+        run: flutter --version
+
       - name: Flutter doctor
         run: flutter doctor -v
 
       - name: Get dependencies
-        run: flutter pub upgrade && flutter pub get
+        run: flutter pub get
 
       - name: Analyze
         run: flutter analyze
