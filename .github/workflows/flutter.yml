@@ -1,0 +1,33 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: cirrusci/flutter:stable
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Accept Licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Install Android SDK Platform 35
+        run: sdkmanager "platforms;android-35" "platform-tools" "build-tools;34.0.0"
+
+      - name: Flutter doctor
+        run: flutter doctor -v
+
+      - name: Get dependencies
+        run: flutter pub upgrade && flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
