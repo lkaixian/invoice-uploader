@@ -1,10 +1,5 @@
 # invoice-uploader: Upload and Manage Your Own Invoices and Receipts
 
- _Disclaimer before we start..._
-
-# ❗Notes for the developer
-This app was created solely to solve the problem i had faced for months where I would personally need to do my own tax and required a digital copy of the invoice/receipt as proof, therefore, there will be alot of bugs and errors appear no where. This repository will only treat as **_proof of concept_** where it could be done more efficently and more user friendly. I would be personally more happy to fork the repository and continue improve the apps. Thank you and wish you have a great day.
----
 # ✏️ Introduction of the App
 
 An app built based on flutter + dart where it can assist personal or small business to manage their invoices for taxation purpose with ease by combining the jobs of auto renaming file name based on the custom category chose, with date of invoice selected, and records of invoice in spreadsheet automatically. *Whisper: I only been able to test on android :P*
