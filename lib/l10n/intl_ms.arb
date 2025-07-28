@@ -3,6 +3,7 @@
   "selectLanguage": "Pilih Bahasa",
   "language": "Bahasa",
   "theme": "Tema",
+  "switchTheme": "Tukar Tema",
   "themeLight": "Cerah",
   "themeDark": "Gelap",
   "themeSystem": "Sistem",
@@ -23,7 +24,7 @@
   "spreadsheetOpenFail": "❌ Gagal buka helaian: {error}",
   "uploadSuccess": "✅ Muat naik berjaya!",
   "uploadFailed": "❌ Gagal muat naik: {statusCode} {error}",
-  "failedToLoadData": "❌ Gagal memuatkan data: {error}",
+  "incompleteData": "❌ Beberapa data tidak lengkap. Sila semak entri anda.",
   "noImageSelected": "Tiada imej dipilih",
   "cameraButton": "Kamera",
   "galleryButton": "Galeri",
@@ -82,14 +83,41 @@
       "error": {}
     }
   },
-  "@failedToLoadData": {
-    "placeholders": {
-      "error": {}
-    }
-  },
   "@deleteCategoryTitle": {
     "placeholders": {
       "category": {}
     }
-  }
+  },
+    "uploadedCount": "Dimuat naik {uploaded} daripada {total}",
+  "@uploadedCount": {
+    "description": "Message shown after each successful file upload",
+    "placeholders": {
+      "uploaded": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "addMoreFiles": "Tambah lagi fail",
+  "originalName": "Nama asal",
+  "autoGenerateFilename": "Jana nama fail secara automatik",
+  "topCategories": "3 Kategori Perbelanjaan Terbesar",
+  "topSpends": "3 Perkara Perbelanjaan Tertinggi",
+  "monthJanuary": "Januari",
+  "monthFebruary": "Februari",
+  "monthMarch": "Mac",
+  "monthApril": "April",
+  "monthMay": "Mei",
+  "monthJune": "Jun",
+  "monthJuly": "Julai",
+  "monthAugust": "Ogos",
+  "monthSeptember": "September",
+  "monthOctober": "Oktober",
+  "monthNovember": "November",
+  "monthDecember": "Disember",
+  "buyMeCoffee": "Sokong Saya",
+  "supportMyWork": "Jika aplikasi ini membantu anda, pertimbangkan untuk membeli saya secawan kopi!",
+  "linkOpenFailed": "Gagal membuka pautan, sila semak sambungan internet anda atau cuba lagi nanti."
 }

@@ -21,6 +21,9 @@ class SZh extends S {
   String get theme => '主题';
 
   @override
+  String get switchTheme => '切换主题';
+
+  @override
   String get themeLight => '浅色';
 
   @override
@@ -88,9 +91,7 @@ class SZh extends S {
   }
 
   @override
-  String failedToLoadData(Object error) {
-    return '❌ 加载数据失败：$error';
-  }
+  String get incompleteData => '❌ 某些数据不完整。请检查您的输入。';
 
   @override
   String get noImageSelected => '未选择图片';
@@ -186,4 +187,69 @@ class SZh extends S {
 
   @override
   String get bulkUpload => '批量上传';
+
+  @override
+  String uploadedCount(int uploaded, int total) {
+    return '已上传 $uploaded 个，共 $total 个';
+  }
+
+  @override
+  String get addMoreFiles => '添加更多文件';
+
+  @override
+  String get originalName => '原始名称';
+
+  @override
+  String get autoGenerateFilename => '自动生成文件名';
+
+  @override
+  String get topCategories => '前三类别';
+
+  @override
+  String get topSpends => '前三支出';
+
+  @override
+  String get monthJanuary => '一月';
+
+  @override
+  String get monthFebruary => '二月';
+
+  @override
+  String get monthMarch => '三月';
+
+  @override
+  String get monthApril => '四月';
+
+  @override
+  String get monthMay => '五月';
+
+  @override
+  String get monthJune => '六月';
+
+  @override
+  String get monthJuly => '七月';
+
+  @override
+  String get monthAugust => '八月';
+
+  @override
+  String get monthSeptember => '九月';
+
+  @override
+  String get monthOctober => '十月';
+
+  @override
+  String get monthNovember => '十一月';
+
+  @override
+  String get monthDecember => '十二月';
+
+  @override
+  String get buyMeCoffee => '请支持我';
+
+  @override
+  String get supportMyWork => '如果您喜欢这个应用，请考虑请我喝杯咖啡！';
+
+  @override
+  String get linkOpenFailed => '无法打开链接，请检查您的网络连接或稍后再试。';
 }

@@ -123,6 +123,12 @@ abstract class S {
   /// **'Theme'**
   String get theme;
 
+  /// No description provided for @switchTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch Theme'**
+  String get switchTheme;
+
   /// No description provided for @themeLight.
   ///
   /// In en, this message translates to:
@@ -138,7 +144,7 @@ abstract class S {
   /// No description provided for @themeSystem.
   ///
   /// In en, this message translates to:
-  /// **'System'**
+  /// **'System Default'**
   String get themeSystem;
 
   /// No description provided for @settings.
@@ -237,11 +243,11 @@ abstract class S {
   /// **'❌ Upload failed: {statusCode} {error}'**
   String uploadFailed(Object statusCode, Object error);
 
-  /// No description provided for @failedToLoadData.
+  /// No description provided for @incompleteData.
   ///
   /// In en, this message translates to:
-  /// **'❌ Failed to load data: {error}'**
-  String failedToLoadData(Object error);
+  /// **'❌ Some data is incomplete. Please check your entries.'**
+  String get incompleteData;
 
   /// No description provided for @noImageSelected.
   ///
@@ -428,6 +434,132 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Bulk Upload'**
   String get bulkUpload;
+
+  /// Message shown after each successful file upload
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded {uploaded} of {total}'**
+  String uploadedCount(int uploaded, int total);
+
+  /// No description provided for @addMoreFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Add more files'**
+  String get addMoreFiles;
+
+  /// No description provided for @originalName.
+  ///
+  /// In en, this message translates to:
+  /// **'Original name'**
+  String get originalName;
+
+  /// No description provided for @autoGenerateFilename.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-generate filename'**
+  String get autoGenerateFilename;
+
+  /// No description provided for @topCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 3 Categories'**
+  String get topCategories;
+
+  /// No description provided for @topSpends.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 3 Spends'**
+  String get topSpends;
+
+  /// No description provided for @monthJanuary.
+  ///
+  /// In en, this message translates to:
+  /// **'January'**
+  String get monthJanuary;
+
+  /// No description provided for @monthFebruary.
+  ///
+  /// In en, this message translates to:
+  /// **'February'**
+  String get monthFebruary;
+
+  /// No description provided for @monthMarch.
+  ///
+  /// In en, this message translates to:
+  /// **'March'**
+  String get monthMarch;
+
+  /// No description provided for @monthApril.
+  ///
+  /// In en, this message translates to:
+  /// **'April'**
+  String get monthApril;
+
+  /// No description provided for @monthMay.
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
+  String get monthMay;
+
+  /// No description provided for @monthJune.
+  ///
+  /// In en, this message translates to:
+  /// **'June'**
+  String get monthJune;
+
+  /// No description provided for @monthJuly.
+  ///
+  /// In en, this message translates to:
+  /// **'July'**
+  String get monthJuly;
+
+  /// No description provided for @monthAugust.
+  ///
+  /// In en, this message translates to:
+  /// **'August'**
+  String get monthAugust;
+
+  /// No description provided for @monthSeptember.
+  ///
+  /// In en, this message translates to:
+  /// **'September'**
+  String get monthSeptember;
+
+  /// No description provided for @monthOctober.
+  ///
+  /// In en, this message translates to:
+  /// **'October'**
+  String get monthOctober;
+
+  /// No description provided for @monthNovember.
+  ///
+  /// In en, this message translates to:
+  /// **'November'**
+  String get monthNovember;
+
+  /// No description provided for @monthDecember.
+  ///
+  /// In en, this message translates to:
+  /// **'December'**
+  String get monthDecember;
+
+  /// No description provided for @buyMeCoffee.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy me a coffee ☕'**
+  String get buyMeCoffee;
+
+  /// No description provided for @supportMyWork.
+  ///
+  /// In en, this message translates to:
+  /// **'CAWFEE TIME! If you find this app useful, consider buying me a coffee to support my work.'**
+  String get supportMyWork;
+
+  /// No description provided for @linkOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the link'**
+  String get linkOpenFailed;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

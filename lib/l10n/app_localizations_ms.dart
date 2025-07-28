@@ -21,6 +21,9 @@ class SMs extends S {
   String get theme => 'Tema';
 
   @override
+  String get switchTheme => 'Tukar Tema';
+
+  @override
   String get themeLight => 'Cerah';
 
   @override
@@ -89,9 +92,8 @@ class SMs extends S {
   }
 
   @override
-  String failedToLoadData(Object error) {
-    return '❌ Gagal memuatkan data: $error';
-  }
+  String get incompleteData =>
+      '❌ Beberapa data tidak lengkap. Sila semak entri anda.';
 
   @override
   String get noImageSelected => 'Tiada imej dipilih';
@@ -189,4 +191,71 @@ class SMs extends S {
 
   @override
   String get bulkUpload => 'Muat Naik Berkelompok';
+
+  @override
+  String uploadedCount(int uploaded, int total) {
+    return 'Dimuat naik $uploaded daripada $total';
+  }
+
+  @override
+  String get addMoreFiles => 'Tambah lagi fail';
+
+  @override
+  String get originalName => 'Nama asal';
+
+  @override
+  String get autoGenerateFilename => 'Jana nama fail secara automatik';
+
+  @override
+  String get topCategories => '3 Kategori Perbelanjaan Terbesar';
+
+  @override
+  String get topSpends => '3 Perkara Perbelanjaan Tertinggi';
+
+  @override
+  String get monthJanuary => 'Januari';
+
+  @override
+  String get monthFebruary => 'Februari';
+
+  @override
+  String get monthMarch => 'Mac';
+
+  @override
+  String get monthApril => 'April';
+
+  @override
+  String get monthMay => 'Mei';
+
+  @override
+  String get monthJune => 'Jun';
+
+  @override
+  String get monthJuly => 'Julai';
+
+  @override
+  String get monthAugust => 'Ogos';
+
+  @override
+  String get monthSeptember => 'September';
+
+  @override
+  String get monthOctober => 'Oktober';
+
+  @override
+  String get monthNovember => 'November';
+
+  @override
+  String get monthDecember => 'Disember';
+
+  @override
+  String get buyMeCoffee => 'Sokong Saya';
+
+  @override
+  String get supportMyWork =>
+      'Jika aplikasi ini membantu anda, pertimbangkan untuk membeli saya secawan kopi!';
+
+  @override
+  String get linkOpenFailed =>
+      'Gagal membuka pautan, sila semak sambungan internet anda atau cuba lagi nanti.';
 }

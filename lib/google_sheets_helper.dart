@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'sheet_config.dart';
 
 class GoogleSheetsHelper {
   final GoogleSignInAccount account;
@@ -18,9 +19,8 @@ class GoogleSheetsHelper {
   /// Get or create a single master spreadsheet and store/retrieve its ID using SharedPreferences
   Future<String> getOrCreateMainSpreadsheet() async {
     final prefs = await SharedPreferences.getInstance();
-    const sheetTitle = "InvoiceLog";
-
-    final cachedId = prefs.getString('spreadsheetId');
+    final sheetTitle = SheetConfig().currentSheetId;
+    final cachedId = prefs.getString('spreadsheetId_$sheetTitle');
     if (cachedId != null && cachedId.isNotEmpty) {
       return cachedId;
     }
@@ -38,7 +38,7 @@ class GoogleSheetsHelper {
     final data = jsonDecode(searchRes.body);
     if (data['files'] != null && data['files'].isNotEmpty) {
       final existingId = data['files'][0]['id'];
-      await prefs.setString('spreadsheetId', existingId);
+      await prefs.setString('spreadsheetId_$sheetTitle', existingId);
       return existingId;
     }
 

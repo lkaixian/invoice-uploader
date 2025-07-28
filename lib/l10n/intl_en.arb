@@ -4,9 +4,10 @@
   "language": "Language",
   "appTitle": "Invoice Uploader App",
   "theme": "Theme",
+  "switchTheme": "Switch Theme",
   "themeLight": "Light",
   "themeDark": "Dark",
-  "themeSystem": "System",
+  "themeSystem": "System Default",
   "settings": "Settings",
   "signedInMessage": "✅ Signed in as {email}",
   "signInCancelled": "❌ Sign-in cancelled",
@@ -23,7 +24,7 @@
   "spreadsheetOpenFail": "❌ Failed to open spreadsheet: {error}",
   "uploadSuccess": "✅ Upload success!",
   "uploadFailed": "❌ Upload failed: {statusCode} {error}",
-  "failedToLoadData": "❌ Failed to load data: {error}",
+  "incompleteData": "❌ Some data is incomplete. Please check your entries.",
   "noImageSelected": "No image selected",
   "cameraButton": "Camera",
   "galleryButton": "Gallery",
@@ -55,6 +56,7 @@
   "viewExpenses": "View Expenses",
   "viewAll": "View All",
   "bulkUpload": "Bulk Upload",
+
   "@signedInMessage": {
     "placeholders": {
       "email": {}
@@ -81,14 +83,43 @@
       "error": {}
     }
   },
-  "@failedToLoadData": {
-    "placeholders": {
-      "error": {}
-    }
-  },
   "@deleteCategoryTitle": {
     "placeholders": {
       "category": {}
     }
-  }
+  },
+
+  "uploadedCount": "Uploaded {uploaded} of {total}",
+  "@uploadedCount": {
+    "description": "Message shown after each successful file upload",
+    "placeholders": {
+      "uploaded": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "addMoreFiles": "Add more files",
+  "originalName": "Original name",
+  "autoGenerateFilename": "Auto-generate filename",
+  "topCategories": "Top 3 Categories",
+  "topSpends": "Top 3 Spends",
+  "monthJanuary": "January",
+  "monthFebruary": "February",
+  "monthMarch": "March",
+  "monthApril": "April",
+  "monthMay": "May",
+  "monthJune": "June",
+  "monthJuly": "July",
+  "monthAugust": "August",
+  "monthSeptember": "September",
+  "monthOctober": "October",
+  "monthNovember": "November",
+  "monthDecember": "December",
+  "buyMeCoffee": "Buy me a coffee ☕",
+  "supportMyWork": "CAWFEE TIME! If you find this app useful, consider buying me a coffee to support my work.",
+  "linkOpenFailed": "Could not open the link"
+
 }

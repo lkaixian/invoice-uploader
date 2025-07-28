@@ -1,7 +1,7 @@
 name: invoice_scanner
 description: "Invoice Scanner App"
 
-version: 1.2.0+3
+version: 1.2.1+4
 
 environment:
   sdk: ^3.8.1
@@ -28,6 +28,7 @@ dependencies:
   fl_chart: ^0.66.0
   file_picker: ^10.2.0
   cupertino_icons: ^1.0.8
+  month_picker_dialog: ^6.4.1
 
 dev_dependencies:
   flutter_test:

@@ -21,13 +21,16 @@ class SEn extends S {
   String get theme => 'Theme';
 
   @override
+  String get switchTheme => 'Switch Theme';
+
+  @override
   String get themeLight => 'Light';
 
   @override
   String get themeDark => 'Dark';
 
   @override
-  String get themeSystem => 'System';
+  String get themeSystem => 'System Default';
 
   @override
   String get settings => 'Settings';
@@ -89,9 +92,8 @@ class SEn extends S {
   }
 
   @override
-  String failedToLoadData(Object error) {
-    return '❌ Failed to load data: $error';
-  }
+  String get incompleteData =>
+      '❌ Some data is incomplete. Please check your entries.';
 
   @override
   String get noImageSelected => 'No image selected';
@@ -187,4 +189,70 @@ class SEn extends S {
 
   @override
   String get bulkUpload => 'Bulk Upload';
+
+  @override
+  String uploadedCount(int uploaded, int total) {
+    return 'Uploaded $uploaded of $total';
+  }
+
+  @override
+  String get addMoreFiles => 'Add more files';
+
+  @override
+  String get originalName => 'Original name';
+
+  @override
+  String get autoGenerateFilename => 'Auto-generate filename';
+
+  @override
+  String get topCategories => 'Top 3 Categories';
+
+  @override
+  String get topSpends => 'Top 3 Spends';
+
+  @override
+  String get monthJanuary => 'January';
+
+  @override
+  String get monthFebruary => 'February';
+
+  @override
+  String get monthMarch => 'March';
+
+  @override
+  String get monthApril => 'April';
+
+  @override
+  String get monthMay => 'May';
+
+  @override
+  String get monthJune => 'June';
+
+  @override
+  String get monthJuly => 'July';
+
+  @override
+  String get monthAugust => 'August';
+
+  @override
+  String get monthSeptember => 'September';
+
+  @override
+  String get monthOctober => 'October';
+
+  @override
+  String get monthNovember => 'November';
+
+  @override
+  String get monthDecember => 'December';
+
+  @override
+  String get buyMeCoffee => 'Buy me a coffee ☕';
+
+  @override
+  String get supportMyWork =>
+      'CAWFEE TIME! If you find this app useful, consider buying me a coffee to support my work.';
+
+  @override
+  String get linkOpenFailed => 'Could not open the link';
 }

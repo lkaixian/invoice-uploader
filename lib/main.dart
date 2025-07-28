@@ -11,8 +11,13 @@ import 'expense_overview_screen.dart';
 import 'settings_screen.dart';
 import 'bulk_upload_screen.dart';
 import 'category_service.dart';
+import 'sheet_config.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensures binding is ready
+  await SheetConfig().init(); // Load sheet config
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -120,53 +125,18 @@ class _MyAppState extends State<MyApp> {
     ).showSnackBar(SnackBar(content: Text(S.of(context)!.signedOut)));
   }
 
-  void _showLanguageDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(S.of(context)!.selectLanguage),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: const Text("English"),
-              onTap: () {
-                _setLocale(const Locale('en'));
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text("简体中文"),
-              onTap: () {
-                _setLocale(const Locale('zh'));
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text("Bahasa Melayu"),
-              onTap: () {
-                _setLocale(const Locale('ms'));
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   void _showThemeDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(S.of(context)!.appTitle + " Theme"),
+        title: Text(S.of(context)!.appTitle + S.of(context)!.theme),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             RadioListTile<ThemeMode>(
               value: ThemeMode.system,
               groupValue: _themeMode,
-              title: const Text("System Default"),
+              title: Text(S.of(context)!.themeSystem),
               onChanged: (mode) {
                 if (mode != null) _setThemeMode(mode);
                 Navigator.pop(context);
@@ -175,7 +145,7 @@ class _MyAppState extends State<MyApp> {
             RadioListTile<ThemeMode>(
               value: ThemeMode.light,
               groupValue: _themeMode,
-              title: const Text("Light"),
+              title: Text(S.of(context)!.themeLight),
               onChanged: (mode) {
                 if (mode != null) _setThemeMode(mode);
                 Navigator.pop(context);
@@ -184,7 +154,7 @@ class _MyAppState extends State<MyApp> {
             RadioListTile<ThemeMode>(
               value: ThemeMode.dark,
               groupValue: _themeMode,
-              title: const Text("Dark"),
+              title: Text(S.of(context)!.themeDark),
               onChanged: (mode) {
                 if (mode != null) _setThemeMode(mode);
                 Navigator.pop(context);
@@ -199,7 +169,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Invoice Uploader App',
+      title: "Invoice Uploader",
       locale: _locale,
       themeMode: _themeMode,
       theme: ThemeData(
@@ -261,7 +231,7 @@ class _MyAppState extends State<MyApp> {
                       ? Icons.light_mode
                       : Icons.brightness_auto,
                 ),
-                tooltip: "Switch Theme",
+                tooltip: S.of(context)!.switchTheme,
                 onPressed: () => _showThemeDialog(context),
               ),
             ],
@@ -547,9 +517,15 @@ class _MyAppState extends State<MyApp> {
                       ),
                       if (_user == null) const SizedBox(height: 16),
                       ElevatedButton.icon(
-                        icon: const Icon(Icons.login),
-                        onPressed: () => _handleSignIn(context),
-                        label: Text(S.of(context)!.signInButton),
+                        icon: Icon(_user == null ? Icons.login : Icons.logout),
+                        onPressed: () => _user == null
+                            ? _handleSignIn(context)
+                            : _handleSignOut(context),
+                        label: Text(
+                          _user == null
+                              ? S.of(context)!.signInButton
+                              : S.of(context)!.signOutButton,
+                        ),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 24,

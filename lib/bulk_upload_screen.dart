@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'bulk_upload.dart';
+import 'settings_screen.dart';
 
 class BulkUploadEntry {
   final PlatformFile file;
@@ -55,60 +56,39 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
 
   String truncateFilename(String filename, {int maxLength = 30}) {
     if (filename.length <= maxLength) return filename;
-
     final dotIndex = filename.lastIndexOf('.');
-    final extension = (dotIndex != -1) ? filename.substring(dotIndex) : '';
-    final baseName = filename.substring(
+    final extension = dotIndex != -1 ? filename.substring(dotIndex) : '';
+    final base = filename.substring(
       0,
       dotIndex != -1 ? dotIndex : filename.length,
     );
-
-    final allowedBaseLength = maxLength - extension.length - 3; // 3 for "..."
-    final truncatedBase = baseName.substring(
-      0,
-      allowedBaseLength.clamp(0, baseName.length),
-    );
-
-    return '$truncatedBase...$extension';
+    final allowedLength = maxLength - extension.length - 3;
+    return '${base.substring(0, allowedLength.clamp(0, base.length))}...$extension';
   }
 
-  Future<void> _pickFiles() async {
+  Future<void> _pickFiles({bool append = false}) async {
     final result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.custom,
       allowedExtensions: ['jpg', 'jpeg', 'png'],
     );
-    if (result != null) {
-      setState(() {
-        entries = result.files.map((f) {
-          return BulkUploadEntry(
-            file: f,
-            filename: truncateFilename(f.name),
-            category: widget.category,
-          );
-        }).toList();
-        currentIndex = 0;
-      });
-    }
-  }
 
-  Future<void> _pickMoreFiles() async {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png'],
-    );
     if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        entries.addAll(
-          result.files.map((f) {
-            return BulkUploadEntry(
-              file: f,
-              filename: truncateFilename(f.name),
-              category: widget.category,
-            );
-          }),
+      final newEntries = result.files.map((f) {
+        return BulkUploadEntry(
+          file: f,
+          filename: truncateFilename(f.name),
+          category: widget.category,
         );
+      }).toList();
+
+      setState(() {
+        if (append) {
+          entries.addAll(newEntries);
+        } else {
+          entries = newEntries;
+          currentIndex = 0;
+        }
       });
     }
   }
@@ -131,8 +111,6 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
     });
 
     final next = entries[newIndex];
-
-    // If auto-generation is on, re-generate the filename
     if (next.autoGenerateFilename) {
       final newName = _generateFilename(next);
       next.filename = newName;
@@ -140,12 +118,11 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
     } else {
       next.filenameController.text = next.filename;
     }
-
     next.amountController.text = next.amount?.toString() ?? '';
   }
 
   Future<void> _submitAll() async {
-    final allFilled = entries.every(
+    final allValid = entries.every(
       (e) =>
           e.filename.trim().isNotEmpty &&
           e.category.trim().isNotEmpty &&
@@ -153,10 +130,10 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
           e.date != null,
     );
 
-    if (!allFilled) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please fill in all required fields.")),
-      );
+    if (!allValid) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(S.of(context)!.incompleteData)));
       return;
     }
 
@@ -167,10 +144,10 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
         onWillPop: () async => false,
         child: AlertDialog(
           content: Row(
-            children: const [
-              CircularProgressIndicator(),
-              SizedBox(width: 16),
-              Expanded(child: Text("Uploading files, please wait...")),
+            children: [
+              const CircularProgressIndicator(),
+              const SizedBox(width: 16),
+              Expanded(child: Text(S.of(context)!.uploadingPleaseWait)),
             ],
           ),
         ),
@@ -180,12 +157,10 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
     try {
       for (int i = 0; i < entries.length; i++) {
         final entry = entries[i];
-
         entry.amount = double.tryParse(entry.amountController.text);
         entry.filename = entry.filenameController.text.trim();
-        final file = File(entry.file.path!);
 
-        setState(() {}); // Optional live UI update
+        final file = File(entry.file.path!);
 
         await uploadEntryToDriveAndSheets(
           file: file,
@@ -197,26 +172,30 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
         );
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Uploaded ${i + 1} of ${entries.length}')),
+          SnackBar(
+            content: Text(
+              '✅ ${i + 1}/${entries.length} ${S.of(context)!.uploadSuccessSnackbar}',
+            ),
+          ),
         );
       }
 
-      Navigator.pop(context); // close dialog
+      Navigator.pop(context); // Close progress
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("All files uploaded successfully.")),
+        SnackBar(content: Text(S.of(context)!.uploadSuccessSnackbar)),
       );
-      Navigator.pop(context); // close screen
+      Navigator.pop(context); // Close screen
     } catch (e) {
       Navigator.pop(context);
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text("Upload Error"),
+          title: Text(S.of(context)!.uploadErrorTitle),
           content: Text(e.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
+              child: Text(S.of(context)!.ok),
             ),
           ],
         ),
@@ -229,41 +208,35 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
     final entry = entries.isEmpty ? null : entries[currentIndex];
 
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context)!.receiptUpload)),
-      resizeToAvoidBottomInset: true, // handles keyboard overflow
+      appBar: AppBar(title: Text(S.of(context)!.bulkUpload)),
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: entries.isEmpty
             ? Center(
                 child: ElevatedButton(
-                  onPressed: _pickFiles,
+                  onPressed: () => _pickFiles(),
                   child: Text(S.of(context)!.galleryButton),
                 ),
               )
             : SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('File ${currentIndex + 1} of ${entries.length}'),
+                        Text(
+                          '${S.of(context)!.file} ${currentIndex + 1}/${entries.length}',
+                        ),
                         ElevatedButton.icon(
-                          icon: Icon(Icons.upload_file),
-                          label: Text('Add more files'),
-                          onPressed: _pickMoreFiles,
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            textStyle: TextStyle(fontSize: 14),
-                          ),
+                          icon: const Icon(Icons.upload_file),
+                          label: Text(S.of(context)!.selectFiles),
+                          onPressed: () => _pickFiles(append: true),
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
-
                     if (entry?.file.path != null)
                       Center(
                         child: Image.file(
@@ -273,11 +246,16 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
                         ),
                       ),
                     const SizedBox(height: 12),
-                    Text('Original name: ${truncateFilename(entry!.filename)}'),
+                    Text(
+                      '${S.of(context)!.filenameLabel}: ${truncateFilename(entry!.filename)}',
+                    ),
 
                     TextFormField(
                       initialValue: entry.category,
-                      decoration: const InputDecoration(labelText: "Category"),
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: S.of(context)!.categoryLabel,
+                      ),
                       onChanged: (val) {
                         setState(() {
                           entry.category = val;
@@ -344,7 +322,7 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
                             });
                           },
                         ),
-                        const Text('Auto-generate filename'),
+                        Text(S.of(context)!.autoGenerateFilename),
                       ],
                     ),
 
@@ -354,15 +332,10 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
                       decoration: InputDecoration(
                         labelText: S.of(context)!.filenameLabel,
                       ),
-                      onChanged: (val) {
-                        setState(() {
-                          entry.filename = val;
-                        });
-                      },
+                      onChanged: (val) => setState(() => entry.filename = val),
                     ),
 
                     const SizedBox(height: 24),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -370,13 +343,13 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
                           onPressed: currentIndex > 0
                               ? () => _goToImage(currentIndex - 1)
                               : null,
-                          child: const Text('Previous'),
+                          child: Text(S.of(context)!.previous),
                         ),
                         ElevatedButton(
                           onPressed: currentIndex < entries.length - 1
                               ? () => _goToImage(currentIndex + 1)
                               : null,
-                          child: const Text('Next'),
+                          child: Text(S.of(context)!.next),
                         ),
                       ],
                     ),
