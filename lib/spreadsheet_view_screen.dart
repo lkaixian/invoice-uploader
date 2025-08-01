@@ -138,8 +138,9 @@ class GoogleSheetsHelper {
       headers: {"Authorization": "Bearer $token"},
     );
 
-    if (response.statusCode != 200)
+    if (response.statusCode != 200) {
       throw Exception("Failed to load data: ${response.body}");
+    }
 
     final data = jsonDecode(response.body);
     final values = data['values'] as List<dynamic>?;

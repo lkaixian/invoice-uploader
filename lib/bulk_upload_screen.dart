@@ -34,11 +34,11 @@ class BulkUploadScreen extends StatefulWidget {
   final GoogleSignInAccount user;
 
   const BulkUploadScreen({
-    Key? key,
+    super.key,
     required this.category,
     required this.onUpload,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   State<BulkUploadScreen> createState() => _BulkUploadScreenState();
@@ -51,7 +51,7 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
   String _generateFilename(BulkUploadEntry entry) {
     final date = entry.date?.toIso8601String().split('T')[0] ?? 'no_date';
     final amount = entry.amount?.toStringAsFixed(2) ?? 'no_amount';
-    return '${widget.category}_$date\_$amount.jpg';
+    return '${widget.category}_${date}_$amount.jpg';
   }
 
   String truncateFilename(String filename, {int maxLength = 30}) {

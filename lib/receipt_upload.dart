@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'google_sheets_helper.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'category_service.dart';
-import 'sheet_config.dart';
 
 class ReceiptUploadScreen extends StatefulWidget {
   final GoogleSignInAccount user;

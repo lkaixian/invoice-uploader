@@ -8,12 +8,12 @@ class cawfee extends StatelessWidget {
   final Color textColor;
 
   const cawfee({
-    Key? key,
+    super.key,
     required this.url,
     this.label = 'Cawfee',
     this.backgroundColor = Colors.orange,
     this.textColor = Colors.white,
-  }) : super(key: key);
+  });
 
   Future<void> _launchURL() async {
     final Uri uri = Uri.parse(url);

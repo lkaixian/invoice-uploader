@@ -560,6 +560,24 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Could not open the link'**
   String get linkOpenFailed;
+
+  /// No description provided for @useCustomFileName.
+  ///
+  /// In en, this message translates to:
+  /// **'Use custom file name'**
+  String get useCustomFileName;
+
+  /// No description provided for @fileName.
+  ///
+  /// In en, this message translates to:
+  /// **'File Name'**
+  String get fileName;
+
+  /// No description provided for @fileNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. InvoiceLog'**
+  String get fileNameHint;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -258,4 +258,13 @@ class SMs extends S {
   @override
   String get linkOpenFailed =>
       'Gagal membuka pautan, sila semak sambungan internet anda atau cuba lagi nanti.';
+
+  @override
+  String get useCustomFileName => 'Custom nama fail ';
+
+  @override
+  String get fileName => 'Nama Fail';
+
+  @override
+  String get fileNameHint => 'cth: InvoiceLog';
 }

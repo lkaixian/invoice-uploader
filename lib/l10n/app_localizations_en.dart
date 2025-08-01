@@ -255,4 +255,13 @@ class SEn extends S {
 
   @override
   String get linkOpenFailed => 'Could not open the link';
+
+  @override
+  String get useCustomFileName => 'Use custom file name';
+
+  @override
+  String get fileName => 'File Name';
+
+  @override
+  String get fileNameHint => 'e.g. InvoiceLog';
 }

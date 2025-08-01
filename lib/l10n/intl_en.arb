@@ -120,6 +120,8 @@
   "monthDecember": "December",
   "buyMeCoffee": "Buy me a coffee ☕",
   "supportMyWork": "CAWFEE TIME! If you find this app useful, consider buying me a coffee to support my work.",
-  "linkOpenFailed": "Could not open the link"
-
+  "linkOpenFailed": "Could not open the link",
+  "useCustomFileName": "Use custom file name",
+  "fileName": "File Name",
+  "fileNameHint": "e.g. InvoiceLog"
 }

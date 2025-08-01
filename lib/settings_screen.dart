@@ -117,16 +117,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CheckboxListTile(
-          title: const Text("Use custom file name"),
+          title: Text(S.of(context)!.useCustomFileName),
           value: _useCustomFileName,
           onChanged: _toggleCustomFileName,
         ),
         TextField(
           controller: _fileNameController,
           enabled: _useCustomFileName,
-          decoration: const InputDecoration(
-            labelText: "Spreadsheet Title",
-            hintText: "e.g. InvoiceLog",
+          decoration: InputDecoration(
+            labelText: S.of(context)!.fileName,
+            hintText: S.of(context)!.fileNameHint,
           ),
           onChanged: _handleFileNameChange,
         ),

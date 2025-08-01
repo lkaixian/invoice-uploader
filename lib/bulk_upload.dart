@@ -3,7 +3,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'google_drive_helper.dart';
 import 'google_sheets_helper.dart';
-import 'sheet_config.dart';
 
 /// Uploads a file to Google Drive under the given category folder.
 /// Returns `true` if the upload was successful.

@@ -252,4 +252,13 @@ class SZh extends S {
 
   @override
   String get linkOpenFailed => '无法打开链接，请检查您的网络连接或稍后再试。';
+
+  @override
+  String get useCustomFileName => '使用自定义文件名';
+
+  @override
+  String get fileName => '文件名';
+
+  @override
+  String get fileNameHint => '例如：InvoiceLog';
 }

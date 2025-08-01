@@ -119,5 +119,8 @@
   "monthDecember": "Disember",
   "buyMeCoffee": "Sokong Saya",
   "supportMyWork": "Jika aplikasi ini membantu anda, pertimbangkan untuk membeli saya secawan kopi!",
-  "linkOpenFailed": "Gagal membuka pautan, sila semak sambungan internet anda atau cuba lagi nanti."
+  "linkOpenFailed": "Gagal membuka pautan, sila semak sambungan internet anda atau cuba lagi nanti.",
+  "useCustomFileName": "Custom nama fail ",
+  "fileName": "Nama Fail",
+  "fileNameHint": "cth: InvoiceLog"
 }
