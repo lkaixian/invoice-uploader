@@ -2,29 +2,55 @@
   "@@locale": "zh",
   "selectLanguage": "选择语言",
   "language": "语言",
+  "appTitle": "发票上传器",
   "theme": "主题",
   "switchTheme": "切换主题",
   "themeLight": "浅色",
   "themeDark": "深色",
-  "themeSystem": "系统",
+  "themeSystem": "系统默认",
   "settings": "设置",
-  "appTitle": "发票上传器",
-  "signedInMessage": "✅ 已登录为 {email}",
+  "signedInMessage": "✅ 已登录：{email}",
+  "@signedInMessage": {
+    "placeholders": {
+      "email": {"type": "String"}
+    }
+  },
   "signInCancelled": "❌ 登录已取消",
   "signedOut": "🔒 已登出",
   "signInError": "❌ 登录出错：{error}",
+  "@signInError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "welcomeHeader": "欢迎！",
   "welcomeUser": "欢迎，{user}",
-  "pleaseSignIn": "请登录以开始。",
+  "@welcomeUser": {
+    "placeholders": {
+      "user": {"type": "String"}
+    }
+  },
+  "pleaseSignIn": "请先登录以开始使用。",
   "signInButton": "登录",
   "signOutButton": "登出",
-  "receiptUpload": "上传收据",
+  "receiptUpload": "上传发票",
   "spreadsheet": "电子表格",
-  "noCategory": "⚠️ 尚未选择类别。请先上传至少一张收据。",
-  "spreadsheetOpenFail": "❌ 无法打开表格：{error}",
+  "noCategory": "⚠️ 尚未选择类别，请先上传至少一个发票。",
+  "spreadsheetOpenFail": "❌ 打开表格失败：{error}",
+  "@spreadsheetOpenFail": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
   "uploadSuccess": "✅ 上传成功！",
   "uploadFailed": "❌ 上传失败：{statusCode} {error}",
-  "incompleteData": "❌ 某些数据不完整。请检查您的输入。",
+  "@uploadFailed": {
+    "placeholders": {
+      "statusCode": {"type": "int"},
+      "error": {"type": "String"}
+    }
+  },
+  "incompleteData": "❌ 信息不完整，请检查输入内容。",
   "noImageSelected": "未选择图片",
   "cameraButton": "相机",
   "galleryButton": "图库",
@@ -33,64 +59,37 @@
   "addCategoryOption": "➕ 添加类别",
   "newCategoryLabel": "新类别名称",
   "deleteCategoryTitle": "删除“{category}”？",
-  "deleteCategoryConfirm": "确定要删除该类别吗？",
+  "@deleteCategoryTitle": {
+    "placeholders": {
+      "category": {"type": "String"}
+    }
+  },
+  "deleteCategoryConfirm": "是否确定要删除此类别？",
   "delete": "删除",
   "cancel": "取消",
-  "amountLabel": "发票金额（例如：34.50）",
+  "amountLabel": "发票金额（例如 34.50）",
   "enterAmount": "输入金额",
   "filenameLabel": "文件名（可选：自动生成）",
   "selectFiles": "选择文件",
-  "file": "文件",
-  "previous": "上一步",
-  "next": "下一步",
   "date": "日期",
+  "file": "文件",
+  "previous": "上一页",
+  "next": "下一页",
   "pickDate": "选择日期",
   "noDateSelected": "未选择日期",
   "uploadButton": "上传！",
-  "uploadingPleaseWait": "正在上传，请稍候...",
-  "uploadProgress": "正在上传并更新表格...",
-  "uploadSuccessSnackbar": "✅ 上传并记录到表格！",
+  "uploadingPleaseWait": "正在上传，请稍候……",
+  "uploadProgress": "正在上传并更新表格……",
+  "uploadSuccessSnackbar": "✅ 上传并记录成功！",
   "uploadFailedSnackbar": "❌ 上传失败",
   "uploadErrorTitle": "上传错误",
-  "ok": "好的",
+  "ok": "确定",
   "viewExpenses": "查看支出",
   "viewAll": "查看全部",
   "bulkUpload": "批量上传",
-  "@signedInMessage": {
-    "placeholders": {
-      "email": {}
-    }
-  },
-  "@signInError": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "@welcomeUser": {
-    "placeholders": {
-      "user": {}
-    }
-  },
-  "@spreadsheetOpenFail": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "@uploadFailed": {
-    "placeholders": {
-      "statusCode": {},
-      "error": {}
-    }
-  },
-  "@deleteCategoryTitle": {
-    "placeholders": {
-      "category": {}
-    }
-  },
-
-  "uploadedCount": "已上传 {uploaded} 个，共 {total} 个",
+  "uploadedCount": "已上传 {uploaded} / {total}",
   "@uploadedCount": {
-    "description": "Message shown after each successful file upload",
+    "description": "每次成功上传文件后显示的消息",
     "placeholders": {
       "uploaded": {
         "type": "int"
@@ -117,10 +116,22 @@
   "monthOctober": "十月",
   "monthNovember": "十一月",
   "monthDecember": "十二月",
-  "buyMeCoffee": "请支持我",
-  "supportMyWork": "如果您喜欢这个应用，请考虑请我喝杯咖啡！",
-  "linkOpenFailed": "无法打开链接，请检查您的网络连接或稍后再试。",
+  "buyMeCoffee": "请我喝杯咖啡 ☕",
+  "supportMyWork": "咖啡时间！如果你觉得这个应用有帮助，可以请我喝杯咖啡来支持我的工作。",
+  "linkOpenFailed": "无法打开链接",
   "useCustomFileName": "使用自定义文件名",
   "fileName": "文件名",
-  "fileNameHint": "例如：InvoiceLog"
+  "fileNameHint": "例如：InvoiceLog",
+  "about": "关于",
+  "aboutDescription": "这是一个用于上传和记录发票的应用程序。它支持图片识别、Google Drive 上传和 Google 表格同步。",
+  "aboutDisclaimer": "鸣谢：\n- Flutter & Dart SDK\n- Google APIs（Drive, Sheets, Sign-In）\n- flutter_dotenv 用于环境配置\n- firebase_crashlytics\n- 以及其他开源库",
+  "aboutVersion": "版本",
+  "aboutVersionValue": "2508W1_NIGHTLY_BUILD",
+  "reportIssue": "报告问题",
+  "reportIssueSubtitle": "发现错误？请在 GitHub 上告诉我们。",
+  "permanentAutoFileName": "永久自动文件名",
+  "permanentAutoFileNameSubtitle": "始终自动生成文件名，无需手动编辑",
+  "permanentAutoFileNameEnabled": "已启用永久自动文件名",
+  "permanentAutoFileNameDisabled": "已禁用永久自动文件名"
+
 }

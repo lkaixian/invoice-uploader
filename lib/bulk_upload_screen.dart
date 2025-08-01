@@ -6,8 +6,10 @@ import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'bulk_upload.dart';
 import 'settings_screen.dart';
 import 'package:logger/logger.dart';
+import 'universal_filename.dart';
 
 final Logger logger = Logger();
+
 class BulkUploadEntry {
   final PlatformFile file;
   DateTime? date;
@@ -76,12 +78,26 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
     );
 
     if (result != null && result.files.isNotEmpty) {
+      final useAuto = await FileNameSettings.isEnabled(); //  check setting
+
       final newEntries = result.files.map((f) {
-        return BulkUploadEntry(
+        final entry = BulkUploadEntry(
           file: f,
-          filename: truncateFilename(f.name),
           category: widget.category,
+          autoGenerateFilename: useAuto, // apply setting
         );
+
+        if (useAuto) {
+          final autoName = _generateFilename(entry);
+          entry.filename = autoName;
+          entry.filenameController.text = autoName;
+        } else {
+          final truncated = truncateFilename(f.name);
+          entry.filename = truncated;
+          entry.filenameController.text = truncated;
+        }
+
+        return entry;
       }).toList();
 
       setState(() {
@@ -369,9 +385,11 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
                         icon: const Icon(Icons.cloud_upload),
                         label: Text(S.of(context)!.uploadButton),
                         onPressed: () {
-                          logger.i("Starting bulk upload for ${entries.length} files");
+                          logger.i(
+                            "Starting bulk upload for ${entries.length} files",
+                          );
                           _submitAll();
-                        }
+                        },
                       ),
                     ),
                   ],

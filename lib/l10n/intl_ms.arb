@@ -2,29 +2,57 @@
   "@@locale": "ms",
   "selectLanguage": "Pilih Bahasa",
   "language": "Bahasa",
+  "appTitle": "Pemuat Naik Resit",
   "theme": "Tema",
   "switchTheme": "Tukar Tema",
   "themeLight": "Cerah",
   "themeDark": "Gelap",
-  "themeSystem": "Sistem",
+  "themeSystem": "Ikut Sistem",
   "settings": "Tetapan",
-  "appTitle": "Aplikasi Pemuat Naik Resit",
-  "signedInMessage": "✅ Log masuk sebagai {email}",
+  "signedInMessage": "✅ Log masuk sebagai: {email}",
+  "@signedInMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "signInCancelled": "❌ Log masuk dibatalkan",
   "signedOut": "🔒 Telah log keluar",
-  "signInError": "❌ Ralat semasa log masuk: {error}",
-  "welcomeHeader": "Selamat datang!",
+  "signInError": "❌ Ralat log masuk: {error}",
+  "@signInError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "welcomeHeader": "Selamat Datang!",
   "welcomeUser": "Selamat datang, {user}",
-  "pleaseSignIn": "Sila log masuk untuk bermula.",
+  "@welcomeUser": {
+    "placeholders": {
+      "user": {"type": "String"}
+    }
+  },
+  "pleaseSignIn": "Sila log masuk untuk memulakan.",
   "signInButton": "Log Masuk",
   "signOutButton": "Log Keluar",
   "receiptUpload": "Muat Naik Resit",
-  "spreadsheet": "Spreadsheet",
+  "spreadsheet": "Lembaran Kerja",
   "noCategory": "⚠️ Tiada kategori dipilih. Sila muat naik sekurang-kurangnya satu resit dahulu.",
-  "spreadsheetOpenFail": "❌ Gagal buka helaian: {error}",
-  "uploadSuccess": "✅ Muat naik berjaya!",
+  "spreadsheetOpenFail": "❌ Gagal buka lembaran: {error}",
+  "@spreadsheetOpenFail": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "uploadSuccess": "✅ Berjaya dimuat naik!",
   "uploadFailed": "❌ Gagal muat naik: {statusCode} {error}",
-  "incompleteData": "❌ Beberapa data tidak lengkap. Sila semak entri anda.",
+  "@uploadFailed": {
+    "placeholders": {
+      "statusCode": {"type": "int"},
+      "error": {"type": "String"}
+    }
+  },
+  "incompleteData": "❌ Maklumat tidak lengkap. Sila semak input anda.",
   "noImageSelected": "Tiada imej dipilih",
   "cameraButton": "Kamera",
   "galleryButton": "Galeri",
@@ -32,65 +60,38 @@
   "selectCategory": "Pilih Kategori",
   "addCategoryOption": "➕ Tambah Kategori",
   "newCategoryLabel": "Nama Kategori Baru",
-  "deleteCategoryTitle": "Padam '{category}'?",
+  "deleteCategoryTitle": "Padam “{category}”?",
+  "@deleteCategoryTitle": {
+    "placeholders": {
+      "category": {"type": "String"}
+    }
+  },
   "deleteCategoryConfirm": "Adakah anda pasti ingin memadam kategori ini?",
   "delete": "Padam",
   "cancel": "Batal",
-  "amountLabel": "Jumlah Invois (cth: 34.50)",
+  "amountLabel": "Jumlah Resit (cth: 34.50)",
   "enterAmount": "Masukkan Jumlah",
   "filenameLabel": "Nama Fail (pilihan: auto jana)",
   "selectFiles": "Pilih Fail",
+  "date": "Tarikh",
   "file": "Fail",
   "previous": "Sebelumnya",
   "next": "Seterusnya",
-  "date": "Tarikh",
   "pickDate": "Pilih Tarikh",
   "noDateSelected": "Tiada tarikh dipilih",
   "uploadButton": "Muat Naik!",
-  "uploadingPleaseWait": "Sedang memuat naik, sila tunggu...",
-  "uploadProgress": "Memuat naik dan mengemas kini spreadsheet...",
-  "uploadSuccessSnackbar": "✅ Telah dimuat naik & dicatat ke spreadsheet!",
-  "uploadFailedSnackbar": "❌ Gagal memuat naik",
+  "uploadingPleaseWait": "Sila tunggu, sedang memuat naik...",
+  "uploadProgress": "Memuat naik dan mengemas kini lembaran...",
+  "uploadSuccessSnackbar": "✅ Berjaya dimuat naik & direkod!",
+  "uploadFailedSnackbar": "❌ Muat naik gagal",
   "uploadErrorTitle": "Ralat Muat Naik",
   "ok": "OK",
   "viewExpenses": "Lihat Perbelanjaan",
   "viewAll": "Lihat Semua",
-  "bulkUpload": "Muat Naik Berkelompok",
-
-  "@signedInMessage": {
-    "placeholders": {
-      "email": {}
-    }
-  },
-  "@signInError": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "@welcomeUser": {
-    "placeholders": {
-      "user": {}
-    }
-  },
-  "@spreadsheetOpenFail": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "@uploadFailed": {
-    "placeholders": {
-      "statusCode": {},
-      "error": {}
-    }
-  },
-  "@deleteCategoryTitle": {
-    "placeholders": {
-      "category": {}
-    }
-  },
-    "uploadedCount": "Dimuat naik {uploaded} daripada {total}",
+  "bulkUpload": "Muat Naik Pukal",
+  "uploadedCount": "Dimuat naik {uploaded} / {total}",
   "@uploadedCount": {
-    "description": "Message shown after each successful file upload",
+    "description": "Mesej selepas setiap fail berjaya dimuat naik",
     "placeholders": {
       "uploaded": {
         "type": "int"
@@ -100,11 +101,11 @@
       }
     }
   },
-  "addMoreFiles": "Tambah lagi fail",
-  "originalName": "Nama asal",
-  "autoGenerateFilename": "Jana nama fail secara automatik",
-  "topCategories": "3 Kategori Perbelanjaan Terbesar",
-  "topSpends": "3 Perkara Perbelanjaan Tertinggi",
+  "addMoreFiles": "Tambah Lagi Fail",
+  "originalName": "Nama Asal",
+  "autoGenerateFilename": "Auto Jana Nama Fail",
+  "topCategories": "3 Kategori Tertinggi",
+  "topSpends": "3 Perbelanjaan Tertinggi",
   "monthJanuary": "Januari",
   "monthFebruary": "Februari",
   "monthMarch": "Mac",
@@ -117,10 +118,21 @@
   "monthOctober": "Oktober",
   "monthNovember": "November",
   "monthDecember": "Disember",
-  "buyMeCoffee": "Sokong Saya",
-  "supportMyWork": "Jika aplikasi ini membantu anda, pertimbangkan untuk membeli saya secawan kopi!",
-  "linkOpenFailed": "Gagal membuka pautan, sila semak sambungan internet anda atau cuba lagi nanti.",
-  "useCustomFileName": "Custom nama fail ",
+  "buyMeCoffee": "Belanja Saya Kopi ☕",
+  "supportMyWork": "Jika anda rasa aplikasi ini membantu, pertimbangkan untuk belanja saya kopi sebagai tanda sokongan.",
+  "linkOpenFailed": "Gagal buka pautan",
+  "useCustomFileName": "Guna Nama Fail Tersuai",
   "fileName": "Nama Fail",
-  "fileNameHint": "cth: InvoiceLog"
+  "fileNameHint": "Contoh: InvoiceLog",
+  "about": "Tentang",
+  "aboutDescription": "Ini adalah aplikasi untuk memuat naik dan merekod resit. Ia menyokong pengecaman imej, muat naik Google Drive dan penyelarasan Google Sheets.",
+  "aboutDisclaimer": "Penghargaan:\n- Flutter & Dart SDK\n- Google APIs (Drive, Sheets, Sign-In)\n- flutter_dotenv untuk konfigurasi .env\n- firebase_crashlytics\n- dan pustaka sumber terbuka lain",
+  "aboutVersion": "Versi",
+  "aboutVersionValue": "2508W1_NIGHTLY_BUILD",
+  "reportIssue": "Laporkan Isu",
+  "reportIssueSubtitle": "Jumpa pepijat? Maklumkan kami di GitHub.",
+  "permanentAutoFileName": "Nama Fail Auto Kekal",
+  "permanentAutoFileNameSubtitle": "Sentiasa jana nama fail secara automatik tanpa suntingan",
+  "permanentAutoFileNameEnabled": "Auto nama fail kekal diaktifkan",
+  "permanentAutoFileNameDisabled": "Auto nama fail kekal dinyahaktifkan"
 }

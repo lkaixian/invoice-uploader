@@ -22,17 +22,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  ); // Initialize Firebase
-  await dotenv.load(fileName: ".env"); // Load environment variables
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (!kIsWeb) {
+    await dotenv.load(fileName: ".env");
     // Crashlytics is not supported on web
     // Enable Crashlytics
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
+
+  await GoogleDriveSignIn().init();
 
   runApp(const MyApp());
 }
@@ -317,6 +317,33 @@ class _MyAppState extends State<MyApp> {
                                     ),
                                   ),
                           ),
+                    
+                    _buildDrawerCard(
+                      icon: Icons.info,
+                      label: S.of(context)!.about,
+                      onTap: () {
+                        Navigator.pop(context);
+                        showAboutDialog(
+                          context: context,
+                          applicationName: S.of(context)!.appTitle,
+                          applicationVersion: S.of(context)!.aboutVersionValue,
+                          applicationIcon: const Icon(Icons.info_outline),
+                          applicationLegalese: '© 2025 Larm Kai Xian',
+                          children: [
+                            const SizedBox(height: 16),
+                            Text(
+                              S.of(context)!.aboutDescription,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              S.of(context)!.aboutDisclaimer,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
 
                     // --- Settings ---
                     _buildDrawerCard(
@@ -353,6 +380,7 @@ class _MyAppState extends State<MyApp> {
                           );
                         },
                       ),
+                      // Bulk Upload
                       _buildDrawerCard(
                         icon: Icons.upload,
                         label: S.of(context)!.bulkUpload,
@@ -446,7 +474,7 @@ class _MyAppState extends State<MyApp> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  "${localizations.spreadsheetOpenFail(e)}: $e",
+                                  "${localizations.spreadsheetOpenFail('$e')}: $e",
                                 ),
                               ),
                             );

@@ -23,6 +23,7 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
       TextEditingController();
   final TextEditingController _filenameController = TextEditingController();
   final FocusNode _filenameFocusNode = FocusNode();
+  bool _autoFilenameEnabled = false;
 
   String? _selectedCategory;
   DateTime? _selectedDate;
@@ -32,12 +33,24 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
   void initState() {
     super.initState();
     _loadCategories();
+    _loadAutoFilenameSetting();
 
     _filenameFocusNode.addListener(() {
       if (_filenameFocusNode.hasFocus &&
           _filenameController.text.isEmpty &&
           _selectedDate != null) {
         _autoGenerateFilename();
+      }
+    });
+  }
+
+  Future<void> _loadAutoFilenameSetting() async {
+    final prefs = await SharedPreferences.getInstance();
+    final enabled = prefs.getBool('autoFilename') ?? false;
+    setState(() {
+      _autoFilenameEnabled = enabled;
+      if (_autoFilenameEnabled) {
+        _autoGenerateFilename(); // Set the filename when the screen loads
       }
     });
   }
@@ -320,8 +333,14 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
             TextField(
               focusNode: _filenameFocusNode,
               controller: _filenameController,
+              readOnly: _autoFilenameEnabled,
+              style: TextStyle(
+                color: _autoFilenameEnabled ? Colors.grey : Colors.black,
+              ),
               decoration: InputDecoration(
                 labelText: S.of(context)!.filenameLabel,
+                filled: _autoFilenameEnabled,
+                fillColor: _autoFilenameEnabled ? Colors.grey[200] : null,
               ),
             ),
             const SizedBox(height: 20),

@@ -15,7 +15,7 @@ class SMs extends S {
   String get language => 'Bahasa';
 
   @override
-  String get appTitle => 'Aplikasi Pemuat Naik Resit';
+  String get appTitle => 'Pemuat Naik Resit';
 
   @override
   String get theme => 'Tema';
@@ -30,14 +30,14 @@ class SMs extends S {
   String get themeDark => 'Gelap';
 
   @override
-  String get themeSystem => 'Sistem';
+  String get themeSystem => 'Ikut Sistem';
 
   @override
   String get settings => 'Tetapan';
 
   @override
-  String signedInMessage(Object email) {
-    return '✅ Log masuk sebagai $email';
+  String signedInMessage(String email) {
+    return '✅ Log masuk sebagai: $email';
   }
 
   @override
@@ -47,20 +47,20 @@ class SMs extends S {
   String get signedOut => '🔒 Telah log keluar';
 
   @override
-  String signInError(Object error) {
-    return '❌ Ralat semasa log masuk: $error';
+  String signInError(String error) {
+    return '❌ Ralat log masuk: $error';
   }
 
   @override
-  String get welcomeHeader => 'Selamat datang!';
+  String get welcomeHeader => 'Selamat Datang!';
 
   @override
-  String welcomeUser(Object user) {
+  String welcomeUser(String user) {
     return 'Selamat datang, $user';
   }
 
   @override
-  String get pleaseSignIn => 'Sila log masuk untuk bermula.';
+  String get pleaseSignIn => 'Sila log masuk untuk memulakan.';
 
   @override
   String get signInButton => 'Log Masuk';
@@ -72,28 +72,28 @@ class SMs extends S {
   String get receiptUpload => 'Muat Naik Resit';
 
   @override
-  String get spreadsheet => 'Spreadsheet';
+  String get spreadsheet => 'Lembaran Kerja';
 
   @override
   String get noCategory =>
       '⚠️ Tiada kategori dipilih. Sila muat naik sekurang-kurangnya satu resit dahulu.';
 
   @override
-  String spreadsheetOpenFail(Object error) {
-    return '❌ Gagal buka helaian: $error';
+  String spreadsheetOpenFail(String error) {
+    return '❌ Gagal buka lembaran: $error';
   }
 
   @override
-  String get uploadSuccess => '✅ Muat naik berjaya!';
+  String get uploadSuccess => '✅ Berjaya dimuat naik!';
 
   @override
-  String uploadFailed(Object statusCode, Object error) {
+  String uploadFailed(int statusCode, String error) {
     return '❌ Gagal muat naik: $statusCode $error';
   }
 
   @override
   String get incompleteData =>
-      '❌ Beberapa data tidak lengkap. Sila semak entri anda.';
+      '❌ Maklumat tidak lengkap. Sila semak input anda.';
 
   @override
   String get noImageSelected => 'Tiada imej dipilih';
@@ -117,8 +117,8 @@ class SMs extends S {
   String get newCategoryLabel => 'Nama Kategori Baru';
 
   @override
-  String deleteCategoryTitle(Object category) {
-    return 'Padam \'$category\'?';
+  String deleteCategoryTitle(String category) {
+    return 'Padam “$category”?';
   }
 
   @override
@@ -132,7 +132,7 @@ class SMs extends S {
   String get cancel => 'Batal';
 
   @override
-  String get amountLabel => 'Jumlah Invois (cth: 34.50)';
+  String get amountLabel => 'Jumlah Resit (cth: 34.50)';
 
   @override
   String get enterAmount => 'Masukkan Jumlah';
@@ -165,17 +165,16 @@ class SMs extends S {
   String get uploadButton => 'Muat Naik!';
 
   @override
-  String get uploadingPleaseWait => 'Sedang memuat naik, sila tunggu...';
+  String get uploadingPleaseWait => 'Sila tunggu, sedang memuat naik...';
 
   @override
-  String get uploadProgress => 'Memuat naik dan mengemas kini spreadsheet...';
+  String get uploadProgress => 'Memuat naik dan mengemas kini lembaran...';
 
   @override
-  String get uploadSuccessSnackbar =>
-      '✅ Telah dimuat naik & dicatat ke spreadsheet!';
+  String get uploadSuccessSnackbar => '✅ Berjaya dimuat naik & direkod!';
 
   @override
-  String get uploadFailedSnackbar => '❌ Gagal memuat naik';
+  String get uploadFailedSnackbar => '❌ Muat naik gagal';
 
   @override
   String get uploadErrorTitle => 'Ralat Muat Naik';
@@ -190,27 +189,27 @@ class SMs extends S {
   String get viewAll => 'Lihat Semua';
 
   @override
-  String get bulkUpload => 'Muat Naik Berkelompok';
+  String get bulkUpload => 'Muat Naik Pukal';
 
   @override
   String uploadedCount(int uploaded, int total) {
-    return 'Dimuat naik $uploaded daripada $total';
+    return 'Dimuat naik $uploaded / $total';
   }
 
   @override
-  String get addMoreFiles => 'Tambah lagi fail';
+  String get addMoreFiles => 'Tambah Lagi Fail';
 
   @override
-  String get originalName => 'Nama asal';
+  String get originalName => 'Nama Asal';
 
   @override
-  String get autoGenerateFilename => 'Jana nama fail secara automatik';
+  String get autoGenerateFilename => 'Auto Jana Nama Fail';
 
   @override
-  String get topCategories => '3 Kategori Perbelanjaan Terbesar';
+  String get topCategories => '3 Kategori Tertinggi';
 
   @override
-  String get topSpends => '3 Perkara Perbelanjaan Tertinggi';
+  String get topSpends => '3 Perbelanjaan Tertinggi';
 
   @override
   String get monthJanuary => 'Januari';
@@ -249,22 +248,58 @@ class SMs extends S {
   String get monthDecember => 'Disember';
 
   @override
-  String get buyMeCoffee => 'Sokong Saya';
+  String get buyMeCoffee => 'Belanja Saya Kopi ☕';
 
   @override
   String get supportMyWork =>
-      'Jika aplikasi ini membantu anda, pertimbangkan untuk membeli saya secawan kopi!';
+      'Jika anda rasa aplikasi ini membantu, pertimbangkan untuk belanja saya kopi sebagai tanda sokongan.';
 
   @override
-  String get linkOpenFailed =>
-      'Gagal membuka pautan, sila semak sambungan internet anda atau cuba lagi nanti.';
+  String get linkOpenFailed => 'Gagal buka pautan';
 
   @override
-  String get useCustomFileName => 'Custom nama fail ';
+  String get useCustomFileName => 'Guna Nama Fail Tersuai';
 
   @override
   String get fileName => 'Nama Fail';
 
   @override
-  String get fileNameHint => 'cth: InvoiceLog';
+  String get fileNameHint => 'Contoh: InvoiceLog';
+
+  @override
+  String get about => 'Tentang';
+
+  @override
+  String get aboutDescription =>
+      'Ini adalah aplikasi untuk memuat naik dan merekod resit. Ia menyokong pengecaman imej, muat naik Google Drive dan penyelarasan Google Sheets.';
+
+  @override
+  String get aboutDisclaimer =>
+      'Penghargaan:\n- Flutter & Dart SDK\n- Google APIs (Drive, Sheets, Sign-In)\n- flutter_dotenv untuk konfigurasi .env\n- firebase_crashlytics\n- dan pustaka sumber terbuka lain';
+
+  @override
+  String get aboutVersion => 'Versi';
+
+  @override
+  String get aboutVersionValue => '2508W1_NIGHTLY_BUILD';
+
+  @override
+  String get reportIssue => 'Laporkan Isu';
+
+  @override
+  String get reportIssueSubtitle => 'Jumpa pepijat? Maklumkan kami di GitHub.';
+
+  @override
+  String get permanentAutoFileName => 'Nama Fail Auto Kekal';
+
+  @override
+  String get permanentAutoFileNameSubtitle =>
+      'Sentiasa jana nama fail secara automatik tanpa suntingan';
+
+  @override
+  String get permanentAutoFileNameEnabled => 'Auto nama fail kekal diaktifkan';
+
+  @override
+  String get permanentAutoFileNameDisabled =>
+      'Auto nama fail kekal dinyahaktifkan';
 }

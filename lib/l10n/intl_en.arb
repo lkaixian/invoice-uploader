@@ -10,85 +10,227 @@
   "themeSystem": "System Default",
   "settings": "Settings",
   "signedInMessage": "✅ Signed in as {email}",
-  "signInCancelled": "❌ Sign-in cancelled",
-  "signedOut": "🔒 Signed out",
-  "signInError": "❌ Error signing in: {error}",
-  "welcomeHeader": "Welcome!",
-  "welcomeUser": "Welcome, {user}",
-  "pleaseSignIn": "Please sign in to begin.",
-  "signInButton": "Sign In",
-  "signOutButton": "Sign Out",
-  "receiptUpload": "Receipt Upload",
-  "spreadsheet": "Spreadsheet",
-  "noCategory": "⚠️ No category chosen yet. Please upload at least one receipt first.",
-  "spreadsheetOpenFail": "❌ Failed to open spreadsheet: {error}",
-  "uploadSuccess": "✅ Upload success!",
-  "uploadFailed": "❌ Upload failed: {statusCode} {error}",
-  "incompleteData": "❌ Some data is incomplete. Please check your entries.",
-  "noImageSelected": "No image selected",
-  "cameraButton": "Camera",
-  "galleryButton": "Gallery",
-  "categoryLabel": "Category",
-  "selectCategory": "Select Category",
-  "addCategoryOption": "➕ Add Category",
-  "newCategoryLabel": "New Category Name",
-  "deleteCategoryTitle": "Delete '{category}'?",
-  "deleteCategoryConfirm": "Do you want to remove this category?",
-  "delete": "Delete",
-  "cancel": "Cancel",
-  "amountLabel": "Invoice Amount (e.g. 34.50)",
-  "enterAmount": "Enter Amount",
-  "filenameLabel": "Filename (optional: auto generated)",
-  "selectFiles": "Select Files",
-  "date": "Date",
-  "file": "File",
-  "previous": "Previous",
-  "next": "Next",
-  "pickDate": "Pick Date",
-  "noDateSelected": "No date selected",
-  "uploadButton": "Upload!",
-  "uploadingPleaseWait": "Uploading, please wait...",
-  "uploadProgress": "Uploading and updating sheet...",
-  "uploadSuccessSnackbar": "✅ Uploaded & logged to sheet!",
-  "uploadFailedSnackbar": "❌ Upload failed",
-  "uploadErrorTitle": "Upload Error",
-  "ok": "OK",
-  "viewExpenses": "View Expenses",
-  "viewAll": "View All",
-  "bulkUpload": "Bulk Upload",
-
   "@signedInMessage": {
     "placeholders": {
-      "email": {}
+      "email": {
+        "type": "String",
+        "description": "The signed-in user's email address"
+      }
     }
   },
+  "signInCancelled": "❌ Sign-in cancelled",
+  "@signInCancelled": {
+    "description": "Shown when the user cancels the sign-in process"
+  },
+  "signedOut": "🔒 Signed out",
+  "@signedOut": {
+    "description": "Shown when the user signs out"
+  },
+  "signInError": "❌ Error signing in: {error}",
   "@signInError": {
     "placeholders": {
-      "error": {}
+      "error": {
+        "type": "String",
+        "description": "The error message during sign-in"
+      }
     }
   },
+  "welcomeHeader": "Welcome!",
+  "@welcomeHeader": {
+    "description": "Generic welcome message on home screen"
+  },
+  "welcomeUser": "Welcome, {user}",
   "@welcomeUser": {
     "placeholders": {
-      "user": {}
+      "user": {
+        "type": "String",
+        "description": "The signed-in user's name"
+      }
     }
   },
+  "pleaseSignIn": "Please sign in to begin.",
+  "@pleaseSignIn": {
+    "description": "Prompt message asking the user to sign in"
+  },
+  "signInButton": "Sign In",
+  "@signInButton": {
+    "description": "Label for the sign-in button"
+  },
+  "signOutButton": "Sign Out",
+  "@signOutButton": {
+    "description": "Label for the sign-out button"
+  },
+  "receiptUpload": "Receipt Upload",
+  "@receiptUpload": {
+    "description": "Title for receipt upload section"
+  },
+  "spreadsheet": "Spreadsheet",
+  "@spreadsheet": {
+    "description": "Label for spreadsheet view"
+  },
+  "noCategory": "⚠️ No category chosen yet. Please upload at least one receipt first.",
+  "@noCategory": {
+    "description": "Message shown when no category is selected"
+  },
+  "spreadsheetOpenFail": "❌ Failed to open spreadsheet: {error}",
   "@spreadsheetOpenFail": {
     "placeholders": {
-      "error": {}
+      "error": {
+        "type": "String",
+        "description": "Error message when opening spreadsheet fails"
+      }
     }
   },
+  "uploadSuccess": "✅ Upload success!",
+  "@uploadSuccess": {
+    "description": "Shown when the upload is successful"
+  },
+  "uploadFailed": "❌ Upload failed: {statusCode} {error}",
   "@uploadFailed": {
     "placeholders": {
-      "statusCode": {},
-      "error": {}
+      "statusCode": {
+        "type": "int",
+        "description": "The HTTP status code from the upload"
+      },
+      "error": {
+        "type": "String",
+        "description": "The error message from the upload"
+      }
     }
   },
+  "incompleteData": "❌ Some data is incomplete. Please check your entries.",
+  "@incompleteData": {
+    "description": "Message when required form data is incomplete"
+  },
+  "noImageSelected": "No image selected",
+  "@noImageSelected": {
+    "description": "Shown when user hasn't selected an image"
+  },
+  "cameraButton": "Camera",
+  "@cameraButton": {
+    "description": "Button label for taking a photo"
+  },
+  "galleryButton": "Gallery",
+  "@galleryButton": {
+    "description": "Button label for choosing image from gallery"
+  },
+  "categoryLabel": "Category",
+  "@categoryLabel": {
+    "description": "Label for the category selection field"
+  },
+  "selectCategory": "Select Category",
+  "@selectCategory": {
+    "description": "Prompt for selecting a category"
+  },
+  "addCategoryOption": "➕ Add Category",
+  "@addCategoryOption": {
+    "description": "Option to add a new category"
+  },
+  "newCategoryLabel": "New Category Name",
+  "@newCategoryLabel": {
+    "description": "Label for entering new category name"
+  },
+  "deleteCategoryTitle": "Delete '{category}'?",
   "@deleteCategoryTitle": {
     "placeholders": {
-      "category": {}
+      "category": {
+        "type": "String",
+        "description": "The name of the category to be deleted"
+      }
     }
   },
-
+  "deleteCategoryConfirm": "Do you want to remove this category?",
+  "@deleteCategoryConfirm": {
+    "description": "Confirmation message for deleting a category"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Label for delete button"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Label for cancel button"
+  },
+  "amountLabel": "Invoice Amount (e.g. 34.50)",
+  "@amountLabel": {
+    "description": "Label for the invoice amount field"
+  },
+  "enterAmount": "Enter Amount",
+  "@enterAmount": {
+    "description": "Placeholder for invoice amount input"
+  },
+  "filenameLabel": "Filename (optional: auto generated)",
+  "@filenameLabel": {
+    "description": "Label for filename input field"
+  },
+  "selectFiles": "Select Files",
+  "@selectFiles": {
+    "description": "Button label for selecting multiple files"
+  },
+  "date": "Date",
+  "@date": {
+    "description": "Label for date picker"
+  },
+  "file": "File",
+  "@file": {
+    "description": "Label for file name or upload"
+  },
+  "previous": "Previous",
+  "@previous": {
+    "description": "Button to go to the previous item"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Button to go to the next item"
+  },
+  "pickDate": "Pick Date",
+  "@pickDate": {
+    "description": "Button label to open date picker"
+  },
+  "noDateSelected": "No date selected",
+  "@noDateSelected": {
+    "description": "Shown when no date is picked yet"
+  },
+  "uploadButton": "Upload!",
+  "@uploadButton": {
+    "description": "Button label for uploading"
+  },
+  "uploadingPleaseWait": "Uploading, please wait...",
+  "@uploadingPleaseWait": {
+    "description": "Message shown while uploading"
+  },
+  "uploadProgress": "Uploading and updating sheet...",
+  "@uploadProgress": {
+    "description": "Message shown during upload progress"
+  },
+  "uploadSuccessSnackbar": "✅ Uploaded & logged to sheet!",
+  "@uploadSuccessSnackbar": {
+    "description": "Snackbar shown on successful upload"
+  },
+  "uploadFailedSnackbar": "❌ Upload failed",
+  "@uploadFailedSnackbar": {
+    "description": "Snackbar shown when upload fails"
+  },
+  "uploadErrorTitle": "Upload Error",
+  "@uploadErrorTitle": {
+    "description": "Title for error alert dialog"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Button label for confirming"
+  },
+  "viewExpenses": "View Expenses",
+  "@viewExpenses": {
+    "description": "Button label to view logged expenses"
+  },
+  "viewAll": "View All",
+  "@viewAll": {
+    "description": "Button label to view all records"
+  },
+  "bulkUpload": "Bulk Upload",
+  "@bulkUpload": {
+    "description": "Title for bulk upload feature"
+  },
   "uploadedCount": "Uploaded {uploaded} of {total}",
   "@uploadedCount": {
     "description": "Message shown after each successful file upload",
@@ -102,10 +244,25 @@
     }
   },
   "addMoreFiles": "Add more files",
+  "@addMoreFiles": {
+    "description": "Button label for adding more files"
+  },
   "originalName": "Original name",
+  "@originalName": {
+    "description": "Label for original file name"
+  },
   "autoGenerateFilename": "Auto-generate filename",
+  "@autoGenerateFilename": {
+    "description": "Label for auto filename toggle"
+  },
   "topCategories": "Top 3 Categories",
+  "@topCategories": {
+    "description": "Label for top categories chart"
+  },
   "topSpends": "Top 3 Spends",
+  "@topSpends": {
+    "description": "Label for top spending chart"
+  },
   "monthJanuary": "January",
   "monthFebruary": "February",
   "monthMarch": "March",
@@ -118,10 +275,67 @@
   "monthOctober": "October",
   "monthNovember": "November",
   "monthDecember": "December",
+  "@monthJanuary": { "description": "January month label" },
+  "@monthFebruary": { "description": "February month label" },
+  "@monthMarch": { "description": "March month label" },
+  "@monthApril": { "description": "April month label" },
+  "@monthMay": { "description": "May month label" },
+  "@monthJune": { "description": "June month label" },
+  "@monthJuly": { "description": "July month label" },
+  "@monthAugust": { "description": "August month label" },
+  "@monthSeptember": { "description": "September month label" },
+  "@monthOctober": { "description": "October month label" },
+  "@monthNovember": { "description": "November month label" },
+  "@monthDecember": { "description": "December month label" },
   "buyMeCoffee": "Buy me a coffee ☕",
+  "@buyMeCoffee": {
+    "description": "Label/button to support the developer"
+  },
   "supportMyWork": "CAWFEE TIME! If you find this app useful, consider buying me a coffee to support my work.",
+  "@supportMyWork": {
+    "description": "Message encouraging donations to developer"
+  },
   "linkOpenFailed": "Could not open the link",
+  "@linkOpenFailed": {
+    "description": "Shown when failing to launch a URL"
+  },
   "useCustomFileName": "Use custom file name",
+  "@useCustomFileName": {
+    "description": "Toggle for manually entering file name"
+  },
   "fileName": "File Name",
-  "fileNameHint": "e.g. InvoiceLog"
+  "@fileName": {
+    "description": "Label for filename field"
+  },
+  "fileNameHint": "e.g. InvoiceLog",
+  "@fileNameHint": {
+    "description": "Hint for filename input field"
+  },
+  "about": "About",
+  "@about": {
+    "description": "Drawer item for About dialog"
+  },
+  "aboutDescription": "A simple app to manage your finance and invoices using Flutter and Google APIs.\n\nIt allows you to upload receipts, log expenses, and view your financial data in a structured way.\n\nBuilt with love by Larm Kai Xian.",
+  "@aboutDescription": {
+    "description": "App description shown in the About dialog"
+  },
+  "aboutDisclaimer": "Credits:\n- Flutter & Dart SDK\n - Google APIs (Drive, Sheets, Sign-In)\n - flutter_dotenv for secure environment config\n - firebase_crashlytics \n",
+  "@aboutDisclaimer": {
+    "description": "Disclaimer/credits shown in About dialog"
+  },
+  "aboutVersion": "Version",
+  "@aboutVersion": {
+    "description": "Label for version info in About dialog"
+  },
+  "aboutVersionValue": "2508W1_NIGHTLY_BUILD",
+  "@aboutVersionValue": {
+    "description": "The full app version string shown in the About dialog"
+  },
+  "reportIssue": "Report an Issue",
+  "reportIssueSubtitle": "Found a bug? Let us know on GitHub.",
+  "permanentAutoFileName": "Permanent Auto File Name",
+  "permanentAutoFileNameSubtitle": "Always auto-generate filenames without editing",
+  "permanentAutoFileNameEnabled": "Permanent auto filename enabled",
+  "permanentAutoFileNameDisabled": "Permanent auto filename disabled"
+
 }

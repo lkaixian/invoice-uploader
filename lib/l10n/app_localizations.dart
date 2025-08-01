@@ -95,8 +95,9 @@ abstract class S {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('zh'),
     Locale('ms'),
+    Locale('zh'),
+    Locale('zh', 'TW'),
   ];
 
   /// No description provided for @selectLanguage.
@@ -157,15 +158,15 @@ abstract class S {
   ///
   /// In en, this message translates to:
   /// **'✅ Signed in as {email}'**
-  String signedInMessage(Object email);
+  String signedInMessage(String email);
 
-  /// No description provided for @signInCancelled.
+  /// Shown when the user cancels the sign-in process
   ///
   /// In en, this message translates to:
   /// **'❌ Sign-in cancelled'**
   String get signInCancelled;
 
-  /// No description provided for @signedOut.
+  /// Shown when the user signs out
   ///
   /// In en, this message translates to:
   /// **'🔒 Signed out'**
@@ -175,9 +176,9 @@ abstract class S {
   ///
   /// In en, this message translates to:
   /// **'❌ Error signing in: {error}'**
-  String signInError(Object error);
+  String signInError(String error);
 
-  /// No description provided for @welcomeHeader.
+  /// Generic welcome message on home screen
   ///
   /// In en, this message translates to:
   /// **'Welcome!'**
@@ -187,39 +188,39 @@ abstract class S {
   ///
   /// In en, this message translates to:
   /// **'Welcome, {user}'**
-  String welcomeUser(Object user);
+  String welcomeUser(String user);
 
-  /// No description provided for @pleaseSignIn.
+  /// Prompt message asking the user to sign in
   ///
   /// In en, this message translates to:
   /// **'Please sign in to begin.'**
   String get pleaseSignIn;
 
-  /// No description provided for @signInButton.
+  /// Label for the sign-in button
   ///
   /// In en, this message translates to:
   /// **'Sign In'**
   String get signInButton;
 
-  /// No description provided for @signOutButton.
+  /// Label for the sign-out button
   ///
   /// In en, this message translates to:
   /// **'Sign Out'**
   String get signOutButton;
 
-  /// No description provided for @receiptUpload.
+  /// Title for receipt upload section
   ///
   /// In en, this message translates to:
   /// **'Receipt Upload'**
   String get receiptUpload;
 
-  /// No description provided for @spreadsheet.
+  /// Label for spreadsheet view
   ///
   /// In en, this message translates to:
   /// **'Spreadsheet'**
   String get spreadsheet;
 
-  /// No description provided for @noCategory.
+  /// Message shown when no category is selected
   ///
   /// In en, this message translates to:
   /// **'⚠️ No category chosen yet. Please upload at least one receipt first.'**
@@ -229,9 +230,9 @@ abstract class S {
   ///
   /// In en, this message translates to:
   /// **'❌ Failed to open spreadsheet: {error}'**
-  String spreadsheetOpenFail(Object error);
+  String spreadsheetOpenFail(String error);
 
-  /// No description provided for @uploadSuccess.
+  /// Shown when the upload is successful
   ///
   /// In en, this message translates to:
   /// **'✅ Upload success!'**
@@ -241,51 +242,51 @@ abstract class S {
   ///
   /// In en, this message translates to:
   /// **'❌ Upload failed: {statusCode} {error}'**
-  String uploadFailed(Object statusCode, Object error);
+  String uploadFailed(int statusCode, String error);
 
-  /// No description provided for @incompleteData.
+  /// Message when required form data is incomplete
   ///
   /// In en, this message translates to:
   /// **'❌ Some data is incomplete. Please check your entries.'**
   String get incompleteData;
 
-  /// No description provided for @noImageSelected.
+  /// Shown when user hasn't selected an image
   ///
   /// In en, this message translates to:
   /// **'No image selected'**
   String get noImageSelected;
 
-  /// No description provided for @cameraButton.
+  /// Button label for taking a photo
   ///
   /// In en, this message translates to:
   /// **'Camera'**
   String get cameraButton;
 
-  /// No description provided for @galleryButton.
+  /// Button label for choosing image from gallery
   ///
   /// In en, this message translates to:
   /// **'Gallery'**
   String get galleryButton;
 
-  /// No description provided for @categoryLabel.
+  /// Label for the category selection field
   ///
   /// In en, this message translates to:
   /// **'Category'**
   String get categoryLabel;
 
-  /// No description provided for @selectCategory.
+  /// Prompt for selecting a category
   ///
   /// In en, this message translates to:
   /// **'Select Category'**
   String get selectCategory;
 
-  /// No description provided for @addCategoryOption.
+  /// Option to add a new category
   ///
   /// In en, this message translates to:
   /// **'➕ Add Category'**
   String get addCategoryOption;
 
-  /// No description provided for @newCategoryLabel.
+  /// Label for entering new category name
   ///
   /// In en, this message translates to:
   /// **'New Category Name'**
@@ -295,141 +296,141 @@ abstract class S {
   ///
   /// In en, this message translates to:
   /// **'Delete \'{category}\'?'**
-  String deleteCategoryTitle(Object category);
+  String deleteCategoryTitle(String category);
 
-  /// No description provided for @deleteCategoryConfirm.
+  /// Confirmation message for deleting a category
   ///
   /// In en, this message translates to:
   /// **'Do you want to remove this category?'**
   String get deleteCategoryConfirm;
 
-  /// No description provided for @delete.
+  /// Label for delete button
   ///
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
 
-  /// No description provided for @cancel.
+  /// Label for cancel button
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
 
-  /// No description provided for @amountLabel.
+  /// Label for the invoice amount field
   ///
   /// In en, this message translates to:
   /// **'Invoice Amount (e.g. 34.50)'**
   String get amountLabel;
 
-  /// No description provided for @enterAmount.
+  /// Placeholder for invoice amount input
   ///
   /// In en, this message translates to:
   /// **'Enter Amount'**
   String get enterAmount;
 
-  /// No description provided for @filenameLabel.
+  /// Label for filename input field
   ///
   /// In en, this message translates to:
   /// **'Filename (optional: auto generated)'**
   String get filenameLabel;
 
-  /// No description provided for @selectFiles.
+  /// Button label for selecting multiple files
   ///
   /// In en, this message translates to:
   /// **'Select Files'**
   String get selectFiles;
 
-  /// No description provided for @date.
+  /// Label for date picker
   ///
   /// In en, this message translates to:
   /// **'Date'**
   String get date;
 
-  /// No description provided for @file.
+  /// Label for file name or upload
   ///
   /// In en, this message translates to:
   /// **'File'**
   String get file;
 
-  /// No description provided for @previous.
+  /// Button to go to the previous item
   ///
   /// In en, this message translates to:
   /// **'Previous'**
   String get previous;
 
-  /// No description provided for @next.
+  /// Button to go to the next item
   ///
   /// In en, this message translates to:
   /// **'Next'**
   String get next;
 
-  /// No description provided for @pickDate.
+  /// Button label to open date picker
   ///
   /// In en, this message translates to:
   /// **'Pick Date'**
   String get pickDate;
 
-  /// No description provided for @noDateSelected.
+  /// Shown when no date is picked yet
   ///
   /// In en, this message translates to:
   /// **'No date selected'**
   String get noDateSelected;
 
-  /// No description provided for @uploadButton.
+  /// Button label for uploading
   ///
   /// In en, this message translates to:
   /// **'Upload!'**
   String get uploadButton;
 
-  /// No description provided for @uploadingPleaseWait.
+  /// Message shown while uploading
   ///
   /// In en, this message translates to:
   /// **'Uploading, please wait...'**
   String get uploadingPleaseWait;
 
-  /// No description provided for @uploadProgress.
+  /// Message shown during upload progress
   ///
   /// In en, this message translates to:
   /// **'Uploading and updating sheet...'**
   String get uploadProgress;
 
-  /// No description provided for @uploadSuccessSnackbar.
+  /// Snackbar shown on successful upload
   ///
   /// In en, this message translates to:
   /// **'✅ Uploaded & logged to sheet!'**
   String get uploadSuccessSnackbar;
 
-  /// No description provided for @uploadFailedSnackbar.
+  /// Snackbar shown when upload fails
   ///
   /// In en, this message translates to:
   /// **'❌ Upload failed'**
   String get uploadFailedSnackbar;
 
-  /// No description provided for @uploadErrorTitle.
+  /// Title for error alert dialog
   ///
   /// In en, this message translates to:
   /// **'Upload Error'**
   String get uploadErrorTitle;
 
-  /// No description provided for @ok.
+  /// Button label for confirming
   ///
   /// In en, this message translates to:
   /// **'OK'**
   String get ok;
 
-  /// No description provided for @viewExpenses.
+  /// Button label to view logged expenses
   ///
   /// In en, this message translates to:
   /// **'View Expenses'**
   String get viewExpenses;
 
-  /// No description provided for @viewAll.
+  /// Button label to view all records
   ///
   /// In en, this message translates to:
   /// **'View All'**
   String get viewAll;
 
-  /// No description provided for @bulkUpload.
+  /// Title for bulk upload feature
   ///
   /// In en, this message translates to:
   /// **'Bulk Upload'**
@@ -441,143 +442,209 @@ abstract class S {
   /// **'Uploaded {uploaded} of {total}'**
   String uploadedCount(int uploaded, int total);
 
-  /// No description provided for @addMoreFiles.
+  /// Button label for adding more files
   ///
   /// In en, this message translates to:
   /// **'Add more files'**
   String get addMoreFiles;
 
-  /// No description provided for @originalName.
+  /// Label for original file name
   ///
   /// In en, this message translates to:
   /// **'Original name'**
   String get originalName;
 
-  /// No description provided for @autoGenerateFilename.
+  /// Label for auto filename toggle
   ///
   /// In en, this message translates to:
   /// **'Auto-generate filename'**
   String get autoGenerateFilename;
 
-  /// No description provided for @topCategories.
+  /// Label for top categories chart
   ///
   /// In en, this message translates to:
   /// **'Top 3 Categories'**
   String get topCategories;
 
-  /// No description provided for @topSpends.
+  /// Label for top spending chart
   ///
   /// In en, this message translates to:
   /// **'Top 3 Spends'**
   String get topSpends;
 
-  /// No description provided for @monthJanuary.
+  /// January month label
   ///
   /// In en, this message translates to:
   /// **'January'**
   String get monthJanuary;
 
-  /// No description provided for @monthFebruary.
+  /// February month label
   ///
   /// In en, this message translates to:
   /// **'February'**
   String get monthFebruary;
 
-  /// No description provided for @monthMarch.
+  /// March month label
   ///
   /// In en, this message translates to:
   /// **'March'**
   String get monthMarch;
 
-  /// No description provided for @monthApril.
+  /// April month label
   ///
   /// In en, this message translates to:
   /// **'April'**
   String get monthApril;
 
-  /// No description provided for @monthMay.
+  /// May month label
   ///
   /// In en, this message translates to:
   /// **'May'**
   String get monthMay;
 
-  /// No description provided for @monthJune.
+  /// June month label
   ///
   /// In en, this message translates to:
   /// **'June'**
   String get monthJune;
 
-  /// No description provided for @monthJuly.
+  /// July month label
   ///
   /// In en, this message translates to:
   /// **'July'**
   String get monthJuly;
 
-  /// No description provided for @monthAugust.
+  /// August month label
   ///
   /// In en, this message translates to:
   /// **'August'**
   String get monthAugust;
 
-  /// No description provided for @monthSeptember.
+  /// September month label
   ///
   /// In en, this message translates to:
   /// **'September'**
   String get monthSeptember;
 
-  /// No description provided for @monthOctober.
+  /// October month label
   ///
   /// In en, this message translates to:
   /// **'October'**
   String get monthOctober;
 
-  /// No description provided for @monthNovember.
+  /// November month label
   ///
   /// In en, this message translates to:
   /// **'November'**
   String get monthNovember;
 
-  /// No description provided for @monthDecember.
+  /// December month label
   ///
   /// In en, this message translates to:
   /// **'December'**
   String get monthDecember;
 
-  /// No description provided for @buyMeCoffee.
+  /// Label/button to support the developer
   ///
   /// In en, this message translates to:
   /// **'Buy me a coffee ☕'**
   String get buyMeCoffee;
 
-  /// No description provided for @supportMyWork.
+  /// Message encouraging donations to developer
   ///
   /// In en, this message translates to:
   /// **'CAWFEE TIME! If you find this app useful, consider buying me a coffee to support my work.'**
   String get supportMyWork;
 
-  /// No description provided for @linkOpenFailed.
+  /// Shown when failing to launch a URL
   ///
   /// In en, this message translates to:
   /// **'Could not open the link'**
   String get linkOpenFailed;
 
-  /// No description provided for @useCustomFileName.
+  /// Toggle for manually entering file name
   ///
   /// In en, this message translates to:
   /// **'Use custom file name'**
   String get useCustomFileName;
 
-  /// No description provided for @fileName.
+  /// Label for filename field
   ///
   /// In en, this message translates to:
   /// **'File Name'**
   String get fileName;
 
-  /// No description provided for @fileNameHint.
+  /// Hint for filename input field
   ///
   /// In en, this message translates to:
   /// **'e.g. InvoiceLog'**
   String get fileNameHint;
+
+  /// Drawer item for About dialog
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// App description shown in the About dialog
+  ///
+  /// In en, this message translates to:
+  /// **'A simple app to manage your finance and invoices using Flutter and Google APIs.\n\nIt allows you to upload receipts, log expenses, and view your financial data in a structured way.\n\nBuilt with love by Larm Kai Xian.'**
+  String get aboutDescription;
+
+  /// Disclaimer/credits shown in About dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Credits:\n- Flutter & Dart SDK\n - Google APIs (Drive, Sheets, Sign-In)\n - flutter_dotenv for secure environment config\n - firebase_crashlytics \n'**
+  String get aboutDisclaimer;
+
+  /// Label for version info in About dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get aboutVersion;
+
+  /// The full app version string shown in the About dialog
+  ///
+  /// In en, this message translates to:
+  /// **'2508W1_NIGHTLY_BUILD'**
+  String get aboutVersionValue;
+
+  /// No description provided for @reportIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Report an Issue'**
+  String get reportIssue;
+
+  /// No description provided for @reportIssueSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Found a bug? Let us know on GitHub.'**
+  String get reportIssueSubtitle;
+
+  /// No description provided for @permanentAutoFileName.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanent Auto File Name'**
+  String get permanentAutoFileName;
+
+  /// No description provided for @permanentAutoFileNameSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Always auto-generate filenames without editing'**
+  String get permanentAutoFileNameSubtitle;
+
+  /// No description provided for @permanentAutoFileNameEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanent auto filename enabled'**
+  String get permanentAutoFileNameEnabled;
+
+  /// No description provided for @permanentAutoFileNameDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanent auto filename disabled'**
+  String get permanentAutoFileNameDisabled;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
@@ -597,6 +664,18 @@ class _SDelegate extends LocalizationsDelegate<S> {
 }
 
 S lookupS(Locale locale) {
+  // Lookup logic when language+country codes are specified.
+  switch (locale.languageCode) {
+    case 'zh':
+      {
+        switch (locale.countryCode) {
+          case 'TW':
+            return SZhTw();
+        }
+        break;
+      }
+  }
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'en':

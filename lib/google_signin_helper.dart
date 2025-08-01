@@ -6,45 +6,41 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GoogleDriveSignIn {
-  // Singleton instance
   static final GoogleDriveSignIn _instance = GoogleDriveSignIn._internal();
-
-  // Private constructor
-  GoogleDriveSignIn._internal();
-
-  // Factory constructor returns the singleton
   factory GoogleDriveSignIn() => _instance;
 
-  // Initialize API key
-  final String apiKey = dotenv.env['GOOGLE_CLIENT_ID'] ?? '';
+  GoogleDriveSignIn._internal();
 
-  // Sign-In configuration
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: kIsWeb ? dotenv.env['GOOGLE_CLIENT_ID'] : null,
-    scopes: [
-      'https://www.googleapis.com/auth/drive.file',
-      'https://www.googleapis.com/auth/spreadsheets',
-    ],
-  );
+  late final GoogleSignIn _googleSignIn;
 
-  // Returns the current signed-in account (if any)
+  // Async initialization method — call this before using anything
+  Future<void> init() async {
+    final String clientId = kIsWeb
+        ? const String.fromEnvironment('GOOGLE_CLIENT_ID')
+        : dotenv.env['GOOGLE_CLIENT_ID']!;
+
+    _googleSignIn = GoogleSignIn(
+      clientId: clientId,
+      scopes: [
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/spreadsheets',
+      ],
+    );
+  }
+
   GoogleSignInAccount? get currentUser => _googleSignIn.currentUser;
 
-  // Silent sign-in (used at app startup)
   Future<GoogleSignInAccount?> trySilentSignIn() async {
     try {
-      final account = await _googleSignIn.signInSilently();
-      return account;
+      return await _googleSignIn.signInSilently();
     } catch (e) {
       debugPrint("Silent sign-in failed: $e");
       return null;
     }
   }
 
-  // Prompts user to sign in and handles caching
-  // Prompts user to sign in and handles caching
   Future<GoogleSignInAccount?> signIn(BuildContext context) async {
-    final S localizations = S.of(context)!; // ✅ Capture S context synchronously
+    final S localizations = S.of(context)!;
 
     try {
       final account = await _googleSignIn.signIn();
@@ -57,13 +53,11 @@ class GoogleDriveSignIn {
       final previousEmail = prefs.getString('lastSignedInEmail');
       final currentEmail = account.email;
 
-      // Clear cached spreadsheet ID if user switched accounts
       if (previousEmail != null && previousEmail != currentEmail) {
         await prefs.remove('spreadsheetId');
         debugPrint("Switched Google account. Cleared cached spreadsheetId.");
       }
 
-      // Save current email
       await prefs.setString('lastSignedInEmail', currentEmail);
       debugPrint(localizations.signedInMessage(currentEmail));
       return account;
@@ -73,10 +67,8 @@ class GoogleDriveSignIn {
     }
   }
 
-  // Signs the user out
   Future<void> signOut(BuildContext context) async {
-    final S localizations = S.of(context)!; // ✅ Capture S context synchronously
-
+    final S localizations = S.of(context)!;
     try {
       await _googleSignIn.signOut();
       debugPrint(localizations.signedOut);
@@ -85,7 +77,6 @@ class GoogleDriveSignIn {
     }
   }
 
-  // Returns true if a user is signed in
   Future<bool> isSignedIn() async {
     return await _googleSignIn.isSignedIn();
   }

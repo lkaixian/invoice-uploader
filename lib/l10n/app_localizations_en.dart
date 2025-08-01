@@ -36,7 +36,7 @@ class SEn extends S {
   String get settings => 'Settings';
 
   @override
-  String signedInMessage(Object email) {
+  String signedInMessage(String email) {
     return '✅ Signed in as $email';
   }
 
@@ -47,7 +47,7 @@ class SEn extends S {
   String get signedOut => '🔒 Signed out';
 
   @override
-  String signInError(Object error) {
+  String signInError(String error) {
     return '❌ Error signing in: $error';
   }
 
@@ -55,7 +55,7 @@ class SEn extends S {
   String get welcomeHeader => 'Welcome!';
 
   @override
-  String welcomeUser(Object user) {
+  String welcomeUser(String user) {
     return 'Welcome, $user';
   }
 
@@ -79,7 +79,7 @@ class SEn extends S {
       '⚠️ No category chosen yet. Please upload at least one receipt first.';
 
   @override
-  String spreadsheetOpenFail(Object error) {
+  String spreadsheetOpenFail(String error) {
     return '❌ Failed to open spreadsheet: $error';
   }
 
@@ -87,7 +87,7 @@ class SEn extends S {
   String get uploadSuccess => '✅ Upload success!';
 
   @override
-  String uploadFailed(Object statusCode, Object error) {
+  String uploadFailed(int statusCode, String error) {
     return '❌ Upload failed: $statusCode $error';
   }
 
@@ -117,7 +117,7 @@ class SEn extends S {
   String get newCategoryLabel => 'New Category Name';
 
   @override
-  String deleteCategoryTitle(Object category) {
+  String deleteCategoryTitle(String category) {
     return 'Delete \'$category\'?';
   }
 
@@ -264,4 +264,41 @@ class SEn extends S {
 
   @override
   String get fileNameHint => 'e.g. InvoiceLog';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get aboutDescription =>
+      'A simple app to manage your finance and invoices using Flutter and Google APIs.\n\nIt allows you to upload receipts, log expenses, and view your financial data in a structured way.\n\nBuilt with love by Larm Kai Xian.';
+
+  @override
+  String get aboutDisclaimer =>
+      'Credits:\n- Flutter & Dart SDK\n - Google APIs (Drive, Sheets, Sign-In)\n - flutter_dotenv for secure environment config\n - firebase_crashlytics \n';
+
+  @override
+  String get aboutVersion => 'Version';
+
+  @override
+  String get aboutVersionValue => '2508W1_NIGHTLY_BUILD';
+
+  @override
+  String get reportIssue => 'Report an Issue';
+
+  @override
+  String get reportIssueSubtitle => 'Found a bug? Let us know on GitHub.';
+
+  @override
+  String get permanentAutoFileName => 'Permanent Auto File Name';
+
+  @override
+  String get permanentAutoFileNameSubtitle =>
+      'Always auto-generate filenames without editing';
+
+  @override
+  String get permanentAutoFileNameEnabled => 'Permanent auto filename enabled';
+
+  @override
+  String get permanentAutoFileNameDisabled =>
+      'Permanent auto filename disabled';
 }

@@ -4,8 +4,10 @@ output-localization-file: app_localizations.dart
 output-class: S
 preferred-supported-locales:
   - en
-  - zh
   - ms
+  - zh
+  - zh_TW
+
 flutter:
   generate: true
   uses-material-design: true

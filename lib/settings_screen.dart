@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'sheet_config.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'universal_filename.dart';
 
 class SettingsScreen extends StatefulWidget {
   final ThemeMode themeMode;
@@ -21,6 +22,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _useCustomFileName = false;
+  bool _permanentAutoFileName = false;
   final TextEditingController _fileNameController = TextEditingController(
     text: "InvoiceLog",
   );
@@ -29,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     _loadCustomFileNameSettings();
+    _loadPermanentAutoFileNameSetting();
   }
 
   Future<void> _loadCustomFileNameSettings() async {
@@ -39,6 +42,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _useCustomFileName = isCustom;
       _fileNameController.text = savedId;
+    });
+  }
+
+  Future<void> _loadPermanentAutoFileNameSetting() async {
+    final enabled = await FileNameSettings.isEnabled();
+    setState(() {
+      _permanentAutoFileName = enabled;
     });
   }
 
@@ -76,7 +86,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildThemeTile(context),
           const Divider(),
           _buildCustomFileNameSettings(),
+          _buildPermanentAutoFileNameSettings(context),
+          const Divider(),
           _buildCawfeeButton(context),
+          _buildReportIssueButton(context),
         ],
       ),
     );
@@ -157,6 +170,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
             ListTile(
+              title: const Text("繁体中文"),
+              onTap: () {
+                widget.onLocaleChanged(const Locale('zh', 'TW'));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               title: const Text("Bahasa Melayu"),
               onTap: () {
                 widget.onLocaleChanged(const Locale('ms'));
@@ -213,6 +233,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SnackBar(content: Text(S.of(context)!.linkOpenFailed)),
           );
         }
+      },
+    );
+  }
+
+  Widget _buildReportIssueButton(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.bug_report),
+      title: Text(S.of(context)!.reportIssue),
+      subtitle: Text(S.of(context)!.reportIssueSubtitle),
+      onTap: () async {
+        final Uri url = Uri.parse(
+          "https://github.com/lkaixian/invoice-uploader/issues/new",
+        );
+        if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(S.of(context)!.linkOpenFailed)),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildPermanentAutoFileNameSettings(BuildContext context) {
+    return SwitchListTile(
+      secondary: const Icon(Icons.perm_identity),
+      title: Text(S.of(context)!.permanentAutoFileName),
+      subtitle: Text(S.of(context)!.permanentAutoFileNameSubtitle),
+      value: _permanentAutoFileName,
+      onChanged: (value) async {
+        await FileNameSettings.setEnabled(value);
+        setState(() {
+          _permanentAutoFileName = value;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              value
+                  ? S.of(context)!.permanentAutoFileNameEnabled
+                  : S.of(context)!.permanentAutoFileNameDisabled,
+            ),
+          ),
+        );
       },
     );
   }
