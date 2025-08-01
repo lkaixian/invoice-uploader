@@ -3,9 +3,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 
 class GoogleDriveUploader {
   final GoogleSignInAccount account;
+  final Logger logger = Logger();
 
   GoogleDriveUploader(this.account);
 
@@ -97,10 +99,10 @@ class GoogleDriveUploader {
     );
 
     if (uploadRes.statusCode == 200) {
-      print("✅ Upload success!");
+      logger.i("Upload success!");
       return true;
     } else {
-      print("❌ Upload failed: ${uploadRes.statusCode} ${uploadRes.body}");
+      logger.e("Upload failed: ${uploadRes.statusCode} ${uploadRes.body}");
       return false;
     }
   }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "563142801704",
+    "project_id": "invoice-manager-0000",
+    "storage_bucket": "invoice-manager-0000.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563142801704:android:3273e544984119c8d1781d",
+        "android_client_info": {
+          "package_name": "com.example.invoice_scanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDKCvYaP2oY8V_KDwV-4_zRDia8Asy82w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

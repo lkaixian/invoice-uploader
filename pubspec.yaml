@@ -29,6 +29,9 @@ dependencies:
   file_picker: ^10.2.0
   cupertino_icons: ^1.0.8
   month_picker_dialog: ^6.4.1
+  logger: ^1.0.0
+  firebase_core: ^2.20.0
+  firebase_crashlytics: ^3.0.0
 
 dev_dependencies:
   flutter_test:

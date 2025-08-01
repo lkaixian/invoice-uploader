@@ -36,11 +36,14 @@ class GoogleDriveSignIn {
   }
 
   // Prompts user to sign in and handles caching
+  // Prompts user to sign in and handles caching
   Future<GoogleSignInAccount?> signIn(BuildContext context) async {
+    final S localizations = S.of(context)!; // ✅ Capture S context synchronously
+
     try {
       final account = await _googleSignIn.signIn();
       if (account == null) {
-        debugPrint(S.of(context)!.signInCancelled);
+        debugPrint(localizations.signInCancelled);
         return null;
       }
 
@@ -56,24 +59,26 @@ class GoogleDriveSignIn {
 
       // Save current email
       await prefs.setString('lastSignedInEmail', currentEmail);
-
-      debugPrint(S.of(context)!.signedInMessage(currentEmail));
+      debugPrint(localizations.signedInMessage(currentEmail));
       return account;
     } catch (error) {
-      debugPrint(S.of(context)!.signInError(error.toString()));
+      debugPrint(localizations.signInError(error.toString()));
       return null;
     }
   }
 
   // Signs the user out
   Future<void> signOut(BuildContext context) async {
+    final S localizations = S.of(context)!; // ✅ Capture S context synchronously
+
     try {
       await _googleSignIn.signOut();
-      debugPrint(S.of(context)!.signedOut);
+      debugPrint(localizations.signedOut);
     } catch (e) {
       debugPrint("Error during sign out: $e");
     }
   }
+
 
   // Returns true if a user is signed in
   Future<bool> isSignedIn() async {

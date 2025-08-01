@@ -5,7 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'bulk_upload.dart';
 import 'settings_screen.dart';
+import 'package:logger/logger.dart';
 
+final Logger logger = Logger();
 class BulkUploadEntry {
   final PlatformFile file;
   DateTime? date;
@@ -156,6 +158,7 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
 
     try {
       for (int i = 0; i < entries.length; i++) {
+        logger.d("Uploading entry ${i + 1}/${entries.length}");
         final entry = entries[i];
         entry.amount = double.tryParse(entry.amountController.text);
         entry.filename = entry.filenameController.text.trim();
@@ -170,6 +173,8 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
           amount: entry.amount.toString(),
           user: widget.user,
         );
+
+        if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -186,6 +191,7 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
       );
       Navigator.pop(context); // Close screen
     } catch (e) {
+      logger.e("Upload failed: $e");
       Navigator.pop(context);
       showDialog(
         context: context,
@@ -214,7 +220,10 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
         child: entries.isEmpty
             ? Center(
                 child: ElevatedButton(
-                  onPressed: () => _pickFiles(),
+                  onPressed: () {
+                    _pickFiles();
+                    logger.v("Pressed gallery button");
+                  },
                   child: Text(S.of(context)!.galleryButton),
                 ),
               )
@@ -359,7 +368,10 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.cloud_upload),
                         label: Text(S.of(context)!.uploadButton),
-                        onPressed: _submitAll,
+                        onPressed: () {
+                          logger.i("Starting bulk upload for ${entries.length} files");
+                          _submitAll();
+                        }
                       ),
                     ),
                   ],

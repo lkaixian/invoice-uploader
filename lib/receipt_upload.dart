@@ -137,18 +137,24 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
   }
 
   Future<void> _uploadAndReturn() async {
+    if (!mounted) return;
+
+    final localizations = S.of(context)!; // Cache S.of(context)
+
     _autoGenerateFilename();
 
     if (_selectedImage == null) return;
 
     final uploader = GoogleDriveUploader(widget.user);
-    final category = _selectedCategory == S.of(context)!.addCategoryOption
+    final category = _selectedCategory == localizations.addCategoryOption
         ? _customCategoryController.text
         : _selectedCategory!.trim();
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("lastCategory", category.trim());
 
-    // 🔒 Show blocking progress dialog
+    // Show loading dialog
+    if (!mounted) return;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -157,9 +163,9 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
         child: AlertDialog(
           content: Row(
             children: [
-              CircularProgressIndicator(),
-              SizedBox(width: 16),
-              Expanded(child: Text(S.of(context)!.uploadingPleaseWait)),
+              const CircularProgressIndicator(),
+              const SizedBox(width: 16),
+              Expanded(child: Text(localizations.uploadingPleaseWait)),
             ],
           ),
         ),
@@ -175,6 +181,9 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
         folderName: category,
       );
 
+      if (!mounted) return;
+      Navigator.pop(context); // Close progress dialog
+
       if (success) {
         final sheets = GoogleSheetsHelper(widget.user);
         final sheetId = await sheets.getOrCreateMainSpreadsheet();
@@ -186,33 +195,32 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
           _filenameController.text.trim(),
         ]);
 
-        // ✅ Save the sheet ID and last used category
-        final prefs = await SharedPreferences.getInstance();
         await prefs.setString("sheetId_$category", sheetId);
         await prefs.setString("lastUsedCategory", category);
 
-        Navigator.pop(context); // Close progress dialog
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context)!.uploadSuccessSnackbar)),
+          SnackBar(content: Text(localizations.uploadSuccessSnackbar)),
         );
         Navigator.pop(context); // Close upload screen
       } else {
-        Navigator.pop(context); // Close progress dialog
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context)!.uploadFailedSnackbar)),
+          SnackBar(content: Text(localizations.uploadFailedSnackbar)),
         );
       }
     } catch (e) {
-      Navigator.pop(context); // Close progress dialog
+      if (!mounted) return;
+      Navigator.pop(context); // Close dialog
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text(S.of(context)!.uploadErrorTitle),
+          title: Text(localizations.uploadErrorTitle),
           content: Text("$e"),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(S.of(context)!.ok),
+              child: Text(localizations.ok),
             ),
           ],
         ),
@@ -245,12 +253,12 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  icon: Icon(Icons.camera_alt),
+                  icon: const Icon(Icons.camera_alt),
                   label: Text(S.of(context)!.cameraButton),
                   onPressed: () => _pickImage(ImageSource.camera),
                 ),
                 ElevatedButton.icon(
-                  icon: Icon(Icons.photo_library),
+                  icon: const Icon(Icons.photo_library),
                   label: Text(S.of(context)!.galleryButton),
                   onPressed: () => _pickImage(ImageSource.gallery),
                 ),
@@ -288,7 +296,7 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.check),
+                    icon: const Icon(Icons.check),
                     onPressed: () {
                       if (_customCategoryController.text.isNotEmpty) {
                         _addCategory(_customCategoryController.text.trim());
@@ -321,7 +329,7 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
             Row(
               children: [
                 ElevatedButton.icon(
-                  icon: Icon(Icons.calendar_today),
+                  icon: const Icon(Icons.calendar_today),
                   label: Text(S.of(context)!.pickDate),
                   onPressed: _pickDate,
                 ),
@@ -338,7 +346,7 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
             const SizedBox(height: 30),
 
             ElevatedButton.icon(
-              icon: Icon(Icons.cloud_upload),
+              icon: const Icon(Icons.cloud_upload),
               label: Text(S.of(context)!.uploadButton),
               onPressed: _isFormComplete ? _uploadAndReturn : null,
               style: ElevatedButton.styleFrom(

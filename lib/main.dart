@@ -99,30 +99,34 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _handleSignIn(BuildContext context) async {
+    final localizations = S.of(context)!;
     final account = await googleDriveSignIn.signIn(context);
     if (!mounted) return;
+
     if (account != null) {
       setState(() => _user = account);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context)!.signedInMessage(account.email))),
+        SnackBar(content: Text(localizations.signedInMessage(account.email))),
       );
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(S.of(context)!.signInCancelled)));
+      ).showSnackBar(SnackBar(content: Text(localizations.signInCancelled)));
     }
   }
 
   Future<void> _handleSignOut(BuildContext context) async {
+    final localizations = S.of(context)!;
+
     await googleDriveSignIn.signOut(context);
     if (!mounted) return;
     setState(() => _user = null);
     if (!mounted) return;
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text(S.of(context)!.signedOut)));
+    ).showSnackBar(SnackBar(content: Text(localizations.signedOut)));
   }
 
   void _showThemeDialog(BuildContext context) {
@@ -256,7 +260,7 @@ class _MyAppState extends State<MyApp> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.account_circle,
                                   size: 64,
                                   color: Colors.white70,
@@ -383,6 +387,7 @@ class _MyAppState extends State<MyApp> {
                         icon: Icons.table_chart,
                         label: S.of(context)!.spreadsheet,
                         onTap: () async {
+                          final localizations = S.of(context)!;
                           Navigator.pop(context);
                           final prefs = await SharedPreferences.getInstance();
                           final lastCategory = prefs.getString(
@@ -391,9 +396,7 @@ class _MyAppState extends State<MyApp> {
 
                           if (lastCategory == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(S.of(context)!.noCategory),
-                              ),
+                              SnackBar(content: Text(localizations.noCategory)),
                             );
                             return;
                           }
@@ -425,7 +428,7 @@ class _MyAppState extends State<MyApp> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  "${S.of(context)!.spreadsheetOpenFail(e)}: $e",
+                                  "${localizations.spreadsheetOpenFail(e)}: $e",
                                 ),
                               ),
                             );
