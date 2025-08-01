@@ -12,10 +12,24 @@ import 'settings_screen.dart';
 import 'bulk_upload_screen.dart';
 import 'category_service.dart';
 import 'sheet_config.dart';
+import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensures binding is ready
-  await SheetConfig().init(); // Load sheet config
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  if (!kIsWeb) {
+    // Crashlytics is not supported on web
+    // Enable Crashlytics
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  }
+
   runApp(const MyApp());
 }
 

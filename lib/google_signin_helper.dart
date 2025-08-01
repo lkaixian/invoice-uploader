@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class GoogleDriveSignIn {
   // Singleton instance
@@ -15,6 +16,7 @@ class GoogleDriveSignIn {
 
   // Sign-In configuration
   final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: kIsWeb ? '201275861015-89jel04o320p6i3pcb46njfdk860cjo5.apps.googleusercontent.com' : null,
     scopes: [
       'https://www.googleapis.com/auth/drive.file',
       'https://www.googleapis.com/auth/spreadsheets',
@@ -78,7 +80,6 @@ class GoogleDriveSignIn {
       debugPrint("Error during sign out: $e");
     }
   }
-
 
   // Returns true if a user is signed in
   Future<bool> isSignedIn() async {
