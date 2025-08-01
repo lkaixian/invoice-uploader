@@ -32,6 +32,7 @@ dependencies:
   logger: ^1.0.0
   firebase_core: ^2.20.0
   firebase_crashlytics: ^3.0.0
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:

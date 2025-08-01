@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GoogleDriveSignIn {
   // Singleton instance
@@ -14,9 +15,12 @@ class GoogleDriveSignIn {
   // Factory constructor returns the singleton
   factory GoogleDriveSignIn() => _instance;
 
+  // Initialize API key
+  final String apiKey = dotenv.env['GOOGLE_CLIENT_ID'] ?? '';
+
   // Sign-In configuration
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: kIsWeb ? '201275861015-89jel04o320p6i3pcb46njfdk860cjo5.apps.googleusercontent.com' : null,
+    clientId: kIsWeb ? dotenv.env['GOOGLE_CLIENT_ID'] : null,
     scopes: [
       'https://www.googleapis.com/auth/drive.file',
       'https://www.googleapis.com/auth/spreadsheets',
