@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' as io;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,6 +7,12 @@ import 'bulk_upload.dart';
 import 'settings_screen.dart';
 import 'package:logger/logger.dart';
 import 'universal_filename.dart';
+import 'upload_notification.dart';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'category_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'category_service.dart';
 
 final Logger logger = Logger();
 
@@ -33,15 +39,15 @@ class BulkUploadEntry {
 }
 
 class BulkUploadScreen extends StatefulWidget {
-  final String category;
   final Future<void> Function(List<BulkUploadEntry>) onUpload;
   final GoogleSignInAccount user;
+  final String category;
 
   const BulkUploadScreen({
     super.key,
-    required this.category,
     required this.onUpload,
     required this.user,
+    required this.category,
   });
 
   @override
@@ -50,12 +56,38 @@ class BulkUploadScreen extends StatefulWidget {
 
 class _BulkUploadScreenState extends State<BulkUploadScreen> {
   List<BulkUploadEntry> entries = [];
+  List<String> _categories = [];
   int currentIndex = 0;
+  String? _selectedCategory;
+  final TextEditingController _customCategoryController =
+      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
+
+  Future<void> _loadCategories() async {
+    final stored = await CategoryService.loadCategories();
+    final prefs = await SharedPreferences.getInstance();
+    final lastUsed = prefs.getString("lastUsedCategory");
+
+    setState(() {
+      _categories = [...stored, S.of(context)!.addCategoryOption];
+      if (_selectedCategory == null && stored.isNotEmpty) {
+        _selectedCategory = lastUsed != null && stored.contains(lastUsed)
+            ? lastUsed
+            : stored.first;
+      }
+    });
+  }
 
   String _generateFilename(BulkUploadEntry entry) {
     final date = entry.date?.toIso8601String().split('T')[0] ?? 'no_date';
     final amount = entry.amount?.toStringAsFixed(2) ?? 'no_amount';
-    return '${widget.category}_${date}_$amount.jpg';
+    final category = _selectedCategory ?? 'no_category';
+    return '${category}_${date}_$amount.jpg';
   }
 
   String truncateFilename(String filename, {int maxLength = 30}) {
@@ -71,6 +103,21 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
   }
 
   Future<void> _pickFiles({bool append = false}) async {
+    // Require category first if not set
+    if (_selectedCategory == null) {
+      final category = await Navigator.push<String>(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CategoryPickerPage(
+            onCategorySelected: (cat) => Navigator.pop(context, cat),
+          ),
+        ),
+      );
+
+      if (category == null || category.isEmpty) return;
+      setState(() => _selectedCategory = category);
+    }
+
     final result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.custom,
@@ -78,13 +125,13 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
     );
 
     if (result != null && result.files.isNotEmpty) {
-      final useAuto = await FileNameSettings.isEnabled(); //  check setting
+      final useAuto = await FileNameSettings.isEnabled();
 
       final newEntries = result.files.map((f) {
         final entry = BulkUploadEntry(
           file: f,
-          category: widget.category,
-          autoGenerateFilename: useAuto, // apply setting
+          category: _selectedCategory!,
+          autoGenerateFilename: useAuto,
         );
 
         if (useAuto) {
@@ -139,6 +186,45 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
     next.amountController.text = next.amount?.toString() ?? '';
   }
 
+  Future<void> _addCategory(String newCategory) async {
+    final stored = await CategoryService.addCategory(newCategory);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("lastUsedCategory", newCategory);
+
+    setState(() {
+      _categories = [...stored, S.of(context)!.addCategoryOption];
+      _customCategoryController.clear();
+    });
+  }
+
+  Future<void> _removeCategory(String category) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(S.of(context)!.deleteCategoryTitle(category)),
+        content: Text(S.of(context)!.deleteCategoryConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(S.of(context)!.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(S.of(context)!.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      final stored = await CategoryService.removeCategory(category);
+      setState(() {
+        _categories = [...stored, S.of(context)!.addCategoryOption];
+        if (_selectedCategory == category) _selectedCategory = null;
+      });
+    }
+  }
+
   Future<void> _submitAll() async {
     final allValid = entries.every(
       (e) =>
@@ -179,10 +265,23 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
         entry.amount = double.tryParse(entry.amountController.text);
         entry.filename = entry.filenameController.text.trim();
 
-        final file = File(entry.file.path!);
+        Uint8List fileBytes;
+
+        if (kIsWeb) {
+          if (entry.file.bytes == null) {
+            throw Exception("No file bytes available for upload on web.");
+          }
+          fileBytes = entry.file.bytes!;
+        } else {
+          if (entry.file.path == null) {
+            throw Exception("File path is null on native platform.");
+          }
+          final file = io.File(entry.file.path!);
+          fileBytes = await file.readAsBytes();
+        }
 
         await uploadEntryToDriveAndSheets(
-          file: file,
+          fileBytes: fileBytes,
           filename: entry.filename,
           category: entry.category,
           date: entry.date!,
@@ -264,30 +363,78 @@ class _BulkUploadScreenState extends State<BulkUploadScreen> {
                     const SizedBox(height: 10),
                     if (entry?.file.path != null)
                       Center(
-                        child: Image.file(
-                          File(entry!.file.path!),
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                        child: kIsWeb && entry!.file.bytes != null
+                            ? Image.memory(
+                                entry.file.bytes!,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              )
+                            : (!kIsWeb && entry!.file.path != null
+                                  ? Image.file(
+                                      io.File(entry.file.path!),
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const Text("Preview not available")),
                       ),
                     const SizedBox(height: 12),
                     Text(
                       '${S.of(context)!.filenameLabel}: ${truncateFilename(entry!.filename)}',
                     ),
 
-                    TextFormField(
-                      initialValue: entry.category,
-                      enabled: false,
+                    DropdownButtonFormField<String>(
                       decoration: InputDecoration(
                         labelText: S.of(context)!.categoryLabel,
                       ),
-                      onChanged: (val) {
+                      value: _selectedCategory,
+                      items: _categories.map((c) {
+                        return DropdownMenuItem(
+                          value: c,
+                          child: GestureDetector(
+                            onLongPress: c != S.of(context)!.addCategoryOption
+                                ? () => _removeCategory(c)
+                                : null,
+                            child: Text(c),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
                         setState(() {
-                          entry.category = val;
+                          _selectedCategory = value;
+                          entry.category = value ?? '';
                           _updateAutoFilename(currentIndex);
                         });
                       },
                     ),
+                    if (_selectedCategory == S.of(context)!.addCategoryOption)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _customCategoryController,
+                              decoration: InputDecoration(
+                                labelText: S.of(context)!.newCategoryLabel,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.check),
+                            onPressed: () async {
+                              final input = _customCategoryController.text
+                                  .trim();
+                              if (input.isNotEmpty) {
+                                await _addCategory(input);
+                                setState(() {
+                                  entry.category = input;
+                                  _selectedCategory = input;
+                                  _updateAutoFilename(currentIndex);
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+
                     const SizedBox(height: 12),
 
                     Row(

@@ -3,19 +3,20 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'google_drive_helper.dart';
 import 'google_sheets_helper.dart';
+import 'dart:typed_data';
 
 /// Uploads a file to Google Drive under the given category folder.
 /// Returns `true` if the upload was successful.
 Future<bool> uploadToDrive({
   required GoogleSignInAccount user,
-  required File file,
+  required Uint8List fileBytes,
   required String filename,
   required String category,
 }) async {
   final uploader = GoogleDriveUploader(user);
 
-  final success = await uploader.uploadFile(
-    file: file,
+  final success = await uploader.uploadFileBytes(
+    fileBytes: fileBytes,
     fileName: filename.trim(),
     folderName: category,
   );
@@ -49,7 +50,7 @@ Future<void> logToSheet({
 
 /// Combines both upload and logging for convenience
 Future<void> uploadEntryToDriveAndSheets({
-  required File file,
+  required Uint8List fileBytes,
   required String filename,
   required String category,
   required DateTime date,
@@ -58,7 +59,7 @@ Future<void> uploadEntryToDriveAndSheets({
 }) async {
   final success = await uploadToDrive(
     user: user,
-    file: file,
+    fileBytes: fileBytes,
     filename: filename,
     category: category,
   );

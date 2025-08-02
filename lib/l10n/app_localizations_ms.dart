@@ -15,7 +15,7 @@ class SMs extends S {
   String get language => 'Bahasa';
 
   @override
-  String get appTitle => 'Pemuat Naik Resit';
+  String get appTitle => 'Apl Pengurus Kewangan dan Invois';
 
   @override
   String get theme => 'Tema';
@@ -69,7 +69,7 @@ class SMs extends S {
   String get signOutButton => 'Log Keluar';
 
   @override
-  String get receiptUpload => 'Muat Naik Resit';
+  String get receiptUpload => 'Muat Naik Tunggal';
 
   @override
   String get spreadsheet => 'Lembaran Kerja';
@@ -120,6 +120,9 @@ class SMs extends S {
   String deleteCategoryTitle(String category) {
     return 'Padam “$category”?';
   }
+
+  @override
+  String get deleteCategoryTitlePlaceholder => 'Padam kategori yang dipilih';
 
   @override
   String get deleteCategoryConfirm =>
@@ -302,4 +305,76 @@ class SMs extends S {
   @override
   String get permanentAutoFileNameDisabled =>
       'Auto nama fail kekal dinyahaktifkan';
+
+  @override
+  String get changelogTitle => 'Apa Yang Baharu';
+
+  @override
+  String get changelog_1 => 'Ditambah sokongan bahasa Cina Tradisional';
+
+  @override
+  String get changelog_2 => 'Ditambah seksyen Mengenai';
+
+  @override
+  String get changelog_3 =>
+      'Ditambah pilihan untuk penjanaan nama fail automatik secara kekal (dalam tetapan)';
+
+  @override
+  String get changelog_4 => 'Ditambah Firebase Crashlytics untuk laporan ranap';
+
+  @override
+  String get changelog_5 =>
+      'Ditambah butang \'Lapor pepijat\' yang terus ke tab Isu GitHub (dalam tetapan)';
+
+  @override
+  String get changelog_6 =>
+      'Ditambah ciri web — boleh lawat aplikasi melalui laman web';
+
+  @override
+  String get changelog_7 => 'Ciri log menggantikan fungsi print()';
+
+  @override
+  String get changelog_8 => 'Penambahbaikan dan pembaikan pepijat kecil';
+
+  @override
+  String get changelog_note =>
+      'Nota: Versi ditetapkan sebagai <1.0.0 untuk versi pra-lepas. Nombor binaan menggunakan format YYYYMMW-BUILD_TYPE, di mana BUILD_TYPE = RELEASE, BETA, NIGHTLY';
+
+  @override
+  String get changelog_latest_1 => 'Ditambah bahagian \"Apa Yang Baharu\".';
+
+  @override
+  String get changelog_latest_2 =>
+      'Nama aplikasi ditukar mengikut fungsi semasa.';
+
+  @override
+  String get changelog_latest_3 =>
+      'Nama \"Muat Naik Resit\" ditukar kepada \"Muat Naik Tunggal\".';
+
+  @override
+  String get changelog_latest_4 =>
+      'Pemilihan kategori direka semula dan kini disegerakkan pada kedua-dua jenis muat naik.';
+
+  @override
+  String get changelog_latest_5 =>
+      'Proses muat naik pukal dirombak agar lebih intuitif.';
+
+  @override
+  String get changelog_latest_6 =>
+      'Pengguna kini boleh menukar, menambah dan memadam kategori semasa muat naik pukal.';
+
+  @override
+  String get changelog_latest_7 =>
+      'Membaiki warna dan fon agar lebih mesra pengguna.';
+
+  @override
+  String get changelog_latest_8 =>
+      'Melaksanakan pop notifikasi untuk prototaip.';
+
+  @override
+  String get changelog_latest_9 => 'Melaksanakan muat naik berbaris.';
+
+  @override
+  String get changelog_latest_note =>
+      'Nota: Masih dalam pembangunan, belum diaktifkan.';
 }

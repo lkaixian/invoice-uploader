@@ -18,6 +18,8 @@ import 'firebase_options.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'upload_notification.dart';
+import 'category_picker.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +35,7 @@ void main() async {
   }
 
   await GoogleDriveSignIn().init();
+  await UploadNotificationService.init();
 
   runApp(const MyApp());
 }
@@ -317,7 +320,7 @@ class _MyAppState extends State<MyApp> {
                                     ),
                                   ),
                           ),
-                    
+
                     _buildDrawerCard(
                       icon: Icons.info,
                       label: S.of(context)!.about,
@@ -380,55 +383,26 @@ class _MyAppState extends State<MyApp> {
                           );
                         },
                       ),
-                      // Bulk Upload
+
+                      // --- Bulk Upload ---
                       _buildDrawerCard(
                         icon: Icons.upload,
                         label: S.of(context)!.bulkUpload,
-                        onTap: () async {
+                        onTap: () {
                           Navigator.pop(context);
-                          final categories =
-                              await CategoryService.loadCategories();
-                          String? selectedCategory = categories.isNotEmpty
-                              ? categories.first
-                              : null;
-
-                          await showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text(S.of(context)!.selectCategory),
-                              content: DropdownButton<String>(
-                                value: selectedCategory,
-                                hint: Text(S.of(context)!.selectCategory),
-                                items: categories
-                                    .map(
-                                      (c) => DropdownMenuItem(
-                                        value: c,
-                                        child: Text(c),
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: (val) {
-                                  selectedCategory = val;
-                                  Navigator.pop(context);
-                                },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BulkUploadScreen(
+                                category: '',
+                                user: _user!,
+                                onUpload: (entries) async {},
                               ),
                             ),
                           );
-
-                          if (selectedCategory != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BulkUploadScreen(
-                                  category: selectedCategory!,
-                                  onUpload: (entries) async {},
-                                  user: _user!,
-                                ),
-                              ),
-                            );
-                          }
                         },
                       ),
+
                       _buildDrawerCard(
                         icon: Icons.table_chart,
                         label: S.of(context)!.spreadsheet,

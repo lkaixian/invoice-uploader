@@ -15,7 +15,7 @@ class SZh extends S {
   String get language => '语言';
 
   @override
-  String get appTitle => '发票上传器';
+  String get appTitle => '财务与发票管理应用';
 
   @override
   String get theme => '主题';
@@ -69,7 +69,7 @@ class SZh extends S {
   String get signOutButton => '登出';
 
   @override
-  String get receiptUpload => '上传发票';
+  String get receiptUpload => '单个上传';
 
   @override
   String get spreadsheet => '电子表格';
@@ -118,6 +118,9 @@ class SZh extends S {
   String deleteCategoryTitle(String category) {
     return '删除“$category”？';
   }
+
+  @override
+  String get deleteCategoryTitlePlaceholder => '删除所选类别';
 
   @override
   String get deleteCategoryConfirm => '是否确定要删除此类别？';
@@ -296,6 +299,67 @@ class SZh extends S {
 
   @override
   String get permanentAutoFileNameDisabled => '已禁用永久自动文件名';
+
+  @override
+  String get changelogTitle => '更新内容';
+
+  @override
+  String get changelog_1 => '新增繁体中文语言支持';
+
+  @override
+  String get changelog_2 => '新增关于页面';
+
+  @override
+  String get changelog_3 => '新增设置中永久启用自动生成文件名的选项';
+
+  @override
+  String get changelog_4 => '集成 Firebase Crashlytics 用于崩溃报告';
+
+  @override
+  String get changelog_5 => '新增“报告问题”按钮，跳转至 GitHub Issues（设置中）';
+
+  @override
+  String get changelog_6 => '新增网页访问功能';
+
+  @override
+  String get changelog_7 => '将 print() 替换为日志记录功能';
+
+  @override
+  String get changelog_8 => '修复了一些小问题';
+
+  @override
+  String get changelog_note =>
+      '注：版本号采用 <1.0.0 表示预发布。构建号格式为 YYYYMMW-BUILD_TYPE，其中 BUILD_TYPE = RELEASE, BETA, NIGHTLY';
+
+  @override
+  String get changelog_latest_1 => '新增“最新动态”部分。';
+
+  @override
+  String get changelog_latest_2 => '应用名称已更改以符合当前功能。';
+
+  @override
+  String get changelog_latest_3 => '“发票上传”更名为“单个上传”。';
+
+  @override
+  String get changelog_latest_4 => '分类选择已重新设计，并在两种上传方式中同步。';
+
+  @override
+  String get changelog_latest_5 => '批量上传流程全面优化，更加直观。';
+
+  @override
+  String get changelog_latest_6 => '用户现在可以在批量上传中更改、添加和删除分类。';
+
+  @override
+  String get changelog_latest_7 => '修复颜色和字体，使其更具可读性。';
+
+  @override
+  String get changelog_latest_8 => '正在实现通知弹出功能，用于原型测试。';
+
+  @override
+  String get changelog_latest_9 => '正在实现上传队列功能。';
+
+  @override
+  String get changelog_latest_note => '注意：功能开发中，暂未启用。';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -309,7 +373,7 @@ class SZhTw extends SZh {
   String get language => '語言';
 
   @override
-  String get appTitle => '發票上傳應用程式';
+  String get appTitle => '財務與發票管理應用程式';
 
   @override
   String get theme => '主題';
@@ -363,7 +427,7 @@ class SZhTw extends SZh {
   String get signOutButton => '登出';
 
   @override
-  String get receiptUpload => '收據上傳';
+  String get receiptUpload => '單筆上傳';
 
   @override
   String get spreadsheet => '試算表';
@@ -412,6 +476,9 @@ class SZhTw extends SZh {
   String deleteCategoryTitle(String category) {
     return '刪除「$category」？';
   }
+
+  @override
+  String get deleteCategoryTitlePlaceholder => '刪除所選分類';
 
   @override
   String get deleteCategoryConfirm => '確定要刪除此類別嗎？';
@@ -590,4 +657,65 @@ class SZhTw extends SZh {
 
   @override
   String get permanentAutoFileNameDisabled => '已停用永久自動檔案名稱';
+
+  @override
+  String get changelogTitle => '更新內容';
+
+  @override
+  String get changelog_1 => '新增繁體中文語言支援';
+
+  @override
+  String get changelog_2 => '新增關於頁面';
+
+  @override
+  String get changelog_3 => '新增永久自動檔名選項（於設定中）';
+
+  @override
+  String get changelog_4 => '加入 Firebase Crashlytics 處理崩潰回報';
+
+  @override
+  String get changelog_5 => '新增「回報錯誤」按鈕（設定中，導向 GitHub Issues）';
+
+  @override
+  String get changelog_6 => '新增網頁版功能，可透過網站使用應用程式';
+
+  @override
+  String get changelog_7 => '以日誌系統取代 print() 函數';
+
+  @override
+  String get changelog_8 => '小錯誤修復';
+
+  @override
+  String get changelog_note =>
+      '注意：預發行版本號為 <1.0.0，建構號格式為 YYYYMMW-BUILD_TYPE，其中 BUILD_TYPE = RELEASE、BETA、NIGHTLY';
+
+  @override
+  String get changelog_latest_1 => '新增「最新消息」區塊。';
+
+  @override
+  String get changelog_latest_2 => '應用程式名稱已更新，以符合目前功能。';
+
+  @override
+  String get changelog_latest_3 => '「發票上傳」更名為「單筆上傳」。';
+
+  @override
+  String get changelog_latest_4 => '重新設計分類選擇，並同步兩種上傳方式。';
+
+  @override
+  String get changelog_latest_5 => '批量上傳流程全面改進，更加直覺易用。';
+
+  @override
+  String get changelog_latest_6 => '使用者現在可以在批量上傳中更改、添加和移除分類。';
+
+  @override
+  String get changelog_latest_7 => '修復顏色與字體，提升可讀性。';
+
+  @override
+  String get changelog_latest_8 => '實作通知彈出功能作為原型。';
+
+  @override
+  String get changelog_latest_9 => '實作排隊上傳功能。';
+
+  @override
+  String get changelog_latest_note => '注意：開發中，尚未啟用。';
 }

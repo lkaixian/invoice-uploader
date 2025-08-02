@@ -115,7 +115,7 @@ abstract class S {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Invoice Uploader App'**
+  /// **'Finance and Invoice Manager App'**
   String get appTitle;
 
   /// No description provided for @theme.
@@ -211,7 +211,7 @@ abstract class S {
   /// Title for receipt upload section
   ///
   /// In en, this message translates to:
-  /// **'Receipt Upload'**
+  /// **'Single Upload'**
   String get receiptUpload;
 
   /// Label for spreadsheet view
@@ -297,6 +297,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Delete \'{category}\'?'**
   String deleteCategoryTitle(String category);
+
+  /// Placeholder text when no category is selected for deletion
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected category'**
+  String get deleteCategoryTitlePlaceholder;
 
   /// Confirmation message for deleting a category
   ///
@@ -645,6 +651,126 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Permanent auto filename disabled'**
   String get permanentAutoFileNameDisabled;
+
+  /// No description provided for @changelogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get changelogTitle;
+
+  /// No description provided for @changelog_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Added Traditional Chinese language support'**
+  String get changelog_1;
+
+  /// No description provided for @changelog_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Added About section'**
+  String get changelog_2;
+
+  /// No description provided for @changelog_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Added option for permanent auto filename generation (in settings)'**
+  String get changelog_3;
+
+  /// No description provided for @changelog_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Added Firebase Crashlytics for crash reporting'**
+  String get changelog_4;
+
+  /// No description provided for @changelog_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Added \'Report a bug\' button that redirects to GitHub Issues (in settings)'**
+  String get changelog_5;
+
+  /// No description provided for @changelog_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Added web support — access the app via website'**
+  String get changelog_6;
+
+  /// No description provided for @changelog_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Replaced print() with logging system'**
+  String get changelog_7;
+
+  /// No description provided for @changelog_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor bug fixes'**
+  String get changelog_8;
+
+  /// No description provided for @changelog_note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: Versioning format changed to <1.0.0 for pre-releases. Build number format: YYYYMMW-BUILD_TYPE, where BUILD_TYPE = RELEASE, BETA, NIGHTLY'**
+  String get changelog_note;
+
+  /// No description provided for @changelog_latest_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Added \"What\'s new section\".'**
+  String get changelog_latest_1;
+
+  /// No description provided for @changelog_latest_2.
+  ///
+  /// In en, this message translates to:
+  /// **'App name changed to suit current featureset.'**
+  String get changelog_latest_2;
+
+  /// No description provided for @changelog_latest_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Naming changed from \"Receipt Upload\" to \"Single Upload\".'**
+  String get changelog_latest_3;
+
+  /// No description provided for @changelog_latest_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Redesigned Category selection and synchronous across both uploads.'**
+  String get changelog_latest_4;
+
+  /// No description provided for @changelog_latest_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Overhaul bulk uploading process to be more intuitive.'**
+  String get changelog_latest_5;
+
+  /// No description provided for @changelog_latest_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Users can now change, add, and remove categories during bulk uploading.'**
+  String get changelog_latest_6;
+
+  /// No description provided for @changelog_latest_7.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed colors and fonts for better intuitiveness.'**
+  String get changelog_latest_7;
+
+  /// No description provided for @changelog_latest_8.
+  ///
+  /// In en, this message translates to:
+  /// **'Implementing notification pop out for prototyping.'**
+  String get changelog_latest_8;
+
+  /// No description provided for @changelog_latest_9.
+  ///
+  /// In en, this message translates to:
+  /// **'Implementing queued uploads.'**
+  String get changelog_latest_9;
+
+  /// No description provided for @changelog_latest_note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: WIP, disabled.'**
+  String get changelog_latest_note;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

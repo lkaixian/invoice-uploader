@@ -2,7 +2,7 @@
   "@@locale": "zh",
   "selectLanguage": "选择语言",
   "language": "语言",
-  "appTitle": "发票上传器",
+  "appTitle": "财务与发票管理应用",
   "theme": "主题",
   "switchTheme": "切换主题",
   "themeLight": "浅色",
@@ -33,7 +33,7 @@
   "pleaseSignIn": "请先登录以开始使用。",
   "signInButton": "登录",
   "signOutButton": "登出",
-  "receiptUpload": "上传发票",
+  "receiptUpload": "单个上传",
   "spreadsheet": "电子表格",
   "noCategory": "⚠️ 尚未选择类别，请先上传至少一个发票。",
   "spreadsheetOpenFail": "❌ 打开表格失败：{error}",
@@ -64,6 +64,7 @@
       "category": {"type": "String"}
     }
   },
+  "deleteCategoryTitlePlaceholder": "删除所选类别",
   "deleteCategoryConfirm": "是否确定要删除此类别？",
   "delete": "删除",
   "cancel": "取消",
@@ -132,6 +133,26 @@
   "permanentAutoFileName": "永久自动文件名",
   "permanentAutoFileNameSubtitle": "始终自动生成文件名，无需手动编辑",
   "permanentAutoFileNameEnabled": "已启用永久自动文件名",
-  "permanentAutoFileNameDisabled": "已禁用永久自动文件名"
-
+  "permanentAutoFileNameDisabled": "已禁用永久自动文件名",
+  "changelogTitle": "更新内容",
+  "changelog_1": "新增繁体中文语言支持",
+  "changelog_2": "新增关于页面",
+  "changelog_3": "新增设置中永久启用自动生成文件名的选项",
+  "changelog_4": "集成 Firebase Crashlytics 用于崩溃报告",
+  "changelog_5": "新增“报告问题”按钮，跳转至 GitHub Issues（设置中）",
+  "changelog_6": "新增网页访问功能",
+  "changelog_7": "将 print() 替换为日志记录功能",
+  "changelog_8": "修复了一些小问题",
+  "changelog_note": "注：版本号采用 <1.0.0 表示预发布。构建号格式为 YYYYMMW-BUILD_TYPE，其中 BUILD_TYPE = RELEASE, BETA, NIGHTLY",
+  "changelog_latest_1": "新增“最新动态”部分。",
+  "changelog_latest_2": "应用名称已更改以符合当前功能。",
+  "changelog_latest_3": "“发票上传”更名为“单个上传”。",
+  "changelog_latest_4": "分类选择已重新设计，并在两种上传方式中同步。",
+  "changelog_latest_5": "批量上传流程全面优化，更加直观。",
+  "changelog_latest_6": "用户现在可以在批量上传中更改、添加和删除分类。",
+  "changelog_latest_7": "修复颜色和字体，使其更具可读性。",
+  "changelog_latest_8": "正在实现通知弹出功能，用于原型测试。",
+  "changelog_latest_9": "正在实现上传队列功能。",
+  "changelog_latest_note": "注意：功能开发中，暂未启用。"
 }
+

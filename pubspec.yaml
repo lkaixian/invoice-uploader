@@ -1,7 +1,7 @@
 name: invoice_scanner
-description: "Invoice Scanner App"
+description: "A Flutter application for managing financial documents and invoices."
 
-version: 0.2.1+202508W1.NIGHTLY.REVISION.5
+version: 0.2.1+202508W1.NIGHTLY.REVISION.6
 
 environment:
   sdk: ^3.8.1
@@ -33,6 +33,7 @@ dependencies:
   firebase_core: ^2.20.0
   firebase_crashlytics: ^3.0.0
   flutter_dotenv: ^5.1.0
+  flutter_local_notifications: ^14.0.0
 
 dev_dependencies:
   flutter_test:

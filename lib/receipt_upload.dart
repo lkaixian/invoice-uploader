@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' as io show File;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'google_drive_helper.dart';
@@ -7,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'google_sheets_helper.dart';
 import 'package:invoice_scanner/l10n/app_localizations.dart';
 import 'category_service.dart';
+import 'upload_notification.dart';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ReceiptUploadScreen extends StatefulWidget {
   final GoogleSignInAccount user;
@@ -17,7 +20,8 @@ class ReceiptUploadScreen extends StatefulWidget {
 }
 
 class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
-  File? _selectedImage;
+  io.File? _selectedImage;
+  Uint8List? _webImageBytes;
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _customCategoryController =
       TextEditingController();
@@ -56,35 +60,105 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
   }
 
   Future<void> _loadCategories() async {
-    final stored = await CategoryService.loadCategories();
+    final savedCategories = await CategoryService.loadCategories();
+    final prefs = await SharedPreferences.getInstance();
+    final lastUsed = prefs.getString("lastUsedCategory");
+
     setState(() {
-      _categories = [...stored, S.of(context)!.addCategoryOption];
+      _categories = savedCategories;
+      _selectedCategory = lastUsed != null && savedCategories.contains(lastUsed)
+          ? lastUsed
+          : (savedCategories.isNotEmpty ? savedCategories.first : null);
     });
   }
 
-  Future<void> _addCategory(String newCategory) async {
-    final stored = await CategoryService.addCategory(newCategory);
-    setState(() {
-      _categories = [...stored, S.of(context)!.addCategoryOption];
-      _selectedCategory = newCategory;
-      _customCategoryController.clear();
-    });
+  Future<String?> _showAddCategoryDialog() async {
+    String input = '';
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context)!.newCategoryLabel),
+        content: TextField(
+          autofocus: true,
+          onChanged: (val) => input = val,
+          decoration: InputDecoration(
+            hintText: S.of(context)!.newCategoryLabel,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context)!.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, input),
+            child: Text(S.of(context)!.addCategoryOption),
+          ),
+        ],
+      ),
+    );
   }
 
-  Future<void> _removeCategory(String category) async {
-    final stored = await CategoryService.removeCategory(category);
-    setState(() {
-      _categories = [...stored, S.of(context)!.addCategoryOption];
-      if (_selectedCategory == category) _selectedCategory = null;
-    });
+  void _addCategory(String category) async {
+    if (!_categories.contains(category)) {
+      final updated = await CategoryService.addCategory(category);
+      setState(() {
+        _categories = updated;
+        _selectedCategory = category;
+      });
+    }
+  }
+
+  void _showDeleteDialog(String category) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context)!.deleteCategoryTitle(category)),
+        content: Text(
+          S
+              .of(context)!
+              .deleteCategoryConfirm
+              .replaceAll('{category}', category),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(S.of(context)!.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(S.of(context)!.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      final updated = await CategoryService.removeCategory(category);
+      setState(() {
+        _categories = updated;
+        if (_selectedCategory == category) {
+          _selectedCategory = _categories.isNotEmpty ? _categories.first : null;
+        }
+      });
+    }
   }
 
   Future<void> _pickImage(ImageSource source) async {
     final picked = await ImagePicker().pickImage(source: source);
     if (picked != null) {
-      setState(() {
-        _selectedImage = File(picked.path);
-      });
+      if (kIsWeb) {
+        final bytes = await picked.readAsBytes();
+        setState(() {
+          _webImageBytes = bytes;
+          _selectedImage = null; // Not used on web
+        });
+      } else {
+        setState(() {
+          _selectedImage = io.File(picked.path);
+          _webImageBytes = null;
+        });
+      }
     }
   }
 
@@ -96,7 +170,10 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
       lastDate: DateTime(2100),
     );
     if (picked != null) {
-      setState(() => _selectedDate = picked);
+      setState(() {
+        _selectedDate = picked;
+        if (_autoFilenameEnabled) _autoGenerateFilename();
+      });
     }
   }
 
@@ -105,7 +182,10 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
         _selectedCategory != null &&
         (_selectedCategory != S.of(context)!.addCategoryOption ||
             _customCategoryController.text.isNotEmpty);
-    return _selectedImage != null &&
+
+    final hasImage = kIsWeb ? _webImageBytes != null : _selectedImage != null;
+
+    return hasImage &&
         _amountController.text.isNotEmpty &&
         _filenameController.text.isNotEmpty &&
         _selectedDate != null &&
@@ -114,60 +194,65 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
 
   void _autoGenerateFilename() {
     if (_filenameController.text.trim().isNotEmpty) return;
+
     final cat = _selectedCategory == S.of(context)!.addCategoryOption
         ? _customCategoryController.text.trim()
         : _selectedCategory ?? 'receipt';
-    final date = _selectedDate ?? DateTime.now();
-    final timestamp =
-        "${date.day.toString().padLeft(2, '0')}"
-        "${date.month.toString().padLeft(2, '0')}"
-        "${date.year.toString().substring(2)}";
-    final generated = "${cat}_$timestamp".toLowerCase().replaceAll(" ", "_");
+
+    final date = _selectedDate;
+    final amount = double.tryParse(_amountController.text);
+
+    final dateStr = date?.toIso8601String().split('T')[0] ?? 'no_date';
+    final amountStr = amount?.toStringAsFixed(2) ?? 'no_amount';
+    final safeCat = cat.isNotEmpty ? cat : 'no_category';
+
+    final generated = '${safeCat}_${dateStr}_$amountStr.jpg'
+        .toLowerCase()
+        .replaceAll(' ', '_');
+
     _filenameController.text = generated;
   }
 
-  void _showDeleteDialog(String category) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(S.of(context)!.deleteCategoryTitle(category)),
-        content: Text(S.of(context)!.deleteCategoryConfirm),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(S.of(context)!.cancel),
-          ),
-          ElevatedButton(
-            child: Text(S.of(context)!.delete),
-            onPressed: () async {
-              Navigator.pop(context);
-              await _removeCategory(category);
-            },
-          ),
-        ],
-      ),
+  Future<bool> uploadToDriveWeb({
+    required GoogleSignInAccount user,
+    required Uint8List fileBytes,
+    required String fileName,
+    required String folderName,
+  }) async {
+    final uploader = GoogleDriveUploader(user);
+    return await uploader.uploadFileBytes(
+      fileBytes: fileBytes,
+      fileName: fileName,
+      folderName: folderName,
+    );
+  }
+
+  Future<bool> uploadToDrive({
+    required GoogleSignInAccount user,
+    required io.File file,
+    required String fileName,
+    required String folderName,
+  }) async {
+    final uploader = GoogleDriveUploader(user);
+    return await uploader.uploadFile(
+      file: file,
+      fileName: fileName,
+      folderName: folderName,
     );
   }
 
   Future<void> _uploadAndReturn() async {
     if (!mounted) return;
-
-    final localizations = S.of(context)!; // Cache S.of(context)
-
+    final localizations = S.of(context)!;
     _autoGenerateFilename();
 
-    if (_selectedImage == null) return;
-
-    final uploader = GoogleDriveUploader(widget.user);
     final category = _selectedCategory == localizations.addCategoryOption
         ? _customCategoryController.text
         : _selectedCategory!.trim();
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString("lastCategory", category.trim());
+    await prefs.setString("lastUsedCategory", category.trim());
 
-    // Show loading dialog
-    if (!mounted) return;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -188,11 +273,26 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
     await Future.delayed(const Duration(milliseconds: 100));
 
     try {
-      final success = await uploader.uploadFile(
-        file: _selectedImage!,
-        fileName: _filenameController.text.trim(),
-        folderName: category,
-      );
+      final filename = _filenameController.text.trim();
+
+      bool success;
+      if (kIsWeb && _webImageBytes != null) {
+        success = await uploadToDriveWeb(
+          user: widget.user,
+          fileBytes: _webImageBytes!,
+          fileName: filename,
+          folderName: category,
+        );
+      } else if (_selectedImage != null) {
+        success = await uploadToDrive(
+          user: widget.user,
+          file: _selectedImage!,
+          fileName: filename,
+          folderName: category,
+        );
+      } else {
+        throw Exception(localizations.noImageSelected);
+      }
 
       if (!mounted) return;
       Navigator.pop(context); // Close progress dialog
@@ -200,31 +300,28 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
       if (success) {
         final sheets = GoogleSheetsHelper(widget.user);
         final sheetId = await sheets.getOrCreateMainSpreadsheet();
-
         await sheets.ensureCategorySheetExists(sheetId, category);
         await sheets.appendToCategorySheet(sheetId, category, [
           _selectedDate!.toIso8601String().split('T').first,
           _amountController.text.trim(),
-          _filenameController.text.trim(),
+          filename,
         ]);
 
         await prefs.setString("sheetId_$category", sheetId);
         await prefs.setString("lastUsedCategory", category);
 
-        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(localizations.uploadSuccessSnackbar)),
         );
-        Navigator.pop(context); // Close upload screen
+        Navigator.pop(context); // Close screen
       } else {
-        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(localizations.uploadFailedSnackbar)),
         );
       }
     } catch (e) {
       if (!mounted) return;
-      Navigator.pop(context); // Close dialog
+      Navigator.pop(context);
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -243,10 +340,6 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedCategory = _selectedCategory == '➕ Add Category'
-        ? _customCategoryController.text
-        : _selectedCategory ?? '';
-
     return Scaffold(
       appBar: AppBar(title: Text(S.of(context)!.receiptUpload)),
       body: Padding(
@@ -256,9 +349,11 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
             Container(
               height: 200,
               color: Colors.grey[300],
-              child: _selectedImage != null
-                  ? Image.file(_selectedImage!, fit: BoxFit.cover)
-                  : Center(child: Text(S.of(context)!.noImageSelected)),
+              child: (kIsWeb && _webImageBytes != null)
+                  ? Image.memory(_webImageBytes!, fit: BoxFit.cover)
+                  : (_selectedImage != null
+                        ? Image.file(_selectedImage!, fit: BoxFit.cover)
+                        : Center(child: Text(S.of(context)!.noImageSelected))),
             ),
             const SizedBox(height: 10),
 
@@ -279,45 +374,56 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
             ),
             const SizedBox(height: 20),
 
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: S.of(context)!.categoryLabel,
-              ),
-              items: _categories.map((c) {
-                return DropdownMenuItem<String>(
-                  value: c,
-                  child: GestureDetector(
-                    onLongPress: c != S.of(context)!.addCategoryOption
-                        ? () => _showDeleteDialog(c)
-                        : null,
-                    child: Text(c),
-                  ),
-                );
-              }).toList(),
-              value: _selectedCategory,
-              onChanged: (value) => setState(() => _selectedCategory = value),
-            ),
-            if (_selectedCategory == S.of(context)!.addCategoryOption)
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _customCategoryController,
-                      decoration: InputDecoration(
-                        labelText: S.of(context)!.newCategoryLabel,
-                      ),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      labelText: S.of(context)!.categoryLabel,
+                      border: const OutlineInputBorder(),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.check),
-                    onPressed: () {
-                      if (_customCategoryController.text.isNotEmpty) {
-                        _addCategory(_customCategoryController.text.trim());
-                      }
+                    value: _selectedCategory,
+                    items: _categories.map((c) {
+                      return DropdownMenuItem<String>(
+                        value: c,
+                        child: GestureDetector(
+                          onLongPress: c != S.of(context)!.addCategoryOption
+                              ? () => _showDeleteDialog(c)
+                              : null,
+                          child: Text(c),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCategory = value;
+                        if (_autoFilenameEnabled) _autoGenerateFilename();
+                      });
                     },
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 8),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  tooltip: S.of(context)!.addCategoryOption,
+                  onPressed: () async {
+                    final newCategory = await _showAddCategoryDialog();
+                    if (newCategory != null && newCategory.trim().isNotEmpty) {
+                      _addCategory(newCategory.trim());
+                    }
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  tooltip: _selectedCategory != null
+                      ? S.of(context)!.deleteCategoryTitle(_selectedCategory!)
+                      : S.of(context)!.deleteCategoryTitlePlaceholder,
+                  onPressed: _selectedCategory == null
+                      ? null
+                      : () => _showDeleteDialog(_selectedCategory!),
+                ),
+              ],
+            ),
 
             const SizedBox(height: 20),
 
@@ -326,6 +432,7 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: S.of(context)!.amountLabel,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
@@ -335,12 +442,15 @@ class _ReceiptUploadScreenState extends State<ReceiptUploadScreen> {
               controller: _filenameController,
               readOnly: _autoFilenameEnabled,
               style: TextStyle(
-                color: _autoFilenameEnabled ? Colors.grey : Colors.black,
+                color: _autoFilenameEnabled
+                    ? Theme.of(context).disabledColor
+                    : Theme.of(context).textTheme.bodyMedium?.color,
               ),
               decoration: InputDecoration(
                 labelText: S.of(context)!.filenameLabel,
                 filled: _autoFilenameEnabled,
                 fillColor: _autoFilenameEnabled ? Colors.grey[200] : null,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),

@@ -107,10 +107,71 @@ class GoogleDriveUploader {
     }
   }
 
-  String _getMimeType(String path) {
-    if (path.endsWith('.jpg') || path.endsWith('.jpeg')) {
+  // Add support for uploading raw bytes (Web)
+  Future<bool> uploadFileBytes({
+    required Uint8List fileBytes,
+    required String fileName,
+    required String folderName,
+  }) async {
+    final token = await _getAuthToken();
+    final folderId = await _getOrCreateFolder(folderName);
+    if (folderId == null) return false;
+
+    final uri = Uri.parse(
+      "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+    );
+
+    // Infer MIME type from file name (not path!)
+    final mimeType = _getMimeType(fileName);
+
+    final metadata = {
+      'name': fileName,
+      'parents': [folderId],
+    };
+
+    final boundary = '----flutter_upload_boundary';
+    final body = <int>[];
+
+    // Part 1: Metadata
+    body.addAll(utf8.encode('--$boundary\r\n'));
+    body.addAll(
+      utf8.encode('Content-Type: application/json; charset=UTF-8\r\n\r\n'),
+    );
+    body.addAll(utf8.encode(jsonEncode(metadata)));
+    body.addAll(utf8.encode('\r\n'));
+
+    // Part 2: File content
+    body.addAll(utf8.encode('--$boundary\r\n'));
+    body.addAll(utf8.encode('Content-Type: $mimeType\r\n\r\n'));
+    body.addAll(fileBytes);
+    body.addAll(utf8.encode('\r\n--$boundary--\r\n'));
+
+    final uploadRes = await http.post(
+      uri,
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+        "Content-Type": "multipart/related; boundary=$boundary",
+      },
+      body: Uint8List.fromList(body),
+    );
+
+    if (uploadRes.statusCode == 200) {
+      logger.i("Upload (bytes) success!");
+      return true;
+    } else {
+      logger.e(
+        "Upload (bytes) failed: ${uploadRes.statusCode} ${uploadRes.body}",
+      );
+      return false;
+    }
+  }
+
+  // filename aware
+  String _getMimeType(String fileName) {
+    final lower = fileName.toLowerCase();
+    if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) {
       return 'image/jpeg';
-    } else if (path.endsWith('.png')) {
+    } else if (lower.endsWith('.png')) {
       return 'image/png';
     }
     return 'application/octet-stream';

@@ -2,7 +2,7 @@
   "@@locale": "en",
   "selectLanguage": "Select Language",
   "language": "Language",
-  "appTitle": "Invoice Uploader App",
+  "appTitle": "Finance and Invoice Manager App",
   "theme": "Theme",
   "switchTheme": "Switch Theme",
   "themeLight": "Light",
@@ -60,7 +60,7 @@
   "@signOutButton": {
     "description": "Label for the sign-out button"
   },
-  "receiptUpload": "Receipt Upload",
+  "receiptUpload": "Single Upload",
   "@receiptUpload": {
     "description": "Title for receipt upload section"
   },
@@ -138,6 +138,10 @@
         "description": "The name of the category to be deleted"
       }
     }
+  },
+  "deleteCategoryTitlePlaceholder": "Delete selected category",
+  "@deleteCategoryTitlePlaceholder": {
+    "description": "Placeholder text when no category is selected for deletion"
   },
   "deleteCategoryConfirm": "Do you want to remove this category?",
   "@deleteCategoryConfirm": {
@@ -336,6 +340,27 @@
   "permanentAutoFileName": "Permanent Auto File Name",
   "permanentAutoFileNameSubtitle": "Always auto-generate filenames without editing",
   "permanentAutoFileNameEnabled": "Permanent auto filename enabled",
-  "permanentAutoFileNameDisabled": "Permanent auto filename disabled"
+  "permanentAutoFileNameDisabled": "Permanent auto filename disabled",
+  "changelogTitle": "What's New",
+  "changelog_1": "Added Traditional Chinese language support",
+  "changelog_2": "Added About section",
+  "changelog_3": "Added option for permanent auto filename generation (in settings)",
+  "changelog_4": "Added Firebase Crashlytics for crash reporting",
+  "changelog_5": "Added 'Report a bug' button that redirects to GitHub Issues (in settings)",
+  "changelog_6": "Added web support — access the app via website",
+  "changelog_7": "Replaced print() with logging system",
+  "changelog_8": "Minor bug fixes",
+  "changelog_note": "Note: Versioning format changed to <1.0.0 for pre-releases. Build number format: YYYYMMW-BUILD_TYPE, where BUILD_TYPE = RELEASE, BETA, NIGHTLY",
+  "changelog_latest_1": "Added \"What's new section\".",
+  "changelog_latest_2": "App name changed to suit current featureset.",
+  "changelog_latest_3": "Naming changed from \"Receipt Upload\" to \"Single Upload\".",
+  "changelog_latest_4": "Redesigned Category selection and synchronous across both uploads.",
+  "changelog_latest_5": "Overhaul bulk uploading process to be more intuitive.",
+  "changelog_latest_6": "Users can now change, add, and remove categories during bulk uploading.",
+  "changelog_latest_7": "Fixed colors and fonts for better intuitiveness.",
+  "changelog_latest_8": "Implementing notification pop out for prototyping.",
+  "changelog_latest_9": "Implementing queued uploads.",
+  "changelog_latest_note": "Note: WIP, disabled."
+
 
 }

@@ -15,7 +15,7 @@ class SEn extends S {
   String get language => 'Language';
 
   @override
-  String get appTitle => 'Invoice Uploader App';
+  String get appTitle => 'Finance and Invoice Manager App';
 
   @override
   String get theme => 'Theme';
@@ -69,7 +69,7 @@ class SEn extends S {
   String get signOutButton => 'Sign Out';
 
   @override
-  String get receiptUpload => 'Receipt Upload';
+  String get receiptUpload => 'Single Upload';
 
   @override
   String get spreadsheet => 'Spreadsheet';
@@ -120,6 +120,9 @@ class SEn extends S {
   String deleteCategoryTitle(String category) {
     return 'Delete \'$category\'?';
   }
+
+  @override
+  String get deleteCategoryTitlePlaceholder => 'Delete selected category';
 
   @override
   String get deleteCategoryConfirm => 'Do you want to remove this category?';
@@ -301,4 +304,74 @@ class SEn extends S {
   @override
   String get permanentAutoFileNameDisabled =>
       'Permanent auto filename disabled';
+
+  @override
+  String get changelogTitle => 'What\'s New';
+
+  @override
+  String get changelog_1 => 'Added Traditional Chinese language support';
+
+  @override
+  String get changelog_2 => 'Added About section';
+
+  @override
+  String get changelog_3 =>
+      'Added option for permanent auto filename generation (in settings)';
+
+  @override
+  String get changelog_4 => 'Added Firebase Crashlytics for crash reporting';
+
+  @override
+  String get changelog_5 =>
+      'Added \'Report a bug\' button that redirects to GitHub Issues (in settings)';
+
+  @override
+  String get changelog_6 => 'Added web support — access the app via website';
+
+  @override
+  String get changelog_7 => 'Replaced print() with logging system';
+
+  @override
+  String get changelog_8 => 'Minor bug fixes';
+
+  @override
+  String get changelog_note =>
+      'Note: Versioning format changed to <1.0.0 for pre-releases. Build number format: YYYYMMW-BUILD_TYPE, where BUILD_TYPE = RELEASE, BETA, NIGHTLY';
+
+  @override
+  String get changelog_latest_1 => 'Added \"What\'s new section\".';
+
+  @override
+  String get changelog_latest_2 =>
+      'App name changed to suit current featureset.';
+
+  @override
+  String get changelog_latest_3 =>
+      'Naming changed from \"Receipt Upload\" to \"Single Upload\".';
+
+  @override
+  String get changelog_latest_4 =>
+      'Redesigned Category selection and synchronous across both uploads.';
+
+  @override
+  String get changelog_latest_5 =>
+      'Overhaul bulk uploading process to be more intuitive.';
+
+  @override
+  String get changelog_latest_6 =>
+      'Users can now change, add, and remove categories during bulk uploading.';
+
+  @override
+  String get changelog_latest_7 =>
+      'Fixed colors and fonts for better intuitiveness.';
+
+  @override
+  String get changelog_latest_8 =>
+      'Implementing notification pop out for prototyping.';
+
+  @override
+  String get changelog_latest_9 => 'Implementing queued uploads.';
+
+  @override
+  String get changelog_latest_note => 'Note: WIP, disabled.';
 }
